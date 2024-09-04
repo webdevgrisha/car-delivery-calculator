@@ -1,0 +1,15 @@
+.currency {
+    margin-top: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.13rem;
+    width: 100%;
+}
+
+.currency p {
+    font-weight: 300;
+    font-size: 0.75rem;
+    line-height: 150%;
+    color: rgb(109, 109, 109);
+}

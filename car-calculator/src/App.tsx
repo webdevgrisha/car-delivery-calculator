@@ -1,33 +1,63 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+import { Currency, Section, SubSection, TotalSum } from './components/index';
 
+const firstSubSection = [
+  'Cena samochodu na aukcji',
+  'Prowizja aukcyjna',
+  'Koszt wysyłki do portu w USA',
+  'Koszt transportu morskiego do portu w Bremerhaven',
+  'Prowizja naszej firmy',
+  'Suma aukcyjna i wysyłka:',
+];
+
+const secondSubSection = [
+  'Cło',
+  'VAT',
+  'Akcyza',
+  'Agencja celna i rozładunek',
+  'Suma opłat celnych:',
+];
+
+const thirdSubSection = ['Transport do domu', 'Inne płatności:'];
+
+const currencyPairs = [
+  { baseCode: 'USD', targetCode: 'PLN' },
+  { baseCode: 'USD', targetCode: 'EUR' },
+];
+
+function App() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <main className="calculator">
+        <div className="colum-wrapper">
+          <Section>
+            <div className="container">
+              <header>
+                <img src="./logo-black.png" alt="logo" />
+              </header>
+              <SubSection
+                title="Aukcja i wysyłka"
+                rows={firstSubSection}
+                currency="USD"
+              />
+              <SubSection
+                title="Odprawa celna"
+                rows={secondSubSection}
+                currency="EUR"
+              />
+              <SubSection
+                title="Inne płatności"
+                rows={thirdSubSection}
+                currency="PLN"
+              />
+            </div>
+            <TotalSum title="Całkowity koszt samochodu:" currency="PLN" />
+          </Section>
+          <Currency currencyPairs={currencyPairs} />
+        </div>
+      </main>
     </>
   );
 }
