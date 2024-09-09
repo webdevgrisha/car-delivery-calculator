@@ -1,11 +1,11 @@
 import './TotalSum.css';
 
-interface SubSectionProps {
+interface TotalSumProps {
   title: string;
   currency: 'USD' | 'EUR' | 'PLN';
 }
 
-function TotalSum(props: SubSectionProps) {
+function TotalSum(props: TotalSumProps) {
   const { title, currency } = props;
   return (
     <div className="total-sum">

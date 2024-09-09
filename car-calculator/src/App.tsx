@@ -4,9 +4,9 @@ import './App.css';
 import {
   AutoCalculation,
   Currency,
-  Section,
   SubSection,
   TotalSum,
+  ManualCalculation,
 } from './components/index';
 
 const firstSubSection = [
@@ -65,6 +65,7 @@ function App() {
         </div>
         <div className="colum-wrapper">
           <AutoCalculation />
+          <ManualCalculation />
         </div>
       </main>
     </>

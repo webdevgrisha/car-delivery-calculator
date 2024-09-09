@@ -1,4 +1,4 @@
-.currency {
+.currency-block {
     margin-top: 0.88rem;
     display: flex;
     align-items: center;
@@ -7,7 +7,7 @@
     width: 100%;
 }
 
-.currency p {
+.currency-block p {
     font-weight: 300;
     font-size: 0.75rem;
     line-height: 150%;

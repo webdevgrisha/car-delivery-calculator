@@ -38,7 +38,7 @@ function Exchange(props: ExchangeProps) {
   if (loading) return <Loader />;
 
   return (
-    <div className="currency">
+    <div className="currency-block">
       {currencyPairs.map(({ baseCode, targetCode }, index: number) => {
         const price = exchangeRates[index];
 
