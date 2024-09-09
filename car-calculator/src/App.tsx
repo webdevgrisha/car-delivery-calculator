@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 import {
+  LoginForm,
   AutoCalculation,
   Currency,
   SubSection,
@@ -36,7 +37,8 @@ const currencyPairs = [
 function App() {
   return (
     <>
-      <main className="calculator">
+      <LoginForm />
+      {/* <main className="calculator">
         <div className="colum-wrapper">
           <section>
             <div className="container">
@@ -67,7 +69,7 @@ function App() {
           <AutoCalculation />
           <ManualCalculation />
         </div>
-      </main>
+      </main> */}
     </>
   );
 }

@@ -4,8 +4,10 @@ import Currency from './Exchange/Exchange.tsx';
 import Loader from './Loader/Loader.tsx';
 import AutoCalculation from './AutoCalculation/AutoCalculation.tsx';
 import ManualCalculation from './ManualCalculation/ManualCalculation.tsx';
+import LoginForm from './ LoginForm/LoginForm.tsx';
 
 export {
+  LoginForm,
   SubSection,
   TotalSum,
   Currency,
