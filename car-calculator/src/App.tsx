@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import './App.css';
 
-import { Currency, Section, SubSection, TotalSum } from './components/index';
+import {
+  AutoCalculation,
+  Currency,
+  Section,
+  SubSection,
+  TotalSum,
+} from './components/index';
 
 const firstSubSection = [
   'Cena samochodu na aukcji',
@@ -32,7 +38,7 @@ function App() {
     <>
       <main className="calculator">
         <div className="colum-wrapper">
-          <Section>
+          <section>
             <div className="container">
               <header>
                 <img src="./logo-black.png" alt="logo" />
@@ -54,8 +60,11 @@ function App() {
               />
             </div>
             <TotalSum title="Całkowity koszt samochodu:" currency="PLN" />
-          </Section>
+          </section>
           <Currency currencyPairs={currencyPairs} />
+        </div>
+        <div className="colum-wrapper">
+          <AutoCalculation />
         </div>
       </main>
     </>

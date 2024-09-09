@@ -42,30 +42,52 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 p {
   font-weight: 400;
   font-size: 0.88rem;
   line-height: 150%;
   color: rgb(124, 141, 181);
 }
+
+section {
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
+  background: rgb(248, 248, 250);
+  font-weight: 300;
+  font-style: normal;
+
+  border: 1px solid rgb(223, 231, 240);
+  border-radius: 0.81rem;
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
+
+  width: 500px;
+}
+
+section .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.94rem 1.56rem;
+}
+
+/* section.small {
+  height: 30%;
+  background-color: aqua;
+}
+
+section.large {
+  padding: 30px;
+  justify-content: flex-start;
+  min-height: 70%;
+  background-color: antiquewhite;
+  background-color:bisque;
+}
+
+section.large h1 {
+  color: #800000;
+} */
