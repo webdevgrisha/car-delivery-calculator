@@ -1,0 +1,117 @@
+.personal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.56rem;
+    padding: 1.56rem 1.88rem;
+    width: 100%;
+    margin: 0px auto;
+    max-width: 48.88rem;
+
+    padding-bottom: 1.56rem;
+    border: 1px solid rgb(223, 231, 240);
+    border-radius: 0.81rem;
+    background-color: rgb(255, 255, 255);
+}
+
+.personal-info>h2 {
+    height: 50px;
+    /* margin: 0px 1.56rem; */
+    border-bottom: 1px solid rgb(223, 231, 240);
+
+    font-weight: 500;
+    font-size: 2.13rem;
+    line-height: 3.63rem;
+    color: rgb(51, 51, 51);
+}
+
+.personal-info>.group {
+    display: flex;
+    flex-direction: column;
+}
+
+.personal-info>.group>h3 {
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 150%;
+    color: rgb(51, 51, 51);
+}
+
+.personal-info>.group>p {
+    margin-bottom: 1.25rem;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.3rem;
+    line-height: 150%;
+    color: rgb(124, 141, 181);
+}
+
+
+.personal-info>.group>input {
+    width: 100%;
+    padding: 0px 0.94rem;
+    background: rgb(250, 251, 252);
+    border: 1px solid rgb(223, 231, 240);
+    border-radius: 0.31rem;
+    font-weight: 300;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    font-family: inherit;
+    height: 2.75rem;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+}
+
+.personal-info>.group>input:disabled {
+    cursor: not-allowed;
+    background: rgb(252, 252, 253);
+}
+
+.react-tel-input .flag-dropdown {
+    background: rgb(250, 251, 252);
+    border: 1px solid rgb(223, 231, 240);
+}
+
+.react-tel-input .form-control {
+    width: 100%;
+    padding: 0px 0.94rem 0px 50px;
+    background: rgb(250, 251, 252);
+    border: 1px solid rgb(223, 231, 240);
+    border-radius: 0.31rem;
+    font-weight: 300;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    font-family: inherit;
+    height: 2.75rem;
+    opacity: 0.5;
+}
+
+.personal-info>.save-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25rem;
+    border: none;
+    transition: transform 0.4s;
+    box-sizing: border-box;
+    user-select: none;
+    padding: 0px 1.5rem;
+    height: 2.75rem;
+    background: rgb(227, 234, 255);
+    cursor: pointer;
+
+    margin-top: 1.25rem;
+    margin-left: auto;
+    width: 8.69rem;
+
+    font-weight: 500;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: rgb(33, 109, 209);
+}
+
+.personal-info>.save-btn:hover {
+    transform: scale(0.97);
+}

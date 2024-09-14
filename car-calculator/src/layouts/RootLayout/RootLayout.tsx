@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function RootLayout() {
   const match = useMatch('/settings/*');
 
-  console.log('match: ', match);
+  // console.log('match: ', match);
   // const [isSettingActive, setSettingActive] = useState<boolean>(false);
 
   const mainNavClass = match ? 'remove-p' : '';

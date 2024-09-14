@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client';
 import {
   createBrowserRouter,
   Navigate,
+  Outlet,
   RouterProvider,
 } from 'react-router-dom';
 import App from './App.tsx';
-import { LoginForm } from './components/index.ts';
+import { LoginForm, PersonalInfo } from './components/index.ts';
 
 import { RootLayout, LogInLayout } from '../src/layouts/index.ts';
 
@@ -22,28 +23,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <RootLayout />,
     children: [
-      {
-        path: 'settings',
-        element: <Navigate to="profile" replace={true} />,
-        children: [
-          {
-            path: 'profile',
-            element: '',
-          },
-          {
-            path: 'users',
-            element: '',
-          },
-          {
-            path: 'calculator',
-            element: '',
-          },
-          {
-            path: 'shipping',
-            element: '',
-          },
-        ],
-      },
       {
         path: 'carfax',
         element: '',
@@ -63,6 +42,32 @@ const router = createBrowserRouter([
       {
         path: 'calculator',
         element: <App />,
+      },
+      {
+        path: 'settings',
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="profile" replace={true} />,
+          },
+          {
+            path: 'profile',
+            element: <PersonalInfo />,
+          },
+          {
+            path: 'users/',
+            element: '',
+          },
+          {
+            path: 'calculator',
+            element: '',
+          },
+          {
+            path: 'shipping',
+            element: '',
+          },
+        ],
       },
     ],
   },

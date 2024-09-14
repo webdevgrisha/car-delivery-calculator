@@ -5,6 +5,7 @@ import Loader from './Loader/Loader.tsx';
 import AutoCalculation from './AutoCalculation/AutoCalculation.tsx';
 import ManualCalculation from './ManualCalculation/ManualCalculation.tsx';
 import LoginForm from './ LoginForm/LoginForm.tsx';
+import PersonalInfo from './PersonalInfo/PersonalInfo.tsx';
 
 export {
   LoginForm,
@@ -14,4 +15,5 @@ export {
   Loader,
   AutoCalculation,
   ManualCalculation,
+  PersonalInfo
 };
