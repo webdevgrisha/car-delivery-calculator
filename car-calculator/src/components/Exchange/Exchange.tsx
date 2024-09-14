@@ -20,26 +20,26 @@ function Exchange(props: ExchangeProps) {
 
   const { currencyPairs } = props;
 
-  useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const promiseArr = currencyPairs.map(({ baseCode, targetCode }) =>
-        getConversion(baseCode, targetCode),
-      );
+  // useEffect(() => {
+  //   const fetchExchangeRate = async () => {
+  //     const promiseArr = currencyPairs.map(({ baseCode, targetCode }) =>
+  //       getConversion(baseCode, targetCode),
+  //     );
 
-      const result = await Promise.all(promiseArr);
+  //     const result = await Promise.all(promiseArr);
 
-      setExchangeRates(result);
-      setLoading(false);
-    };
+  //     setExchangeRates(result);
+  //     setLoading(false);
+  //   };
 
-    fetchExchangeRate();
-  }, []);
+  //   fetchExchangeRate();
+  // }, []);
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
 
   return (
     <div className="currency-block">
-      {currencyPairs.map(({ baseCode, targetCode }, index: number) => {
+      {/* {currencyPairs.map(({ baseCode, targetCode }, index: number) => {
         const price = exchangeRates[index];
 
         return (
@@ -47,8 +47,8 @@ function Exchange(props: ExchangeProps) {
             {baseCode}/{targetCode} - {price}
           </p>
         );
-      })}
-      {/* <p>USD/EUR - 0.91</p> */}
+      })} */}
+      <p>USD/EUR - 0.91</p>
     </div>
   );
 }

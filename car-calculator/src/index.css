@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
 
 :root {
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   font-size: 0.88rem;
   line-height: 1.06rem;
 
   color: rgb(124, 141, 181);
   background: rgb(248, 248, 250);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -28,6 +28,7 @@ html {
 }
 
 body {
+  font-size: 1.171vw;
   font-family: 'Rubik', sans-serif;
   margin: 0;
   padding: 0;
@@ -50,10 +51,6 @@ p {
 }
 
 section {
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; */
   background: rgb(248, 248, 250);
   font-weight: 300;
   font-style: normal;
@@ -74,20 +71,3 @@ section .container {
   width: 100%;
   padding: 0.94rem 1.56rem;
 }
-
-/* section.small {
-  height: 30%;
-  background-color: aqua;
-}
-
-section.large {
-  padding: 30px;
-  justify-content: flex-start;
-  min-height: 70%;
-  background-color: antiquewhite;
-  background-color:bisque;
-}
-
-section.large h1 {
-  color: #800000;
-} */

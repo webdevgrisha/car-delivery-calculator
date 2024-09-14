@@ -1,16 +1,22 @@
 #root {
-  max-width: 1920px;
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  /* max-width: 1920px;
   height: 100vh;
   width: 100%;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  text-align: center; */
 }
 
 .calculator {
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
 }
 

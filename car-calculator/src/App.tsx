@@ -37,8 +37,7 @@ const currencyPairs = [
 function App() {
   return (
     <>
-      <LoginForm />
-      {/* <main className="calculator">
+      <div className="calculator">
         <div className="colum-wrapper">
           <section>
             <div className="container">
@@ -69,7 +68,7 @@ function App() {
           <AutoCalculation />
           <ManualCalculation />
         </div>
-      </main> */}
+      </div>
     </>
   );
 }
