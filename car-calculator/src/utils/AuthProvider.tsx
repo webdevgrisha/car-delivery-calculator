@@ -16,6 +16,7 @@ type User = {
   id: number;
   email: string;
   role: 'admin' | 'user';
+  displayName: string;
 };
 
 const AuthContext = createContext<User | null>(null);

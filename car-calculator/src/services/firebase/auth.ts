@@ -1,5 +1,5 @@
 import './firebase'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 const auth = getAuth();
@@ -11,7 +11,7 @@ const functions = getFunctions();
 //     console.log(result);
 // });
 
-export function createUser(email: string, password: string) {
+function createUser(email: string, password: string) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentail) => {
             console.log('User create: ', userCredentail)
@@ -23,7 +23,7 @@ export function createUser(email: string, password: string) {
         });
 }
 
-export function signInUser(email: string, password: string) {
+function signInUser(email: string, password: string) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredentail) => {
             console.log('User login: ', userCredentail)
@@ -35,18 +35,19 @@ export function signInUser(email: string, password: string) {
         });
 }
 
-export function subscribeOnAuthStateChanged(stateChangedFunc: Function) {
-    return onAuthStateChanged(auth, stateChangedFunc);
-}
-
-export function userSignOut() {
+function userSignOut() {
     signOut(auth)
         .then(() => console.log('user sign out '))
         .catch((err) => console.log('Error when user sign out: ', err.message));
 }
 
+// subscriptions
+function subscribeOnAuthStateChanged(stateChangedFunc: Function) {
+    return onAuthStateChanged(auth, stateChangedFunc);
+}
 
-export async function checkAdminRole() {
+
+async function checkAdminRole() {
     const user = auth.currentUser;
 
     if (!user) return false;
@@ -62,4 +63,26 @@ export async function checkAdminRole() {
     return idTokenResult.claims.admin;
 }
 
+
+// update User obj
+async function updateUserName(name: string) {
+    const user = auth.currentUser;
+
+    if (!user) return { error: 'you cannot change the name until you are logged in. ' }
+
+    updateProfile(user, {
+        displayName: name,
+    }).then(() => console.log('name was update'));
+}
+
+
 // createUser('test1@gmail.com', '12345678');
+
+export {
+    createUser,
+    signInUser,
+    userSignOut,
+    subscribeOnAuthStateChanged,
+    checkAdminRole,
+    updateUserName,
+}
