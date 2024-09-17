@@ -13,12 +13,13 @@ import { RootLayout, LogInLayout } from '../src/layouts/index.ts';
 
 import './index.css';
 import './reset.css';
+import AuthProvider from './utils/AuthProvider.tsx';
 
 const router = createBrowserRouter([
-  // {
-  //   path: '/login/',
-  //   element: <LoginForm />,
-  // },
+  {
+    path: '/login',
+    element: <LoginForm />,
+  },
   {
     path: '/',
     element: <RootLayout />,
@@ -75,6 +76,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 );

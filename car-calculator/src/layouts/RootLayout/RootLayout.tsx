@@ -3,9 +3,16 @@ import { Outlet, NavLink, useMatch } from 'react-router-dom';
 import './RootLayout.css';
 import { useState } from 'react';
 
+import { userSignOut } from '../../services/firebase/auth';
+import { useAuth } from '../../utils/AuthProvider';
+
 export default function RootLayout() {
   const match = useMatch('/settings/*');
+  const userData = useAuth();
 
+  const email = userData.currentUser.email;
+  const role = userData.currentUser.role;
+  console.log('Auth: ', userData.currentUser.email);
   // console.log('match: ', match);
   // const [isSettingActive, setSettingActive] = useState<boolean>(false);
 
@@ -43,7 +50,8 @@ export default function RootLayout() {
               </g>
             </svg>
           </span>
-          <p>libertycartrade@gmail.com</p>
+          <p>{email}</p>
+          {/* <p>libertycartrade@gmail.com</p> */}
         </div>
         <div className="account-info status">
           <span className="icon">
@@ -62,9 +70,11 @@ export default function RootLayout() {
               ></path>
             </svg>
           </span>
-          <p>admin</p>
+          <p>{role}</p>
         </div>
-        <button className="logout-btn">Logout</button>
+        <button className="logout-btn" onClick={userSignOut}>
+          Logout
+        </button>
       </header>
       <div className="app-container">
         <nav className={'main-nav ' + mainNavClass}>
