@@ -6,7 +6,8 @@ import AutoCalculation from './AutoCalculation/AutoCalculation.tsx';
 import ManualCalculation from './ManualCalculation/ManualCalculation.tsx';
 import LoginForm from './ LoginForm/LoginForm.tsx';
 import PersonalInfo from './PersonalInfo/PersonalInfo.tsx';
-
+import Users from './Users/Users.tsx';
+import CustomTable from './CustomTable/CustomTable.tsx';
 export {
   LoginForm,
   SubSection,
@@ -15,5 +16,7 @@ export {
   Loader,
   AutoCalculation,
   ManualCalculation,
-  PersonalInfo
+  PersonalInfo,
+  Users,
+  CustomTable
 };

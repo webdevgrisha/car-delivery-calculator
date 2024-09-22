@@ -21,7 +21,7 @@ export default function RootLayout() {
     <div className="root-layout">
       <header>
         <div className="logo">
-          <img src="logo-black.png" alt="liberty cars logo" />
+          <img src="/logo-black.png" alt="liberty cars logo" />
         </div>
         <div className="account-info email">
           <span className="icon">

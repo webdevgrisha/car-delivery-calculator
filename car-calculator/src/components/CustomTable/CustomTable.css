@@ -1,4 +1,4 @@
-.users {
+.table-section {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -9,19 +9,25 @@
     background-color: rgb(255, 255, 255);
 }
 
-.users>header {
+.table-section>header {
     display: flex;
     align-items: center;
-    margin: 0.94rem 1.56rem 20px 1.25rem;
+    height: 4.25rem;
+    padding: 0px 1.25rem;
+    /* margin: 0.94rem 1.56rem 20px 1.25rem; */
     /* border-bottom: 1px solid rgb(223, 231, 240); */
 }
 
-.users>header>.icon>svg {
+.table-section>header>.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     width: 20px;
     height: 20px;
 }
 
-.users>header>h2 {
+.table-section>header>h2 {
     margin-left: 0rem;
     font-weight: 500;
     font-size: 1.13rem;
@@ -29,10 +35,23 @@
     vertical-align: bottom;
 }
 
-.users>header>button {
+.table-section>header>input {
+    margin-left: auto;
+    background: rgb(250, 251, 252);
+    border: 1px solid rgb(223, 231, 240);
+    border-radius: 0.31rem;
+    font-weight: 300;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    font-family: inherit;
+    height: 2rem;
+    padding: 0px 0.63rem;
+}
+
+.table-section>header>button {
     display: flex;
     justify-content: center;
-    margin-left: auto;
+    margin-left: 15px;
     align-items: center;
     border-radius: 0.25rem;
     border: none;
@@ -52,7 +71,7 @@
     color: rgb(255, 255, 255);
 }
 
-.users>.users-table {
+.table-section>.custom-table {
     position: relative;
     width: 100%;
     border-collapse: collapse;
@@ -62,13 +81,13 @@
     border-radius: 0.81rem;
 }
 
-.users>.users-table>thead {
+.table-section>.custom-table>thead {
     background-color: rgb(241, 246, 252);
 }
 
 
 
-.users>.users-table>thead>tr>th {
+.table-section>.custom-table>thead>tr>th {
     padding: 0.94rem 0.5rem 0.94rem 0px;
 
     font-size: 0.88rem;
@@ -80,21 +99,20 @@
     text-align: left;
 }
 
-.users>.users-table>thead>tr>th:first-child {
+.table-section>.custom-table>thead>tr>th:first-child {
     padding-left: 1.25rem;
 }
 
-
-.users .users-table>tbody>tr:not(:last-child) {
+.table-section .custom-table>tbody>tr:not(:last-child) {
     border-bottom: 1px solid rgb(231, 234, 240);
 }
 
-.users .users-table>tbody>tr>td {
+.table-section .custom-table>tbody>tr>td {
     padding: 0.5rem 1.25rem 0.5rem 0px;
     min-width: 100px;
 }
 
-.users .users-table>tbody>tr>td>p {
+.table-section .custom-tablee>tbody>tr>td>p {
     font-weight: 300;
     font-size: 0.81rem;
     line-height: 150%;
@@ -102,17 +120,17 @@
     text-align: left;
 }
 
-.users .users-table>tbody>tr>td:first-child {
+.table-section .custom-table>tbody>tr>td:first-child {
     padding-left: 1.25rem;
 }
 
-.users .users-table>tbody>tr>td:last-child {
+.table-section .custom-table>tbody>tr>td:last-child {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.users .users-table>tbody>tr>td:last-child>.buttons {
+.table-section .custom-table>tbody>tr>td:last-child>.buttons {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,7 +140,7 @@
     margin-left: 10px;
 }
 
-.users .users-table>tbody>tr>td:last-child>.buttons>.btn {
+.table-section .custom-table>tbody>tr>td:last-child>.buttons>.btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,33 +154,21 @@
     background-color: transparent;
 }
 
-.users .users-table>tbody>tr>td:last-child>.buttons>.delete-btn {
-    /* stroke: #249E3F;
-    /* Цвет обводки */
-    stroke-width: 0.5;
-    /* Толщина обводки */
-    rx: 4.75;
-    */
-}
-
-.users>.users-table>tbody>tr>td:last-child>.buttons>.btn:hover {
+.table-section>.custom-table>tbody>tr>td:last-child>.buttons>.btn:hover {
     transform: scale(0.9);
 }
 
-.users .users-table>tbody .add-new-user td {
+.table-section .custom-table>tbody .add-new-record td {
     line-height: 0px;
 }
 
-/* .users .users-table>tbody .add-new-user td>input
-.users .users-table>tbody .add-new-user td>select */
-
-.users .users-table>tbody .add-new-user td>input::placeholder,
-.users .users-table>tbody .add-new-user td>select::placeholder {
+.table-section .custom-table>tbody .add-new-record td>input::placeholder,
+.table-section .custom-table>tbody .add-new-record td>select::placeholder {
     color: rgb(190, 190, 190);
 }
 
-.users .users-table>tbody .add-new-user td>input,
-.users .users-table>tbody .add-new-user td>select {
+.table-section .custom-table>tbody .add-new-record td>input,
+.table-section .custom-table>tbody .add-new-record td>select {
     width: 100%;
     padding: 0px 1.63rem 0px 0.63rem;
     font-size: 0.88rem;
@@ -178,7 +184,8 @@
     color: rgb(51, 51, 51);
 }
 
-.users .users-table>tbody .add-new-user td>input.error {
+.table-section .custom-table>tbody .add-new-record td.error>input,
+.table-section .custom-table>tbody .add-new-record td.error>select {
     border: 1px solid rgb(224, 59, 75);
     color: rgb(224, 59, 75);
 }

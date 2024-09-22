@@ -5,13 +5,19 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 const auth = getAuth();
 const functions = getFunctions();
 
-// const addAdminRole = httpsCallable(functions, "addAdminRole");
+const addAdminRole = httpsCallable(functions, "addAdminRole");
+const createNewUser = httpsCallable(functions, "createNewUser");
+const getUsers = httpsCallable(functions, "getUsers");
 
 // addAdminRole({ email: 'test1@gmail.com' }).then((result) => {
-//     console.log(result);
+//     console.log("Result: ", result);
 // });
 
-function createUser(email: string, password: string) {
+// console.log('get users');
+// getUsers().then((result) => console.log("Users:", result));
+
+
+function testCreateUser(email: string, password: string) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentail) => {
             console.log('User create: ', userCredentail)
@@ -52,15 +58,16 @@ async function checkAdminRole() {
 
     if (!user) return false;
 
+    // user.getIdToken(true);
     const idTokenResult = await user.getIdTokenResult();
-
-    if (idTokenResult.claims.admin) {
+    console.log('Claim: ', idTokenResult.claims)
+    if (idTokenResult.claims.role === 'admin') {
         console.log("User is an admin");
     } else {
         console.log("User is not an admin");
     }
 
-    return idTokenResult.claims.admin;
+    return idTokenResult.claims.role;
 }
 
 
@@ -79,10 +86,13 @@ async function updateUserName(name: string) {
 // createUser('test1@gmail.com', '12345678');
 
 export {
-    createUser,
+    // createUser,
     signInUser,
     userSignOut,
     subscribeOnAuthStateChanged,
     checkAdminRole,
     updateUserName,
+    addAdminRole,
+    createNewUser,
+    getUsers,
 }

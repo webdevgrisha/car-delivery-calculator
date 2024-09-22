@@ -7,7 +7,7 @@ import './Loader.css';
 // }
 
 function Loader() {
-  return <span className="loader"></span>;
+  return <div className="loader"></div>;
 }
 
 export default Loader;
