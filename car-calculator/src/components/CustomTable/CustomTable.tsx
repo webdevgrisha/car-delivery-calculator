@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import './CustomTable.css';
 import { useImmer } from 'use-immer';
 import inputMax from 'react-phone-number-input/input-max';
@@ -8,6 +8,7 @@ type InputFiledType = 'text' | 'number' | 'email';
 
 interface InputFieldInfo {
   name: string;
+  defaultValue: string;
   placeholder: string;
   type: InputFiledType;
   isRequired: boolean;
@@ -16,7 +17,7 @@ interface InputFieldInfo {
 
 interface SelectedFieldInfo {
   name: string;
-  defaultSelection: string;
+  defaultValue: string;
   selectionOptions: string[];
   isRequired: boolean;
   validateFunction: (input: string | number) => boolean;
@@ -92,19 +93,36 @@ interface RenderSelectProps {
 }
 
 function CreateNewRecord({ fields }: CreateNewRecordProps) {
-  const [newRecordData, setNewRecordData] = useImmer<
-    Record<string, string | number>
-  >({
-    // name: '',
-    // email: '',
-    // role: 'user',
-  });
+  // const newRecordDataConfig = useMemo(
+  //   () =>
+  //     fields.reduce<Record<string, string>>((config, field) => {
+  //       const fieldConfig = field.fieldConfig;
+  //       const key = fieldConfig.name;
+  //       const value = fieldConfig.defaultValue;
+
+  //       config[key] = value;
+
+  //       return config;
+  //     }, {}),
+  //   [fields],
+  // );
+
+  const newRecordValidateFunc = useMemo(
+    () =>
+      fields.map((field: FieldInfo) => {
+        return field.fieldConfig.validateFunction;
+      }),
+    [fields],
+  );
+
+  const fieldesdTags = useRef<
+    Record<string, HTMLInputElement | HTMLSelectElement>
+  >({});
+
+  // const [newRecordData, setNewRecordData] =
+  //   useImmer<Record<string, string>>(newRecordDataConfig);
 
   const [unValidFiledsKeys, setUnValidFiledsKeys] = useState<number[]>([]);
-
-  const newRecordValidateFunc = fields.map((field: FieldInfo) => {
-    return field.fieldConfig.validateFunction;
-  });
 
   console.log('fields: ', fields);
 
@@ -114,22 +132,33 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
     index: number,
   ) => {
     const value = e.target.value;
-    setNewRecordData((draft) => {
-      draft[name] = value;
-    });
+    // setNewRecordData((draft) => {
+    //   draft[name] = value;
+    // });
 
-    console.log('NewRecordData:', newRecordData);
+    // console.log('NewRecordData:', newRecordData);
 
-    // const resetUnValidFields = unValidFiledsKeys.filter(
-    //   (key: number) => key !== +index,
-    // );
-    // setUnValidFiledsKeys(resetUnValidFields);
+    const resetUnValidFields = unValidFiledsKeys.filter(
+      (key: number) => key !== +index,
+    );
+
+    console.log(resetUnValidFields);
+    setUnValidFiledsKeys(resetUnValidFields);
   };
 
   const handleFormSubmit = () => {
     console.log('Add new record');
+    console.log(
+      'Refs: ',
+      Object.entries(fieldesdTags.current).map(([key, tag]) => [
+        key,
+        tag.value,
+      ]),
+    );
+
     console.log(newRecordValidateFunc);
-    const values: string[] = Object.values(newRecordData) as string[];
+    const values = Object.values(fieldesdTags.current).map((tag) => tag.value);
+    // const values: string[] = Object.values(newRecordData) as string[];
 
     const unValidFileds: number[] = newRecordValidateFunc
       .map((func: Function, index: number) => {
@@ -150,43 +179,43 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
     }
   };
 
-  const RenderInput = React.memo(({ config, index }: RenderInputProps) => {
-    const { name, placeholder, type, isRequired, validateFunction } = config;
+  const RenderInput = ({ config, index }: RenderInputProps) => {
+    const { name, placeholder, type, isRequired } = config;
+
+    console.log('rerender!!!');
 
     return (
       <input
+        ref={(el) => (fieldesdTags.current[name] = el as HTMLInputElement)}
         type={type}
         name={name}
         placeholder={placeholder}
         required={isRequired}
+        defaultValue={fieldesdTags.current[name].value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleFiledChange(e, name, index)
         }
-        value={newRecordData[name] || ''}
+        // value={newRecordData[name] || ''}
       />
     );
-  });
+  };
 
   const RenderSelect = ({ config, index }: RenderSelectProps) => {
-    const {
-      name,
-      defaultSelection = '',
-      selectionOptions,
-      isRequired,
-    } = config;
+    const { name, selectionOptions, isRequired } = config;
 
     return (
       <select
+        ref={(el) => (fieldesdTags.current[name] = el as HTMLSelectElement)}
         name={name}
         required={isRequired}
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          handleFiledChange(e, name, index)
-        }
+        // value={newRecordData[name]}
+        // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+        //   handleFiledChange(e, name)
+        // }
       >
         {selectionOptions.map((option: string, index: number) => {
-          const isSelected = option === defaultSelection;
           return (
-            <option value={option} selected={isSelected} key={index}>
+            <option value={option} key={index}>
               {option}
             </option>
           );
@@ -239,13 +268,12 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
             {tagName === 'input' ? (
               <RenderInput
                 config={fieldConfig as InputFieldInfo}
-                key={index}
                 index={index}
               />
             ) : (
               <RenderSelect
                 config={fieldConfig as SelectedFieldInfo}
-                key={index}
+                index={index}
               />
             )}
             {buttons}
