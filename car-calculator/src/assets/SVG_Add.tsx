@@ -1,4 +1,4 @@
-const SVG_Plus_icon = () => (
+const SVG_Add = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1.5rem"
@@ -23,4 +23,4 @@ const SVG_Plus_icon = () => (
   </svg>
 );
 
-export default SVG_Plus_icon;
+export default SVG_Add;
