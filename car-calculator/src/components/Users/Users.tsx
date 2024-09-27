@@ -6,12 +6,10 @@ import {
   addAdminRole,
   createNewUser,
   getUsers,
-  deleteUser
+  deleteUser,
 } from '../../services/firebase/auth';
 import Loader from '../Loader/Loader';
 import CustomTable from '../CustomTable/CustomTable';
-
-type UserFileds = 'name' | 'email' | 'role';
 
 interface UserProfile {
   uid: string;
@@ -23,14 +21,42 @@ interface UserProfile {
   };
 }
 
-interface NewUserData {
-  name: string;
-  email: string;
-  role: string;
-}
+const fields = [
+  {
+    tagName: 'input',
+    fieldConfig: {
+      name: 'name',
+      placeholder: 'Jakub Kowalski',
+      type: 'text',
+      defaultValue: '',
+      isRequired: false,
+      validateFunction: nameValidation,
+    },
+  },
+  {
+    tagName: 'input',
+    fieldConfig: {
+      name: 'email',
+      placeholder: 'test@gmail.com',
+      type: 'email',
+      defaultValue: '',
+      isRequired: true,
+      validateFunction: emailValidation,
+    },
+  },
+  {
+    tagName: 'select',
+    fieldConfig: {
+      name: 'role',
+      isRequired: false,
+      defaultValue: 'user',
+      selectionOptions: ['user', 'admin'],
+      validateFunction: (input: string) => true,
+    },
+  },
+];
 
 function Users() {
-  const [showAddUserFields, setShowAddUserFields] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
 
@@ -58,53 +84,15 @@ function Users() {
     loadUsers().finally(() => setLoading(false));
   }, []);
 
-  const handleShowNewUserFields = () => setShowAddUserFields(true);
-
-  //  const
-  // const usersTableConfig = {};
-  const fields = [
-    {
-      tagName: 'input',
-      fieldConfig: {
-        name: 'name',
-        placeholder: 'Jakub Kowalski',
-        type: 'text',
-        defaultValue: '',
-        isRequired: false,
-        validateFunction: nameValidation,
-      },
-    },
-    {
-      tagName: 'input',
-      fieldConfig: {
-        name: 'email',
-        placeholder: 'test@gmail.com',
-        type: 'email',
-        defaultValue: '',
-        isRequired: true,
-        validateFunction: emailValidation,
-      },
-    },
-    {
-      tagName: 'select',
-      fieldConfig: {
-        name: 'role',
-        isRequired: false,
-        defaultValue: 'user',
-        selectionOptions: ['user', 'admin'],
-        validateFunction: (input: string) => true,
-      },
-    },
-  ];
-
   const records = users.map((user) => {
-    const result = { id: '', rowData: [] };
+    const result: { id: string; rowData: string[] } = { id: '', rowData: [] };
 
     result.id = user.uid;
     result.rowData = [user.displayName, user.email, user.role];
     return result;
   });
 
+  console.log('records: ', records);
   return (
     <>
       {/* Custom table */}
@@ -114,6 +102,7 @@ function Users() {
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}
         records={records}
+        searchBy="name"
         addNewRecordFunc={createNewUser}
         deleteRecordFunc={deleteUser}
       />
