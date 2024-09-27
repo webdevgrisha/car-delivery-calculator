@@ -5,12 +5,16 @@ import { FieldInfo } from '../interfaces';
 import CustomInput from '../ CustomInput/CustomInput';
 import CustomSelect from '../CustomSelect/CustomSelect';
 
+import { showWarningToastMessage, showUpdateToast } from '../tableToast';
+import { Id, toast } from 'react-toastify';
+
 interface CreateTableRowProps {
   id: string;
   fields: FieldInfo[];
   rowData: string[];
   isEdit: boolean;
   setEditRowId: (id: string) => void;
+  deleteRecordFunc: Function;
 }
 
 function CreateTableRow({
@@ -19,8 +23,33 @@ function CreateTableRow({
   rowData,
   isEdit,
   setEditRowId,
+  deleteRecordFunc,
 }: CreateTableRowProps) {
   const ActionBtn = () => {
+    const handleCancel = () => {
+      const confirmCancel = confirm('Are you sure you want to cancel ?');
+
+      if (!confirmCancel) return;
+
+      setEditRowId('');
+    };
+
+    const handleDelete = (id: string) => {
+      const confirmCancel = confirm('Are you sure you want to delete ?');
+
+      if (!confirmCancel) return;
+
+      const toastId: Id = toast.loading('Please wait...');
+
+      deleteRecordFunc({ id }).then(({ data }) => {
+        const status = 'message' in data ? 'success' : 'error';
+
+        const message: string = data.message || data.error;
+
+        showUpdateToast(toastId, message, status);
+      });
+    };
+
     return (
       <div className="buttons">
         {!isEdit && (
@@ -28,7 +57,7 @@ function CreateTableRow({
             <button className="edit-btn btn" onClick={() => setEditRowId(id)}>
               <SVG_Edit />
             </button>
-            <button className="delete-btn btn">
+            <button className="delete-btn btn" onClick={() => handleDelete(id)}>
               <SVG_Delete />
             </button>
           </>
@@ -38,7 +67,7 @@ function CreateTableRow({
             <button className="save-btn btn">
               <SVG_Save />
             </button>
-            <button className="cancel-btn btn" onClick={() => true}>
+            <button className="cancel-btn btn" onClick={handleCancel}>
               <SVG_Cancel />
             </button>
           </>

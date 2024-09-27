@@ -6,6 +6,7 @@ import {
   addAdminRole,
   createNewUser,
   getUsers,
+  deleteUser
 } from '../../services/firebase/auth';
 import Loader from '../Loader/Loader';
 import CustomTable from '../CustomTable/CustomTable';
@@ -70,7 +71,7 @@ function Users() {
         type: 'text',
         defaultValue: '',
         isRequired: false,
-        validateFunction: (input: string) => true,
+        validateFunction: nameValidation,
       },
     },
     {
@@ -113,9 +114,29 @@ function Users() {
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}
         records={records}
+        addNewRecordFunc={createNewUser}
+        deleteRecordFunc={deleteUser}
       />
     </>
   );
+}
+
+function nameValidation(name: string) {
+  const nameRegex = /^[a-zA-Zа-яА-ЯёЁąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s-]+$/;
+
+  if (!name.length) return true;
+
+  const clearName: string = name.trim();
+
+  if (
+    clearName.length >= 2 &&
+    clearName.length <= 50 &&
+    nameRegex.test(clearName)
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 function emailValidation(email: string) {

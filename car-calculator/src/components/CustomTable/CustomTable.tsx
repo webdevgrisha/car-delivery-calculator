@@ -9,6 +9,8 @@ interface CustomTableProps {
   tableColumnNames: string[];
   tableFields: FieldInfo[];
   records: Record[];
+  addNewRecordFunc: Function;
+  deleteRecordFunc: Function;
 }
 
 function CustomTable({
@@ -17,6 +19,8 @@ function CustomTable({
   tableColumnNames,
   tableFields,
   records,
+  addNewRecordFunc,
+  deleteRecordFunc,
 }: CustomTableProps) {
   const [showAddNewRecordFields, setShowAddNewRecordFields] =
     useState<boolean>(false);
@@ -44,12 +48,19 @@ function CustomTable({
         </thead>
         <tbody>
           {showAddNewRecordFields && (
-            <CreateNewRecord fields={tableFields} submitFunction={undefined} />
+            <CreateNewRecord
+              fields={tableFields}
+              submitFunction={addNewRecordFunc}
+            />
           )}
           {/* {loading && <Loader />}
           {showAddUserFields && <AddNewUser />}
           <CreateRows users={users} /> */}
-          <RenderRows fields={tableFields} records={records} />
+          <RenderRows
+            fields={tableFields}
+            records={records}
+            deleteRecordFunc={deleteRecordFunc}
+          />
         </tbody>
       </table>
     </section>
@@ -59,20 +70,22 @@ function CustomTable({
 interface RenderRowsProps {
   records: Record[];
   fields: FieldInfo[];
+  deleteRecordFunc: Function;
 }
 
-function RenderRows({ fields, records }: RenderRowsProps) {
+function RenderRows({ fields, records, deleteRecordFunc }: RenderRowsProps) {
   const [editRowId, setEditRowId] = useState<string>('');
 
   const rows = records.map((record: Record) => {
     const isEdit = record.id === editRowId;
-  
+
     return (
       <CreateTableRow
         {...record}
         fields={fields}
         isEdit={isEdit}
         setEditRowId={(id: string) => setEditRowId(id)}
+        deleteRecordFunc={deleteRecordFunc}
       />
     );
   });

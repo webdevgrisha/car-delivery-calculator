@@ -6,12 +6,15 @@ import './CreateNewRecord.css';
 import { CustomInput, CustomSelect } from '..';
 import { FieldInfo, InputFieldInfo, SelectedFieldInfo } from '../interfaces';
 
+import { showWarningToastMessage, showUpdateToast } from '../tableToast';
+import { Id, toast } from 'react-toastify';
+
 interface CreateNewRecordProps {
   fields: FieldInfo[];
   submitFunction: Function;
 }
 
-function CreateNewRecord({ fields }: CreateNewRecordProps) {
+function CreateNewRecord({ fields, submitFunction }: CreateNewRecordProps) {
   const newRecordDataConfig = useMemo(
     () =>
       fields.reduce<Record<string, string>>((config, field) => {
@@ -80,10 +83,24 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
         draft[name] = true;
       });
 
+      showWarningToastMessage(name);
       return false;
     });
 
     console.log('unValidFields:', invalidFieldsArr);
+    if (invalidFieldsArr.some((valid) => valid === false)) return;
+
+    const toastId: Id = toast.loading('Please wait...');
+
+    console.log('create user');
+
+    submitFunction(newRecordData).then(({ data }) => {
+      const status = 'message' in data ? 'success' : 'error';
+
+      const message: string = data.message || data.error;
+
+      showUpdateToast(toastId, message, status);
+    });
   };
 
   console.log('newRecordData:', newRecordData);

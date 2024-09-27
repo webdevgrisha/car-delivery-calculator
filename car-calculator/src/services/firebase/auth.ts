@@ -8,6 +8,7 @@ const functions = getFunctions();
 const addAdminRole = httpsCallable(functions, "addAdminRole");
 const createNewUser = httpsCallable(functions, "createNewUser");
 const getUsers = httpsCallable(functions, "getUsers");
+const deleteUser = httpsCallable(functions, "deleteUser");
 
 // addAdminRole({ email: 'test1@gmail.com' }).then((result) => {
 //     console.log("Result: ", result);
@@ -95,4 +96,5 @@ export {
     addAdminRole,
     createNewUser,
     getUsers,
+    deleteUser,
 }

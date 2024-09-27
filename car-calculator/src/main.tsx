@@ -14,6 +14,8 @@ import { RootLayout, LogInLayout } from '../src/layouts/index.ts';
 import './index.css';
 import './reset.css';
 import AuthProvider from './utils/AuthProvider.tsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
@@ -78,6 +80,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
+      <ToastContainer />
     </AuthProvider>
   </StrictMode>,
 );
