@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import './Users.css';
-import { useImmer } from 'use-immer';
 
 import {
   addAdminRole,
   createNewUser,
   getUsers,
   deleteUser,
-} from '../../services/firebase/auth';
+} from '../../services/firebase/functions';
+import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
 import CustomTable from '../CustomTable/CustomTable';
 
@@ -60,31 +60,22 @@ function Users() {
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
 
-  function loadUsers() {
-    return getUsers().then((result) => {
-      console.log('useEffect:', result);
-      const usersProfile = result.data.users.map((userRecord) => {
-        const { uid, displayName, email, customClaims }: UserProfile =
-          userRecord;
-        const userProfile: UserProfile = {
-          uid,
-          displayName,
-          email,
-          role: customClaims?.role || 'user',
-        };
 
-        return userProfile;
-      });
-      console.log('users profile: ', usersProfile);
-      setUsers(usersProfile);
-    });
-  }
-
+  // вызывает сомнения
   useEffect(() => {
-    loadUsers().finally(() => setLoading(false));
+    let unsubscribeFunc: () => void = () => {};
+
+    const subcribe = async () => {
+      unsubscribeFunc = await subscribeOnUserUpdate(setUsers);
+    };
+
+    subcribe();
+
+    return () => unsubscribeFunc();
   }, []);
 
-  const records = users.map((user) => {
+  const records = Object.values(users).map((user) => {
+    // loadUsers().finally(() => setLoading(false));
     const result: { id: string; rowData: string[] } = { id: '', rowData: [] };
 
     result.id = user.uid;

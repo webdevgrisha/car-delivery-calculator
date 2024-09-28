@@ -28,25 +28,29 @@ function CustomTable({
     useState<boolean>(false);
   const [filterRecords, setFilterRecords] = useState<Record[]>(records);
 
-  console.log('records:', records);
-  console.log('filterRecords: ', filterRecords);
+  // console.log('records:', records);
+  // console.log('filterRecords: ', filterRecords);
 
   useEffect(() => {
     setFilterRecords(records);
   }, [records]);
 
-  const handleInputSearch = useCallback((newValue: string = '') => {
-    const filterdResult: Record[] = filterBy(
-      searchBy,
-      tableFields,
-      records,
-      newValue,
-    );
+  // почему если убрать records и преключиться между вкладками в приложении поиск перстает работать ?
+  const handleInputSearch = useCallback(
+    (newValue: string = '') => {
+      const filterdResult: Record[] = filterBy(
+        searchBy,
+        tableFields,
+        records,
+        newValue,
+      );
 
-    console.log('filterdResult: ', filterdResult);
+      console.log('filterdResult: ', filterdResult);
 
-    setFilterRecords(filterdResult);
-  }, []);
+      setFilterRecords(filterdResult);
+    },
+    [records],
+  );
 
   const handleAddNewRecord = useCallback(
     () => setShowAddNewRecordFields(true),
@@ -127,14 +131,16 @@ function filterBy(
   records: Record[],
   searchTerm: string,
 ) {
-  console.log('searchTerm: ', searchTerm);
   const searchIndex = tableFields.findIndex((field: FieldInfo) => {
     const fieldConfig = field.fieldConfig;
 
     return fieldConfig.name === colName;
   });
 
-  if (searchIndex === -1 || searchTerm == '') return records;
+  console.log('search term: ', searchTerm);
+  console.log('is equal: ', searchTerm === '');
+  console.log('records: ', records);
+  if (searchIndex === -1 || searchTerm === '') return records;
 
   const filterdRecord: Record[] = records.filter((record: Record) => {
     const rowData: string[] = record.rowData;

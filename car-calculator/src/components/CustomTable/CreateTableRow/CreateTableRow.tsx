@@ -98,7 +98,6 @@ interface RenderFieldProps {
 }
 
 function RenderField({ isEdit, value, field }: RenderFieldProps) {
-  console.log('field: ', field);
   if (!isEdit) {
     return <p>{value}</p>;
   }
