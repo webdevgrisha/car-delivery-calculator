@@ -1,25 +1,27 @@
+import { useEffect } from 'react';
 import './CustomSelect.css';
 
 interface CustomSelectProps {
   name: string;
-  defaultValue: string;
   selectionOptions: string[];
-  isRequired?: boolean;
+  currValue: string;
   changeEventFunc: (value: string) => void;
 }
 
 function CustomSelect({
   name,
-  defaultValue,
   selectionOptions,
-  isRequired,
+  currValue = '',
   changeEventFunc,
 }: CustomSelectProps) {
+  // useEffect(() => {
+  //   changeEventFunc(defaultValue);
+  // }, []);
+
   return (
     <select
       name={name}
-      required={isRequired || false}
-      defaultValue={defaultValue}
+      value={currValue}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         changeEventFunc(e.target.value)
       }

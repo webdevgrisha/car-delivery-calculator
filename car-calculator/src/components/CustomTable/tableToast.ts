@@ -8,7 +8,7 @@ const showWarningToastMessage = (inputName: string) => {
 const showUpdateToast = (
     toastId: Id,
     text: string,
-    status: 'success' | 'error',
+    status: 'success' | 'error' | 'warning',
 ) => {
     toast.update(toastId, { render: text, type: status, autoClose: 5000, closeButton: null, isLoading: false });
 };

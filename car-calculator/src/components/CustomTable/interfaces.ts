@@ -5,16 +5,12 @@ interface InputFieldInfo {
     defaultValue: string;
     placeholder: string;
     type?: InputFiledType;
-    isRequired?: boolean;
-    validateFunction: (input: string | number) => boolean;
 }
 
 interface SelectedFieldInfo {
     name: string;
     defaultValue: string;
     selectionOptions: string[];
-    isRequired?: boolean;
-    validateFunction: (input: string | number) => boolean;
 }
 
 interface InputField {
@@ -29,7 +25,11 @@ interface SelectField {
 
 type FieldInfo = InputField | SelectField;
 
-interface Record {
+interface FieldsValidateFuncs {
+    [key: string]: (value: string) => boolean;
+}
+
+interface TableRecord {
     id: string;
     rowData: string[];
 }
@@ -38,5 +38,6 @@ export type {
     InputFieldInfo,
     SelectedFieldInfo,
     FieldInfo,
-    Record
+    FieldsValidateFuncs,
+    TableRecord
 }

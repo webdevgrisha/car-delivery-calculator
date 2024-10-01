@@ -5,6 +5,8 @@ const addAdminRole = httpsCallable(functions, "addAdminRole");
 const createNewUser = httpsCallable(functions, "createNewUser");
 const getUsers = httpsCallable(functions, "getUsers");
 const deleteUser = httpsCallable(functions, "deleteUser");
+const editUser = httpsCallable(functions, "editUser");
+
 
 import { writeUserData, readAllUsers } from './realtimeDb';
 
@@ -13,9 +15,11 @@ export {
     createNewUser,
     getUsers,
     deleteUser,
+    editUser,
 }
 
-// readAllUsers();
+readAllUsers();
+console.log(editUser);
 // (async () => {
 //     const result = await getUsers();
 

@@ -13,6 +13,7 @@
     "deploy": "npm run build && gh-pages -d dist --dest hooks-and-routing"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-phone-input-2": "^2.15.1",

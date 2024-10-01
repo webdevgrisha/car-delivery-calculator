@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './Users.css';
 
 import {
-  addAdminRole,
   createNewUser,
-  getUsers,
   deleteUser,
+  editUser,
 } from '../../services/firebase/functions';
 import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
@@ -25,12 +24,10 @@ const fields = [
   {
     tagName: 'input',
     fieldConfig: {
-      name: 'name',
+      name: 'displayName',
       placeholder: 'Jakub Kowalski',
       type: 'text',
       defaultValue: '',
-      isRequired: false,
-      validateFunction: nameValidation,
     },
   },
   {
@@ -40,30 +37,37 @@ const fields = [
       placeholder: 'test@gmail.com',
       type: 'email',
       defaultValue: '',
-      isRequired: true,
-      validateFunction: emailValidation,
     },
   },
   {
     tagName: 'select',
     fieldConfig: {
       name: 'role',
-      isRequired: false,
       defaultValue: 'user',
       selectionOptions: ['user', 'admin'],
-      validateFunction: (input: string) => true,
     },
   },
 ];
+
+const fieldsValidateFuncs = {
+  displayName: nameValidation,
+  email: emailValidation,
+  role: (value: string) => true,
+};
+
+// const fieldsDefaultValues = {
+//   name: '',
+//   email: '',
+//   role: 'user',
+// };
 
 function Users() {
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
 
-
   // вызывает сомнения
   useEffect(() => {
-    let unsubscribeFunc: () => void = () => {};
+    let unsubscribeFunc: () => void | undefined;
 
     const subcribe = async () => {
       unsubscribeFunc = await subscribeOnUserUpdate(setUsers);
@@ -71,8 +75,14 @@ function Users() {
 
     subcribe();
 
-    return () => unsubscribeFunc();
+    return () => {
+      if (unsubscribeFunc) unsubscribeFunc();
+    };
   }, []);
+
+  useEffect(() => {
+    console.log('users: ', users);
+  }, [users]);
 
   const records = Object.values(users).map((user) => {
     // loadUsers().finally(() => setLoading(false));
@@ -93,9 +103,12 @@ function Users() {
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}
         records={records}
-        searchBy="name"
+        fieldsValidateFuncs={fieldsValidateFuncs}
+        searchBy="displayName"
+        searchInputText="name"
         addNewRecordFunc={createNewUser}
         deleteRecordFunc={deleteUser}
+        editRecordFunc={editUser}
       />
     </>
   );
