@@ -21,3 +21,4 @@ const app = initializeApp(firebaseConfig);
 // const db = getFirestore()
 
 export const realtimeDb = getDatabase(app);
+export const firestoteDb = getFirestore(app);

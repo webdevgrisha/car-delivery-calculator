@@ -83,7 +83,6 @@ function RenderTableRow({
       },
     );
 
-    console.log();
     if (invalidFieldsArr.some((valid) => valid === false)) return;
 
     const toastId: Id = toast.loading('Please wait...');
@@ -95,6 +94,8 @@ function RenderTableRow({
       return;
     }
 
+    setEditRowId('');
+
     editRecordFunc({ id, editRecordData }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
 
@@ -104,7 +105,6 @@ function RenderTableRow({
 
       if (status !== 'error') {
         setEditRecordData({});
-        setEditRowId('');
       }
 
       // setEditRecordData({});

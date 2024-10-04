@@ -8,6 +8,7 @@ import {
 } from '../../services/firebase/functions';
 import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
+import { SVG_User } from '../../assets';
 import CustomTable from '../CustomTable/CustomTable';
 
 interface UserProfile {
@@ -98,7 +99,7 @@ function Users() {
     <>
       {/* Custom table */}
       <CustomTable
-        tableIconPath={'table-logo/users.svg'}
+        tableIcon={<SVG_User />}
         tableName="Users"
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}

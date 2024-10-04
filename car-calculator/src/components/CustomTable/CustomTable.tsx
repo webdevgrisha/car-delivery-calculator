@@ -1,25 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './CustomTable.css';
-import { CreateNewRecord, CreateTableRow } from '.';
-import { FieldInfo, FieldsValidateFuncs, Record } from './interfaces';
+import { CreateNewRecord } from '.';
+import { FieldInfo, FieldsValidateFuncs, TableRecord } from './interfaces';
 import RenderRows from './RenderRows/RenderRows';
+import { Id, toast } from 'react-toastify';
+import { showErrorToastMessage, showUpdateToast } from './tableToast';
+import Papa from 'papaparse';
 
 interface CustomTableProps {
-  tableIconPath: string;
+  tableIcon: React.ReactNode;
   tableName: string;
   tableColumnNames: string[];
   tableFields: FieldInfo[];
-  records: Record[];
+  records: TableRecord[];
   fieldsValidateFuncs: FieldsValidateFuncs;
   searchBy: string;
   searchInputText: string;
   addNewRecordFunc: Function;
   deleteRecordFunc: Function;
   editRecordFunc: Function;
+  createTableFormJSON?: Function;
 }
 
 function CustomTable({
-  tableIconPath,
+  tableIcon,
   tableName = '',
   tableColumnNames,
   tableFields,
@@ -30,10 +34,13 @@ function CustomTable({
   addNewRecordFunc,
   deleteRecordFunc,
   editRecordFunc,
+  createTableFormJSON,
 }: CustomTableProps) {
+  const addFileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [showAddNewRecordFields, setShowAddNewRecordFields] =
     useState<boolean>(false);
-  const [filterRecords, setFilterRecords] = useState<Record[]>(records);
+  const [filterRecords, setFilterRecords] = useState<TableRecord[]>(records);
 
   useEffect(() => {
     setFilterRecords(records);
@@ -41,7 +48,7 @@ function CustomTable({
 
   const handleInputSearch = useCallback(
     (newValue: string = '') => {
-      const filterdResult: Record[] = filterBy(
+      const filterdResult: TableRecord[] = filterBy(
         searchBy,
         tableFields,
         records,
@@ -55,13 +62,43 @@ function CustomTable({
     [records],
   );
 
+  const handleAddCsv = () => addFileInputRef.current?.click();
+
   const handleAddNewRecord = () => setShowAddNewRecordFields(true);
+
+  const handleFileAdd = (file: File) => {
+    if (!createTableFormJSON || !file) return;
+
+    if (file.type !== 'text/csv') {
+      showErrorToastMessage();
+      return;
+    }
+
+    const toastId: Id = toast.loading('Please wait...');
+
+    Papa.parse(file, {
+      header: true,
+      complete: (result) => {
+        console.log(typeof result);
+        console.log(result.data);
+        console.log('JSON: ', JSON.stringify(result.data));
+
+        createTableFormJSON(JSON.stringify(result.data)).then(({ data }) => {
+          const status = 'message' in data ? 'success' : 'error';
+          const message: string = data.message || data.error;
+
+          showUpdateToast(toastId, message, status);
+        });
+      },
+    });
+  };
 
   return (
     <section className="table-section">
       <header>
         <div className="icon">
-          <img src={`/${tableIconPath}`} alt="table-icon" />
+          {tableIcon}
+          {/* <img src={`/${tableIconPath}`} alt="table-icon" /> */}
         </div>
         <h2>{tableName}</h2>
         <input
@@ -71,6 +108,18 @@ function CustomTable({
             handleInputSearch(e.target.value)
           }
         />
+
+        <input
+          ref={addFileInputRef}
+          onChange={(e) => {
+            handleFileAdd(e.target.files?.[0]);
+            e.target.value = '';
+          }}
+          type="file"
+          accept=".csv"
+          style={{ display: 'none' }}
+        />
+        <button onClick={handleAddCsv}>Add csv</button>
         <button onClick={handleAddNewRecord}>Add New</button>
       </header>
       <table className="custom-table">
@@ -105,7 +154,7 @@ function CustomTable({
 function filterBy(
   colName: string,
   tableFields: FieldInfo[],
-  records: Record[],
+  records: TableRecord[],
   searchTerm: string,
 ) {
   const searchIndex = tableFields.findIndex((field: FieldInfo) => {
@@ -116,7 +165,7 @@ function filterBy(
 
   if (searchIndex === -1 || searchTerm === '') return records;
 
-  const filterdRecord: Record[] = records.filter((record: Record) => {
+  const filterdRecord: TableRecord[] = records.filter((record: TableRecord) => {
     const rowData: string[] = record.rowData;
 
     return rowData[searchIndex]
