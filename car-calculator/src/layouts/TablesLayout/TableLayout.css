@@ -39,7 +39,8 @@
 .tables-container>.content {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    gap: 15px;
     width: 100%;
     padding: 1.56rem 1.88rem;
 }

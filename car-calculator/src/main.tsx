@@ -16,7 +16,7 @@ import './reset.css';
 import AuthProvider from './utils/AuthProvider.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ShippingCostToAUSPort } from './components/Tables/index.ts';
+import { MyPorts } from './components/Tables/index.ts';
 
 const router = createBrowserRouter([
   {
@@ -79,7 +79,11 @@ const router = createBrowserRouter([
               },
               {
                 path: 'shipping_cost_to_a_US_port',
-                element: <ShippingCostToAUSPort />,
+                element: '',
+              },
+              {
+                path: 'my_ports',
+                element: <MyPorts />,
               },
             ],
           },

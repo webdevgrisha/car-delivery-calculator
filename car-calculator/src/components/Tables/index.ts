@@ -1,3 +1,3 @@
-import ShippingCostToAUSPort from './ShippingCostToAUSPort/ShippingCostToAUSPort';
+import MyPorts from './MyPorts/MyPorts';
 
-export { ShippingCostToAUSPort }
+export { MyPorts }

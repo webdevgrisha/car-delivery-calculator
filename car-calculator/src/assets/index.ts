@@ -12,6 +12,7 @@ import SVG_Delete from "./SVG_Delete";
 import SVG_Save from "./SVG_Save";
 import SVG_Cancel from "./SVG_Cancel";
 import SVG_Ports from "./SVG_Ports";
+import SVG_Ship from "./SVG_Ship";
 
 export {
     SVG_Add,
@@ -28,4 +29,5 @@ export {
     SVG_Save,
     SVG_Cancel,
     SVG_Ports,
+    SVG_Ship,
 }
