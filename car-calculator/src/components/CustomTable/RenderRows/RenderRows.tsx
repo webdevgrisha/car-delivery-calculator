@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import CreateTableRow from '../RenderTableRow/RenderTableRow';
-import { FieldInfo, FieldsValidateFuncs, TableRecord } from '../interfaces';
+import { FieldsValidateFuncs, TableRecord } from '../interfaces';
+import { FieldInfo } from '../types';
 
 interface RenderRowsProps {
+  columnNames: string[];
   records: TableRecord[];
   fields: FieldInfo[];
-  fieldsValidateFuncs: FieldsValidateFuncs;
   deleteRecordFunc: Function;
   editRecordFunc: Function;
 }
 
 function RenderRows({
+  columnNames,
   fields,
   records,
-  fieldsValidateFuncs,
   deleteRecordFunc,
   editRecordFunc,
 }: RenderRowsProps) {
@@ -25,11 +26,12 @@ function RenderRows({
     return (
       <CreateTableRow
         key={record.id}
-        {...record}
+        columnNames={columnNames}
+        id={record.id}
+        rowData={record.rowData}
         fields={fields}
         isEdit={isEdit}
         setEditRowId={(id: string) => setEditRowId(id)}
-        fieldsValidateFuncs={fieldsValidateFuncs}
         deleteRecordFunc={deleteRecordFunc}
         editRecordFunc={editRecordFunc}
       />

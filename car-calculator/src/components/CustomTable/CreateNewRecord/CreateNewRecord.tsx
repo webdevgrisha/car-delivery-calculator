@@ -4,27 +4,18 @@ import { SVG_Add } from '../../../assets';
 
 import './CreateNewRecord.css';
 import { CustomInput, CustomSelect } from '..';
-import {
-  FieldInfo,
-  FieldValidateFuncs,
-  InputFieldInfo,
-  SelectedFieldInfo,
-} from '../interfaces';
+import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
+import { FieldInfo } from '../types';
 
 interface CreateNewRecordProps {
   fields: FieldInfo[];
-  fieldsValidateFuncs: FieldValidateFuncs;
   addNewRecordFunc: Function;
 }
 
-function CreateNewRecord({
-  fields,
-  fieldsValidateFuncs,
-  addNewRecordFunc,
-}: CreateNewRecordProps) {
+function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
   const newRecordDataConfig = useMemo(() => createConfig(fields), [fields]);
 
   const [newRecordData, setNewRecordData] =
@@ -54,21 +45,20 @@ function CreateNewRecord({
   const handleFormSubmit = () => {
     console.log('Add new record');
 
-    const invalidFieldsArr: boolean[] = Object.entries(fieldsValidateFuncs).map(
-      ([name, func]) => {
-        const value = newRecordData[name];
-        const isValid = func(value);
+    const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
+      const { name, validate } = fieldConfig;
+      const value = newRecordData[name];
+      const isValid = validate(value);
 
-        if (isValid) return true;
+      if (isValid) return true;
 
-        setInvalidFields((draft) => {
-          draft[name] = true;
-        });
+      setInvalidFields((draft) => {
+        draft[name] = true;
+      });
 
-        showWarningToastMessage(name);
-        return false;
-      },
-    );
+      showWarningToastMessage(name);
+      return false;
+    });
 
     if (invalidFieldsArr.some((valid) => valid === false)) return;
 
@@ -113,8 +103,7 @@ function CreateNewRecord({
             {tagName === 'input' ? (
               <CustomInput
                 {...(fieldConfig as InputFieldInfo)}
-                currValue={newRecordData[fieldConfig.name]}
-                // currValue={newRecordData[fieldConfig.name]}
+                value={newRecordData[fieldConfig.name]}
                 changeEventFunc={(value: string) =>
                   handleFieldChange(fieldConfig.name, value)
                 }
@@ -122,7 +111,7 @@ function CreateNewRecord({
             ) : (
               <CustomSelect
                 {...(fieldConfig as SelectedFieldInfo)}
-                currValue={newRecordData[fieldConfig.name]}
+                value={newRecordData[fieldConfig.name]}
                 changeEventFunc={(value: string) =>
                   handleFieldChange(fieldConfig.name, value)
                 }
@@ -144,7 +133,7 @@ function createConfig(fields: FieldInfo[]) {
       const { fieldConfig } = field;
       const { name, defaultValue } = fieldConfig;
 
-      config[name] = defaultValue;
+      config[name] = defaultValue || '';
 
       return config;
     },

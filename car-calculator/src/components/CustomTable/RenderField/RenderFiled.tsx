@@ -1,10 +1,11 @@
 import { CustomInput, CustomSelect } from '..';
-import { FieldInfo, InputFieldInfo, SelectedFieldInfo } from '../interfaces';
+import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
+import { FieldInfo } from '../types';
 
 interface RenderFieldProps {
   isEdit: boolean;
   initValue: string;
-  currValue: string;
+  value: string;
   field: FieldInfo;
   handleFieldChange: (name: string, value: string) => void;
 }
@@ -12,7 +13,7 @@ interface RenderFieldProps {
 function RenderField({
   isEdit,
   initValue,
-  currValue,
+  value,
   field,
   handleFieldChange,
 }: RenderFieldProps) {
@@ -26,9 +27,9 @@ function RenderField({
     fieldConfig,
   );
 
-  let newValue = currValue;
+  let newValue = value;
 
-  if (currValue === undefined) {
+  if (value === undefined) {
     newValue = initValue;
   }
 
@@ -39,7 +40,7 @@ function RenderField({
     return (
       <CustomInput
         {...(configCopy as InputFieldInfo)}
-        currValue={newValue}
+        value={newValue}
         changeEventFunc={(value: string) =>
           handleFieldChange(fieldConfig.name, value)
         }
@@ -50,7 +51,7 @@ function RenderField({
   return (
     <CustomSelect
       {...(configCopy as SelectedFieldInfo)}
-      currValue={currValue}
+      value={newValue}
       changeEventFunc={(value: string) =>
         handleFieldChange(fieldConfig.name, value)
       }

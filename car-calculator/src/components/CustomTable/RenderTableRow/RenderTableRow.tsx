@@ -1,32 +1,32 @@
 import './RenderTableRow.css';
 
 import { SVG_Edit, SVG_Delete, SVG_Cancel, SVG_Save } from '../../../assets';
-import { FieldInfo, FieldsValidateFuncs } from '../interfaces';
+import { FieldData, FieldsValidateFuncs } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
-import { useCallback, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { RenderField } from '..';
+import { FieldInfo } from '../types';
 
 interface CreateTableRowProps {
   id: string;
+  columnNames: string[];
   fields: FieldInfo[];
-  rowData: string[];
+  rowData: FieldData;
   isEdit: boolean;
   setEditRowId: (id: string) => void;
-  fieldsValidateFuncs: FieldsValidateFuncs;
   deleteRecordFunc: Function;
   editRecordFunc: Function;
 }
 
 function RenderTableRow({
   id,
+  columnNames,
   fields,
   rowData,
   isEdit,
   setEditRowId,
-  fieldsValidateFuncs,
   deleteRecordFunc,
   editRecordFunc,
 }: CreateTableRowProps) {
@@ -68,7 +68,12 @@ function RenderTableRow({
 
     const invalidFieldsArr: boolean[] = Object.entries(editRecordData).map(
       ([name, value]) => {
-        const func = fieldsValidateFuncs[name];
+        const field = fields.find(
+          ({ fieldConfig }) => fieldConfig.name === name,
+        );
+
+        const func = field!.fieldConfig.validate;
+
         console.log('value: ', value);
         const isValid = func(value);
 
@@ -149,10 +154,11 @@ function RenderTableRow({
 
   return (
     <tr>
-      {rowData.map((initValue: string, index: number) => {
-        const buttons = rowData.length - 1 === index ? <ActionBtns /> : null;
-        const fieldName = fields[index].fieldConfig.name;
+      {columnNames.map((colName: string, index: number) => {
+        const buttons = columnNames .length - 1 === index ? <ActionBtns /> : null;
 
+        const fieldName = fields[index].fieldConfig.name;
+        const initValue = rowData[colName];
         const errorClass = invalidFields[fieldName] ? 'error' : '';
 
         return (
@@ -160,7 +166,7 @@ function RenderTableRow({
             <RenderField
               isEdit={isEdit}
               initValue={initValue}
-              currValue={editRecordData[fieldName]}
+              value={editRecordData[fieldName]}
               field={fields[index]}
               handleFieldChange={handleFieldChange}
             />

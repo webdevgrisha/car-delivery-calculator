@@ -1,16 +1,19 @@
-type InputFiledType = 'text' | 'number' | 'email';
+import { InputFiledType } from "./types";
+
 
 interface InputFieldInfo {
     name: string;
-    defaultValue: string;
     placeholder: string;
+    validate: (value: string) => boolean,
+    defaultValue?: string;
     type?: InputFiledType;
 }
 
 interface SelectedFieldInfo {
     name: string;
-    defaultValue: string;
     selectionOptions: string[];
+    defaultValue?: string;
+    validate: (value: string) => boolean,
 }
 
 interface InputField {
@@ -23,21 +26,21 @@ interface SelectField {
     fieldConfig: SelectedFieldInfo;
 }
 
-type FieldInfo = InputField | SelectField;
-
-interface FieldsValidateFuncs {
-    [key: string]: (value: string) => boolean;
+interface FieldData {
+    [key: string]: string;
 }
 
 interface TableRecord {
     id: string;
-    rowData: string[];
+    rowData: FieldData;
 }
 
+
 export type {
+    InputField,
+    SelectField,
     InputFieldInfo,
     SelectedFieldInfo,
-    FieldInfo,
-    FieldsValidateFuncs,
-    TableRecord
+    TableRecord,
+    FieldData
 }

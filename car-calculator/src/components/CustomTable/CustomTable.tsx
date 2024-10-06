@@ -1,40 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './CustomTable.css';
 import { CreateNewRecord } from '.';
-import { FieldInfo, FieldsValidateFuncs, TableRecord } from './interfaces';
+import { FieldData, TableRecord } from './interfaces';
 import RenderRows from './RenderRows/RenderRows';
 import { Id, toast } from 'react-toastify';
 import { showErrorToastMessage, showUpdateToast } from './tableToast';
 import Papa from 'papaparse';
+import { FieldInfo } from './types';
 
 interface CustomTableProps {
   tableIcon: React.ReactNode;
   tableName: string;
-  tableColumnNames: string[];
+  columnNames: string[];
   tableFields: FieldInfo[];
   records: TableRecord[];
-  fieldsValidateFuncs: FieldsValidateFuncs;
   searchBy: string;
   searchInputText: string;
   addNewRecordFunc: Function;
   deleteRecordFunc: Function;
   editRecordFunc: Function;
-  createTableFormJSON?: Function;
+  createTableFormCSV: Function;
 }
 
 function CustomTable({
   tableIcon,
   tableName = '',
-  tableColumnNames,
+  columnNames,
   tableFields,
   records,
   searchBy,
   searchInputText,
-  fieldsValidateFuncs,
   addNewRecordFunc,
   deleteRecordFunc,
   editRecordFunc,
-  createTableFormJSON,
+  createTableFormCSV,
 }: CustomTableProps) {
   const addFileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -46,28 +45,22 @@ function CustomTable({
     setFilterRecords(records);
   }, [records]);
 
-  const handleInputSearch = useCallback(
-    (newValue: string = '') => {
-      const filterdResult: TableRecord[] = filterBy(
-        searchBy,
-        tableFields,
-        records,
-        newValue,
-      );
+  const handleInputSearch = (searchTerm: string = '') => {
+    const filteredResult: TableRecord[] = filterBy(
+      searchBy,
+      records,
+      searchTerm,
+    );
 
-      console.log('filterdResult: ', filterdResult);
-
-      setFilterRecords(filterdResult);
-    },
-    [records],
-  );
+    setFilterRecords(filteredResult);
+  };
 
   const handleAddCsv = () => addFileInputRef.current?.click();
 
   const handleAddNewRecord = () => setShowAddNewRecordFields(true);
 
   const handleFileAdd = (file: File) => {
-    if (!createTableFormJSON || !file) return;
+    if (!file) return;
 
     if (file.type !== 'text/csv') {
       showErrorToastMessage();
@@ -83,7 +76,7 @@ function CustomTable({
         console.log(result.data);
         console.log('JSON: ', JSON.stringify(result.data));
 
-        createTableFormJSON(JSON.stringify(result.data)).then(({ data }) => {
+        createTableFormCSV(JSON.stringify(result.data)).then(({ data }) => {
           const status = 'message' in data ? 'success' : 'error';
           const message: string = data.message || data.error;
 
@@ -96,10 +89,7 @@ function CustomTable({
   return (
     <section className="table-section">
       <header>
-        <div className="icon">
-          {tableIcon}
-          {/* <img src={`/${tableIconPath}`} alt="table-icon" /> */}
-        </div>
+        <div className="icon">{tableIcon}</div>
         <h2>{tableName}</h2>
         <input
           type="search"
@@ -125,7 +115,7 @@ function CustomTable({
       <table className="custom-table">
         <thead>
           <tr>
-            {tableColumnNames.map((name: string, index: number) => (
+            {columnNames.map((name: string, index: number) => (
               <th key={index}>{name}</th>
             ))}
           </tr>
@@ -135,13 +125,12 @@ function CustomTable({
             <CreateNewRecord
               fields={tableFields}
               addNewRecordFunc={addNewRecordFunc}
-              fieldsValidateFuncs={fieldsValidateFuncs}
             />
           )}
           <RenderRows
+            columnNames={columnNames}
             fields={tableFields}
             records={filterRecords}
-            fieldsValidateFuncs={fieldsValidateFuncs}
             deleteRecordFunc={deleteRecordFunc}
             editRecordFunc={editRecordFunc}
           />
@@ -151,29 +140,22 @@ function CustomTable({
   );
 }
 
-function filterBy(
-  colName: string,
-  tableFields: FieldInfo[],
-  records: TableRecord[],
-  searchTerm: string,
-) {
-  const searchIndex = tableFields.findIndex((field: FieldInfo) => {
-    const fieldConfig = field.fieldConfig;
+function filterBy(colName: string, records: TableRecord[], searchTerm: string) {
+  const isColNameExist = colName in records[0].rowData;
 
-    return fieldConfig.name === colName;
-  });
+  if (!isColNameExist || searchTerm === '') return records;
 
-  if (searchIndex === -1 || searchTerm === '') return records;
+  const filteredRecord: TableRecord[] = records.filter(
+    (record: TableRecord) => {
+      const rowData: FieldData = record.rowData;
 
-  const filterdRecord: TableRecord[] = records.filter((record: TableRecord) => {
-    const rowData: string[] = record.rowData;
+      return rowData[colName]
+        .toLowerCase()
+        .startsWith(searchTerm.toLowerCase());
+    },
+  );
 
-    return rowData[searchIndex]
-      .toLowerCase()
-      .startsWith(searchTerm.toLowerCase());
-  });
-
-  return filterdRecord;
+  return filteredRecord;
 }
 
 export default CustomTable;

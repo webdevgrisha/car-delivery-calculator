@@ -1,27 +1,22 @@
-import { useEffect } from 'react';
 import './CustomSelect.css';
 
 interface CustomSelectProps {
   name: string;
   selectionOptions: string[];
-  currValue: string;
+  value: string;
   changeEventFunc: (value: string) => void;
 }
 
 function CustomSelect({
   name,
   selectionOptions,
-  currValue = '',
+  value = '',
   changeEventFunc,
 }: CustomSelectProps) {
-  // useEffect(() => {
-  //   changeEventFunc(defaultValue);
-  // }, []);
-
   return (
     <select
       name={name}
-      value={currValue}
+      value={value}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         changeEventFunc(e.target.value)
       }

@@ -5,7 +5,7 @@ type InputFiledType = 'text' | 'number' | 'email';
 
 interface CustomInputProps {
   name: string;
-  currValue: string;
+  value: string;
   placeholder?: string;
   type?: InputFiledType;
   changeEventFunc: (value: string) => void;
@@ -13,18 +13,17 @@ interface CustomInputProps {
 
 function CustomInput({
   name,
-  currValue = '',
+  value = '',
   placeholder = '',
   type = 'text',
   changeEventFunc,
 }: CustomInputProps) {
-
   return (
     <input
       type={type}
       name={name}
       placeholder={placeholder}
-      value={currValue}
+      value={value}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         changeEventFunc(e.target.value)
       }
