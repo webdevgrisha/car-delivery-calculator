@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Users.css';
 
 import {
@@ -9,19 +9,23 @@ import {
 import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
 import { SVG_User } from '../../assets';
-import CustomTable from '../CustomTable/CustomTable';
+import { UserTable } from './UserTable/index';
+import { FieldInfo } from './UserTable/types';
+import { TableRecord } from './UserTable/interfaces';
 
 interface UserProfile {
   uid: string;
-  displayName: string;
-  email: string;
-  role: 'user' | 'admin';
-  customClaims?: {
-    role?: 'user' | 'admin';
+  userData: {
+    displayName: string;
+    email: string;
+    role: 'user' | 'admin';
+    customClaims?: {
+      role?: 'user' | 'admin';
+    };
   };
 }
 
-const fields = [
+const fields: FieldInfo[] = [
   {
     tagName: 'input',
     fieldConfig: {
@@ -29,6 +33,7 @@ const fields = [
       placeholder: 'Jakub Kowalski',
       type: 'text',
       defaultValue: '',
+      validate: nameValidation,
     },
   },
   {
@@ -38,6 +43,7 @@ const fields = [
       placeholder: 'test@gmail.com',
       type: 'email',
       defaultValue: '',
+      validate: emailValidation,
     },
   },
   {
@@ -46,25 +52,14 @@ const fields = [
       name: 'role',
       defaultValue: 'user',
       selectionOptions: ['user', 'admin'],
+      validate: (value: string) => true,
     },
   },
 ];
 
-const fieldsValidateFuncs = {
-  displayName: nameValidation,
-  email: emailValidation,
-  role: (value: string) => true,
-};
-
-// const fieldsDefaultValues = {
-//   name: '',
-//   email: '',
-//   role: 'user',
-// };
-
 function Users() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [users, setUsers] = useState<TableRecord[]>([]);
 
   // вызывает сомнения
   useEffect(() => {
@@ -81,35 +76,21 @@ function Users() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('users: ', users);
-  }, [users]);
+  console.log('users: ', users);
 
-  const records = Object.values(users).map((user) => {
-    // loadUsers().finally(() => setLoading(false));
-    const result: { id: string; rowData: string[] } = { id: '', rowData: [] };
-
-    result.id = user.uid;
-    result.rowData = [user.displayName, user.email, user.role];
-    return result;
-  });
-
-  console.log('records: ', records);
   return (
     <>
-      {/* Custom table */}
-      <CustomTable
+      <UserTable
         tableIcon={<SVG_User />}
         tableName="Users"
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}
-        records={records}
-        fieldsValidateFuncs={fieldsValidateFuncs}
+        records={users}
         searchBy="displayName"
         searchInputText="name"
-        addNewRecordFunc={createNewUser}
-        deleteRecordFunc={deleteUser}
-        editRecordFunc={editUser}
+        addNewUserFunc={createNewUser}
+        deleteUserFunc={deleteUser}
+        editUserFunc={editUser}
       />
     </>
   );
@@ -137,19 +118,6 @@ function emailValidation(email: string) {
   const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return emailRegex.test(email);
-}
-
-function formatName(name: string): string {
-  const names = name.trim().split(' ');
-
-  const result = names.map((name: string) => {
-    const firstLetter = name[0].toUpperCase();
-    const otherLetter = name.slice(1).toLocaleLowerCase();
-
-    return firstLetter + otherLetter;
-  });
-
-  return result.join(' ');
 }
 
 export default Users;
