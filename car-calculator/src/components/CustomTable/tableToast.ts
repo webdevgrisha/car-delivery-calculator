@@ -5,8 +5,8 @@ const showWarningToastMessage = (inputName: string) => {
     toast.warning(`${inputName} is invalid.`);
 };
 
-const showErrorToastMessage = () => {
-    toast.error(`Wrong file type. The file type should be csv. `);
+const showErrorToastMessage = (message: string) => {
+    toast.error(message);
 }
 
 const showUpdateToast = (

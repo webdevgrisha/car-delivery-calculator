@@ -59,11 +59,18 @@ function CustomTable({
 
   const handleAddNewRecord = () => setShowAddNewRecordFields(true);
 
-  const handleFileAdd = (file: File) => {
+  const handleFileAdd = async (file: File) => {
     if (!file) return;
 
-    if (file.type !== 'text/csv') {
-      showErrorToastMessage();
+    if (String(file.type) !== 'text/csv') {
+      showErrorToastMessage('Wrong file type. The file type should be csv');
+      return;
+    }
+
+    if (!(await isCSVValid(columnNames, file))) {
+      showErrorToastMessage(
+        'Column names of the CSV file do not match the table column names',
+      );
       return;
     }
 
@@ -138,6 +145,31 @@ function CustomTable({
       </table>
     </section>
   );
+}
+
+async function isCSVValid(columnNames: string[], file: File) {
+  const headers = await new Promise<string[]>((resolve, reject) =>
+    Papa.parse(file, {
+      preview: 1,
+      header: false,
+      complete: (result) => {
+        resolve(result.data[0]);
+        console.log('headers: ', result.data);
+      },
+      error: (error) => {
+        reject(false);
+      },
+    }),
+  );
+
+  console.log('JSON header: ', JSON.stringify(headers));
+  console.log('JSON columnNames: ', JSON.stringify(columnNames));
+
+  const isEqual: boolean =
+    JSON.stringify(columnNames) === JSON.stringify(headers);
+
+  console.log('iseEqual: ', isEqual);
+  return isEqual;
 }
 
 function filterBy(colName: string, records: TableRecord[], searchTerm: string) {

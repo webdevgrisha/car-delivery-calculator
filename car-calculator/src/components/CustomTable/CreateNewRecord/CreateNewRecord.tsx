@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { SVG_Add } from '../../../assets';
 
@@ -16,7 +16,7 @@ interface CreateNewRecordProps {
 }
 
 function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
-  const newRecordDataConfig = useMemo(() => createConfig(fields), [fields]);
+  const [newRecordDataConfig] = useState(() => createConfig(fields));
 
   const [newRecordData, setNewRecordData] =
     useImmer<Record<string, string>>(newRecordDataConfig);
@@ -83,7 +83,7 @@ function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
     <tr className="add-new-record">
       {fields.map((field: FieldInfo, index: number) => {
         const { tagName, fieldConfig } = field;
-        const errorClass = invalidFields[fieldConfig.name] ? 'error' : '';
+        const errorClass = invalidFields[fieldConfig.name] ? 'error' : undefined;
 
         console.log('errorClass: ', errorClass);
 
@@ -128,6 +128,7 @@ function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
 export default CreateNewRecord;
 
 function createConfig(fields: FieldInfo[]) {
+  console.log('config create!');
   const result = fields.reduce(
     (config, field) => {
       const { fieldConfig } = field;
