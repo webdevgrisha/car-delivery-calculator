@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { createTableFromJSON, createTableRecord, deleteTableRecord, editTableRecord } from "../../services/firebase/functions";
 import { CreateTableRecord, DeleteTableRowData, EditTableData } from "./interfaces";
 
-function createActionFunctions(tableName: string) {
-    const tableActionFunction = {
+function useCreateActionFunctions(tableName: string) {
+    const [tableActionFunction] = useState(() => ({
         addNewRecordFunc: (data: CreateTableRecord) => {
             return createTableRecord({
                 tableName: tableName,
@@ -21,15 +22,15 @@ function createActionFunctions(tableName: string) {
                 ...data,
             });
         },
-        createTableFormJSON: (file: string) => {
+        createTableFormCSV: (file: string) => {
             return createTableFromJSON({
                 tableName: tableName,
                 parseArr: file,
             });
         }
-    };
+    }));
 
     return tableActionFunction;
 }
 
-export default createActionFunctions;
+export default useCreateActionFunctions;

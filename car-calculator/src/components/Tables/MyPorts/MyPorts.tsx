@@ -1,52 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
 import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
-import createActionFunctions from '../tableActionFunctions';
-
-interface TableData {
-  id: string;
-  rowData: string[];
-}
-
-const shippingPortsFields = [
-  {
-    tagName: 'input',
-    fieldConfig: {
-      name: 'To port',
-      placeholder: 'To port',
-      type: 'text',
-      defaultValue: '',
-    },
-  },
-];
-
-const destinationPortsFields = [
-  {
-    tagName: 'input',
-    fieldConfig: {
-      name: 'To port',
-      placeholder: 'To port',
-      type: 'text',
-      defaultValue: '',
-    },
-  },
-];
-
-const fieldsValidateFuncs = {
-  'To port': portValidation,
-};
+import createActionFunctions from '../useCreateActionFunctions';
+import { TableData } from '../../CustomTable/types';
+import { destinationPortsFields, shippingPortsFields } from './fields';
 
 function MyPorts() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [shippingPortsTableData, setShippingPortsTableData] = useState<
-    TableData[]
-  >([]);
-  const [destinationPortsTableData, setDestinationPortsTableData] = useState<
-    TableData[]
-  >([]);
+  const [shippingPortsTableData, setShippingPortsTableData] =
+    useState<TableData>([]);
+  const [destinationPortsTableData, setDestinationPortsTableData] =
+    useState<TableData>([]);
 
   // вызывает сомнения
   useEffect(() => {
@@ -55,6 +22,7 @@ function MyPorts() {
     const subcribe = async () => {
       unsubscribeFunc = await subscribeOnTableUpdate(
         'shipping_ports_(from)',
+        'To Port',
         setShippingPortsTableData,
       );
     };
@@ -72,6 +40,7 @@ function MyPorts() {
     const subcribe = async () => {
       unsubscribeFunc = await subscribeOnTableUpdate(
         'destination_ports_(to)',
+        'Destination',
         setDestinationPortsTableData,
       );
     };
@@ -88,32 +57,26 @@ function MyPorts() {
       <CustomTable
         tableIcon={<SVG_Ports />}
         tableName="Shipping ports (from)"
-        tableColumnNames={['To port']}
+        columnNames={['To Port']}
         tableFields={shippingPortsFields}
         records={shippingPortsTableData}
-        fieldsValidateFuncs={fieldsValidateFuncs}
-        searchBy="To port"
+        searchBy="To Port"
         searchInputText="port name"
         {...createActionFunctions('shipping_ports_(from)')}
       />
+
       <CustomTable
         tableIcon={<SVG_Ship />}
         tableName="Destination ports (to)"
-        tableColumnNames={['Destination']}
+        columnNames={['Destination']}
         tableFields={destinationPortsFields}
         records={destinationPortsTableData}
-        fieldsValidateFuncs={fieldsValidateFuncs}
         searchBy="Destination"
         searchInputText="Destination port"
         {...createActionFunctions('destination_ports_(to)')}
       />
     </>
   );
-}
-function portValidation(value: string) {
-  const regExp = /^[a-z]+/i;
-
-  return regExp.test(value);
 }
 
 export default MyPorts;
