@@ -51,9 +51,9 @@ function ManualCalculation() {
                   <path
                     d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
                     stroke="#7C8DB5"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </span>
@@ -81,9 +81,9 @@ function ManualCalculation() {
                       <path
                         d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
                         stroke="#7C8DB5"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </span>
@@ -108,9 +108,9 @@ function ManualCalculation() {
                       <path
                         d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
                         stroke="#7C8DB5"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </span>

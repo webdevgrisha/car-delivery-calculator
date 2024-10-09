@@ -23,8 +23,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+    margin-right: 0.5rem;
 }
 
 .table-section>header>h2 {
@@ -33,6 +32,7 @@
     font-size: 1.13rem;
     color: rgb(51, 51, 51);
     vertical-align: bottom;
+    flex-shrink: 0;
 }
 
 .table-section>header>input {
@@ -107,6 +107,10 @@
     border-bottom: 1px solid rgb(231, 234, 240);
 }
 
+.table-section .custom-table>tbody>tr>td:last-child {
+    margin-bottom: 1px;
+}
+
 .table-section .custom-table>tbody>tr>td {
     padding: 0.5rem 1.25rem 0.5rem 0px;
     min-width: 100px;
@@ -162,8 +166,8 @@
     line-height: 0px;
 }
 
-.table-section .custom-table>tbody  td>input::placeholder,
-.table-section .custom-table>tbody  td>select::placeholder {
+.table-section .custom-table>tbody td>input::placeholder,
+.table-section .custom-table>tbody td>select::placeholder {
     color: rgb(190, 190, 190);
 }
 

@@ -1,83 +1,196 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './CustomTable.css';
-import { CreateNewRecord, CreateTableRow } from '.';
-import { FieldInfo, Record } from './interfaces';
+import { CreateNewRecord } from '.';
+import { FieldData, TableContext, TableRecord } from './interfaces';
+import RenderRows from './RenderRows/RenderRows';
+import { Id, toast } from 'react-toastify';
+import { showErrorToastMessage, showUpdateToast } from './tableToast';
+import Papa from 'papaparse';
+import { FieldInfo } from './types';
+import { CustomTableContext } from './tableContext';
 
 interface CustomTableProps {
-  tableIconPath: string;
+  tableIcon: React.ReactNode;
   tableName: string;
-  tableColumnNames: string[];
-  tableFields: FieldInfo[];
-  records: Record[];
+  columnNames: string[];
+  fields: FieldInfo[];
+  records: TableRecord[];
+  searchBy: string;
+  searchInputText: string;
+  addNewRecordFunc: Function;
+  deleteRecordFunc: Function;
+  editRecordFunc: Function;
+  createTableFormCSV: Function;
 }
 
 function CustomTable({
-  tableIconPath,
+  tableIcon,
   tableName = '',
-  tableColumnNames,
-  tableFields,
+  columnNames,
+  fields,
   records,
+  searchBy,
+  searchInputText,
+  addNewRecordFunc,
+  deleteRecordFunc,
+  editRecordFunc,
+  createTableFormCSV,
 }: CustomTableProps) {
+  const addFileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [showAddNewRecordFields, setShowAddNewRecordFields] =
     useState<boolean>(false);
+  const [filterRecords, setFilterRecords] = useState<TableRecord[]>(records);
 
-  console.log('records:', records);
+  useEffect(() => {
+    setFilterRecords(records);
+  }, [records]);
+
+  const customTableContextValue: TableContext = {
+    columnNames,
+    fields,
+    records: filterRecords,
+    addNewRecordFunc,
+    deleteRecordFunc,
+    editRecordFunc,
+  };
+
+  const handleInputSearch = (searchTerm: string = '') => {
+    const filteredResult: TableRecord[] = filterBy(
+      searchBy,
+      records,
+      searchTerm,
+    );
+
+    setFilterRecords(filteredResult);
+  };
+
+  const handleAddCsv = () => addFileInputRef.current?.click();
+
   const handleAddNewRecord = () => setShowAddNewRecordFields(true);
+
+  const handleFileAdd = async (file: File) => {
+    if (!file) return;
+
+    if (String(file.type) !== 'text/csv') {
+      showErrorToastMessage('Wrong file type. The file type should be csv');
+      return;
+    }
+
+    if (!(await isCSVValid(columnNames, file))) {
+      showErrorToastMessage(
+        'Column names of the CSV file do not match the table column names',
+      );
+      return;
+    }
+
+    const toastId: Id = toast.loading('Please wait...');
+
+    Papa.parse(file, {
+      header: true,
+      complete: (result) => {
+        console.log(typeof result);
+        console.log(result.data);
+        console.log('JSON: ', JSON.stringify(result.data));
+
+        createTableFormCSV(JSON.stringify(result.data)).then(({ data }) => {
+          const status = 'message' in data ? 'success' : 'error';
+          const message: string = data.message || data.error;
+
+          showUpdateToast(toastId, message, status);
+        });
+      },
+    });
+  };
 
   return (
     <section className="table-section">
       <header>
-        <div className="icon">
-          <img src={`/${tableIconPath}`} alt="table-icon" />
-        </div>
+        <div className="icon">{tableIcon}</div>
         <h2>{tableName}</h2>
-        <input type="search" placeholder="Search" />
+        <input
+          type="search"
+          placeholder={`Search by ${searchInputText}`}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputSearch(e.target.value)
+          }
+        />
+
+        <input
+          ref={addFileInputRef}
+          onChange={(e) => {
+            handleFileAdd(e.target.files?.[0]);
+            e.target.value = '';
+          }}
+          type="file"
+          accept=".csv"
+          style={{ display: 'none' }}
+        />
+        <button onClick={handleAddCsv}>Add csv</button>
         <button onClick={handleAddNewRecord}>Add New</button>
       </header>
       <table className="custom-table">
         <thead>
           <tr>
-            {tableColumnNames.map((name: string, index: number) => (
+            {columnNames.map((name: string, index: number) => (
               <th key={index}>{name}</th>
             ))}
           </tr>
         </thead>
+
         <tbody>
-          {showAddNewRecordFields && (
-            <CreateNewRecord fields={tableFields} submitFunction={undefined} />
-          )}
-          {/* {loading && <Loader />}
-          {showAddUserFields && <AddNewUser />}
-          <CreateRows users={users} /> */}
-          <RenderRows fields={tableFields} records={records} />
+          <CustomTableContext.Provider value={customTableContextValue}>
+            {showAddNewRecordFields && <CreateNewRecord />}
+
+            <RenderRows />
+          </CustomTableContext.Provider>
         </tbody>
       </table>
     </section>
   );
 }
 
-interface RenderRowsProps {
-  records: Record[];
-  fields: FieldInfo[];
+async function isCSVValid(columnNames: string[], file: File) {
+  const headers = await new Promise<string[]>((resolve, reject) =>
+    Papa.parse(file, {
+      preview: 1,
+      header: false,
+      complete: (result) => {
+        resolve(result.data[0]);
+        console.log('headers: ', result.data);
+      },
+      error: (error) => {
+        reject(false);
+      },
+    }),
+  );
+
+  console.log('JSON header: ', JSON.stringify(headers));
+  console.log('JSON columnNames: ', JSON.stringify(columnNames));
+
+  const isEqual: boolean =
+    JSON.stringify(columnNames) === JSON.stringify(headers);
+
+  console.log('iseEqual: ', isEqual);
+  return isEqual;
 }
 
-function RenderRows({ fields, records }: RenderRowsProps) {
-  const [editRowId, setEditRowId] = useState<string>('');
+function filterBy(colName: string, records: TableRecord[], searchTerm: string) {
+  const isColNameExist = colName in records[0].rowData;
 
-  const rows = records.map((record: Record) => {
-    const isEdit = record.id === editRowId;
-  
-    return (
-      <CreateTableRow
-        {...record}
-        fields={fields}
-        isEdit={isEdit}
-        setEditRowId={(id: string) => setEditRowId(id)}
-      />
-    );
-  });
+  if (!isColNameExist || searchTerm === '') return records;
 
-  return rows;
+  const filteredRecord: TableRecord[] = records.filter(
+    (record: TableRecord) => {
+      const rowData: FieldData = record.rowData;
+
+      return rowData[colName]
+        .toLowerCase()
+        .startsWith(searchTerm.toLowerCase());
+    },
+  );
+
+  return filteredRecord;
 }
 
 export default CustomTable;

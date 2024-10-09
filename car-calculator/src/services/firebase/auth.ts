@@ -1,13 +1,9 @@
-import './firebase'
+import './firebaseConfig'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
-import { getFunctions, httpsCallable } from "firebase/functions";
+
 
 const auth = getAuth();
-const functions = getFunctions();
 
-const addAdminRole = httpsCallable(functions, "addAdminRole");
-const createNewUser = httpsCallable(functions, "createNewUser");
-const getUsers = httpsCallable(functions, "getUsers");
 
 // addAdminRole({ email: 'test1@gmail.com' }).then((result) => {
 //     console.log("Result: ", result);
@@ -91,8 +87,5 @@ export {
     userSignOut,
     subscribeOnAuthStateChanged,
     checkAdminRole,
-    updateUserName,
-    addAdminRole,
-    createNewUser,
-    getUsers,
+    updateUserName
 }

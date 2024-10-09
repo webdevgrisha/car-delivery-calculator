@@ -13,7 +13,7 @@ const SVG_Add = () => (
       y="0.25"
       fill="#E3EAFF"
       stroke="#DFE7F0"
-      stroke-width="0.5"
+      strokeWidth="0.5"
       rx="4.75"
     ></rect>
     <path
