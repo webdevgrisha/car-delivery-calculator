@@ -5,7 +5,7 @@ import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
-import { TableData } from '../../CustomTable/types';
+import { FieldInfo, TableData } from '../../CustomTable/types';
 import {
   createShippingPortsFieldsConfig,
   createDestinationPortsFieldsConfig,
@@ -19,8 +19,8 @@ function MyPorts() {
   const [destinationPortsTableData, setDestinationPortsTableData] =
     useState<TableData>([]);
 
-  const destinationPortsFields = useFields(createDestinationPortsFieldsConfig);
-  const shippingPortsFields = useFields(createShippingPortsFieldsConfig);
+  const destinationPortsFields = useFields(createDestinationPortsFieldsConfig) as FieldInfo[];
+  const shippingPortsFields = useFields(createShippingPortsFieldsConfig) as FieldInfo[];
 
   // вызывает сомнения
   useEffect(() => {
@@ -65,7 +65,7 @@ function MyPorts() {
         tableIcon={<SVG_Ports />}
         tableName="Shipping ports (from)"
         columnNames={['To Port']}
-        tableFields={shippingPortsFields}
+        fields={shippingPortsFields}
         records={shippingPortsTableData}
         searchBy="To Port"
         searchInputText="port name"
@@ -76,7 +76,7 @@ function MyPorts() {
         tableIcon={<SVG_Ship />}
         tableName="Destination ports (to)"
         columnNames={['Destination']}
-        tableFields={destinationPortsFields}
+        fields={destinationPortsFields}
         records={destinationPortsTableData}
         searchBy="Destination"
         searchInputText="Destination port"

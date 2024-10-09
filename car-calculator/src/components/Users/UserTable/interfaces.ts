@@ -3,17 +3,17 @@ import { FieldName, FunctionResult, InputFieldType, Role } from "./types";
 
 interface InputFieldInfo {
     name: FieldName;
-    defaultValue: string;
     placeholder: string;
-    type?: InputFieldType;
     validate: (value: string) => boolean;
+    type?: InputFieldType;
+    defaultValue?: string;
 }
 
 interface SelectedFieldInfo {
     name: FieldName;
-    defaultValue: string;
     selectionOptions: string[];
     validate: (value: string) => boolean;
+    defaultValue?: string;
 }
 
 interface InputField {
@@ -48,7 +48,7 @@ interface EditFunc {
 }
 
 interface NewUserData {
-    name: FieldName,
+    displayName: string,
     email: string,
     role: Role
 }

@@ -13,6 +13,8 @@ function CustomSelect({
   value = '',
   changeEventFunc,
 }: CustomSelectProps) {
+  console.log('select: ', selectionOptions);
+  console.log('select value: ', value);
   return (
     <select
       name={name}
@@ -21,7 +23,7 @@ function CustomSelect({
         changeEventFunc(e.target.value)
       }
     >
-      {selectionOptions.map((option: string, index: number) => {
+      {selectionOptions?.map((option: string, index: number) => {
         return (
           <option value={option} key={index}>
             {option}

@@ -2,8 +2,14 @@
 //     if(!value.trim().length) return false;
 // }
 
-function portValidation(value: string) {
+function shippingPortValidation(value: string) {
     const regExp = /^[a-z]+, [A-Z]{2}/i;
+
+    return regExp.test(value);
+}
+
+function destinationPortValidation(value: string) {
+    const regExp = /^[a-z]+/i;
 
     return regExp.test(value);
 }
@@ -18,7 +24,8 @@ function validateNumberInput(value: string) {
     return +value > 0;
 }
 export {
-    portValidation,
+    shippingPortValidation,
+    destinationPortValidation,
     validateSelect,
     validateNumberInput,
 }

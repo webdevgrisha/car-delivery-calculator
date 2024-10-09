@@ -1,5 +1,5 @@
 import { AsyncFieldInfo } from "../interfaces";
-import { portValidation } from "../validateFunctions";
+import { destinationPortValidation, shippingPortValidation } from "../validateFunctions";
 
 const createShippingPortsFieldsConfig = () => {
     const shippingPortsFieldsConfig: AsyncFieldInfo[] = [
@@ -9,7 +9,7 @@ const createShippingPortsFieldsConfig = () => {
                 name: 'To Port',
                 placeholder: 'To port',
                 type: 'text',
-                validate: portValidation,
+                validate: shippingPortValidation,
             },
         },
     ];
@@ -26,7 +26,7 @@ const createDestinationPortsFieldsConfig = () => {
                 name: 'Destination',
                 placeholder: 'Destination port',
                 type: 'text',
-                validate: portValidation,
+                validate: destinationPortValidation,
             },
         },
     ];

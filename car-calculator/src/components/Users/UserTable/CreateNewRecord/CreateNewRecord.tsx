@@ -12,17 +12,14 @@ import {
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
-import { FieldInfo } from '../types';
+import { FieldInfo, FieldName } from '../types';
 
 interface CreateNewRecordProps {
   fields: FieldInfo[];
   addNewUserFunc: AddFunc;
 }
 
-function CreateNewRecord({
-  fields,
-  addNewUserFunc,
-}: CreateNewRecordProps) {
+function CreateNewRecord({ fields, addNewUserFunc }: CreateNewRecordProps) {
   // данный конфик стоит создовать или лучше передовать ?
   const newUserDataConfig = useMemo(() => createConfig(fields), [fields]);
 
@@ -34,7 +31,7 @@ function CreateNewRecord({
   );
 
   const handleFieldChange = useCallback(
-    (name: string, value: string) => {
+    (name: FieldName, value: string) => {
       setNewUserData((draft) => {
         draft[name] = value;
       });
@@ -49,22 +46,20 @@ function CreateNewRecord({
   );
 
   const handleFormSubmit = () => {
-    const invalidFieldsArr: boolean[] = fields.map(
-      ({fieldConfig}) => {
-        const {name, validate} = fieldConfig;
-        const value = newUserData[name];
-        const isValid = validate(value);
+    const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
+      const { name, validate } = fieldConfig;
+      const value = newUserData[name];
+      const isValid = validate(value);
 
-        if (isValid) return true;
+      if (isValid) return true;
 
-        setInvalidFields((draft) => {
-          draft[name] = true;
-        });
+      setInvalidFields((draft) => {
+        draft[name] = true;
+      });
 
-        showWarningToastMessage(name);
-        return false;
-      },
-    );
+      showWarningToastMessage(name);
+      return false;
+    });
 
     if (invalidFieldsArr.some((valid) => valid === false)) return;
 
@@ -135,7 +130,7 @@ function createConfig(fields: FieldInfo[]) {
       const { fieldConfig } = field;
       const { name, defaultValue } = fieldConfig;
 
-      config[name] = defaultValue;
+      config[name] = defaultValue || '';
 
       return config;
     },

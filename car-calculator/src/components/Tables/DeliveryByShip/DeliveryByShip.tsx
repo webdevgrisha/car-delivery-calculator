@@ -5,7 +5,7 @@ import Loader from '../Loader/Loader';
 import { SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
-import { TableData } from '../../CustomTable/types';
+import { FieldInfo, TableData } from '../../CustomTable/types';
 import createFieldsConfig from './fields';
 import useFields from '../hooks/useFields';
 
@@ -13,7 +13,7 @@ function DeliveryByShip() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
-  const fields = useFields(createFieldsConfig);
+  const fields = useFields(createFieldsConfig) as FieldInfo[];
 
   // вызывает сомнения
   useEffect(() => {
@@ -51,7 +51,7 @@ function DeliveryByShip() {
           'Van',
           'Motor',
         ]}
-        tableFields={fields}
+        fields={fields}
         records={tableData}
         searchBy="From"
         searchInputText="from port"

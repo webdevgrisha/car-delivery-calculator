@@ -1,5 +1,4 @@
-import { InputFiledType } from "./types";
-
+import { FieldInfo, InputFiledType } from "./types";
 
 interface InputFieldInfo {
     name: string;
@@ -35,6 +34,14 @@ interface TableRecord {
     rowData: FieldData;
 }
 
+interface TableContext {
+    columnNames: string[];
+    fields: FieldInfo[];
+    records: TableRecord[];
+    addNewRecordFunc: Function;
+    deleteRecordFunc: Function;
+    editRecordFunc: Function;
+}
 
 export type {
     InputField,
@@ -42,5 +49,6 @@ export type {
     InputFieldInfo,
     SelectedFieldInfo,
     TableRecord,
-    FieldData
+    FieldData,
+    TableContext
 }

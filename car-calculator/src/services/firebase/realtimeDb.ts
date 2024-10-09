@@ -7,7 +7,6 @@ async function writeUserData(userId: string, name: string, email: string, role: 
 
     try {
         await set(ref(realtimeDb, 'users/' + userId), {
-            uid: userId,
             displayName: name,
             email: email,
             role: role,
@@ -45,7 +44,10 @@ async function subscribeOnUserUpdate(setFunc: Function) {
             console.log("Нет данных о пользователях");
             setFunc({});
         } else {
-            setFunc(snapshot.val());
+            console.log('snapshot: ', Object.entries(snapshot.val()));
+            const userData = Object.entries(snapshot.val()).map(([uid, userData]) => ({ uid: uid, userData: Object.values(userData) }));
+            console.log('userData: ', userData);
+            setFunc(userData);
         }
     });
 

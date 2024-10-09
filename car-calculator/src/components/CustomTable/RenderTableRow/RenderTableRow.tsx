@@ -1,35 +1,30 @@
 import './RenderTableRow.css';
 
 import { SVG_Edit, SVG_Delete, SVG_Cancel, SVG_Save } from '../../../assets';
-import { FieldData, FieldsValidateFuncs } from '../interfaces';
+import { FieldData } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
 import { useImmer } from 'use-immer';
 import { RenderField } from '..';
-import { FieldInfo } from '../types';
+import { useCustomTableContext } from '../tableContext';
 
 interface CreateTableRowProps {
   id: string;
-  columnNames: string[];
-  fields: FieldInfo[];
   rowData: FieldData;
   isEdit: boolean;
   setEditRowId: (id: string) => void;
-  deleteRecordFunc: Function;
-  editRecordFunc: Function;
 }
 
 function RenderTableRow({
   id,
-  columnNames,
-  fields,
   rowData,
   isEdit,
   setEditRowId,
-  deleteRecordFunc,
-  editRecordFunc,
 }: CreateTableRowProps) {
+  const { columnNames, fields, deleteRecordFunc, editRecordFunc } =
+    useCustomTableContext();
+
   const [editRecordData, setEditRecordData] = useImmer<Record<string, string>>(
     {},
   );
@@ -155,7 +150,8 @@ function RenderTableRow({
   return (
     <tr>
       {columnNames.map((colName: string, index: number) => {
-        const buttons = columnNames .length - 1 === index ? <ActionBtns /> : null;
+        const buttons =
+          columnNames.length - 1 === index ? <ActionBtns /> : null;
 
         const fieldName = fields[index].fieldConfig.name;
         const initValue = rowData[colName];

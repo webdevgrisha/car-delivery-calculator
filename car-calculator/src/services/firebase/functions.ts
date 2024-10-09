@@ -17,8 +17,8 @@ import { writeUserData, readAllUsers } from './realtimeDb';
 
 export {
     addAdminRole,
-    createNewUser,
     getUsers,
+    createNewUser,
     deleteUser,
     editUser,
     createTableFromJSON,
@@ -28,7 +28,7 @@ export {
 }
 
 readAllUsers();
-console.log(editUser);
+// console.log(editUser);
 // (async () => {
 //     const result = await getUsers();
 

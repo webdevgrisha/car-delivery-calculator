@@ -7,10 +7,10 @@ export default function TablesLayout() {
     <div className='tables-container'>
       <header>
         <nav className={'tables-nav'}>
-          <NavLink className="nav-link" to="a">
+          <NavLink className="nav-link" to="shipping_cost_to_a_US_port">
             <p>Shipping cost to a US port</p>
           </NavLink>
-          <NavLink className="nav-link" to="b">
+          <NavLink className="nav-link" to="delivery_by_ship">
             <p>Delivery by ship</p>
           </NavLink>
           <NavLink className="nav-link" to="my_ports">

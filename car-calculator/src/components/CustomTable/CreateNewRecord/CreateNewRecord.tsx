@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { SVG_Add } from '../../../assets';
 
@@ -9,13 +9,16 @@ import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
 import { FieldInfo } from '../types';
+import { useCustomTableContext } from '../tableContext';
 
-interface CreateNewRecordProps {
-  fields: FieldInfo[];
-  addNewRecordFunc: Function;
-}
+// interface CreateNewRecordProps {
+//   fields: FieldInfo[];
+//   addNewRecordFunc: Function;
+// }
 
-function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
+function CreateNewRecord() {
+  const { fields, addNewRecordFunc } = useCustomTableContext();
+  
   const [newRecordDataConfig] = useState(() => createConfig(fields));
 
   const [newRecordData, setNewRecordData] =
@@ -24,8 +27,6 @@ function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
   const [invalidFields, setInvalidFields] = useImmer<Record<string, boolean>>(
     {},
   );
-
-  console.log('fields: ', fields);
 
   const handleFieldChange = useCallback(
     (name: string, value: string) => {
@@ -47,6 +48,10 @@ function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
 
     const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
       const { name, validate } = fieldConfig;
+
+      console.log('fieldConfig: ', fieldConfig);
+      console.log('validate: ', validate);
+
       const value = newRecordData[name];
       const isValid = validate(value);
 
@@ -83,7 +88,9 @@ function CreateNewRecord({ fields, addNewRecordFunc }: CreateNewRecordProps) {
     <tr className="add-new-record">
       {fields.map((field: FieldInfo, index: number) => {
         const { tagName, fieldConfig } = field;
-        const errorClass = invalidFields[fieldConfig.name] ? 'error' : undefined;
+        const errorClass = invalidFields[fieldConfig.name]
+          ? 'error'
+          : undefined;
 
         console.log('errorClass: ', errorClass);
 

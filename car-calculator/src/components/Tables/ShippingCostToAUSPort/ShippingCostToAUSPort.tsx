@@ -5,7 +5,7 @@ import Loader from '../Loader/Loader';
 import { SVG_Laveta } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import useCreateActionFunctions from '../hooks/useCreateActionFunctions';
-import { TableData } from '../../CustomTable/types';
+import { FieldInfo, TableData } from '../../CustomTable/types';
 import createFiledConfig from './fields';
 import useFields from '../hooks/useFields';
 
@@ -15,7 +15,7 @@ function ShippingCostToAUSPort() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
-  const fields = useFields(createFiledConfig);
+  const fields = useFields(createFiledConfig) as FieldInfo[];
 
   // вызывает сомнения
   useEffect(() => {
@@ -55,7 +55,7 @@ function ShippingCostToAUSPort() {
           'Van',
           'Motor',
         ]}
-        tableFields={fields}
+        fields={fields}
         records={tableData}
         searchBy="From"
         searchInputText="from port"

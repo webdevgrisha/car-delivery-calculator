@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './CustomInput.css';
 
 type InputFiledType = 'text' | 'number' | 'email';

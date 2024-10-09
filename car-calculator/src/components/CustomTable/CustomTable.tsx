@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './CustomTable.css';
 import { CreateNewRecord } from '.';
-import { FieldData, TableRecord } from './interfaces';
+import { FieldData, TableContext, TableRecord } from './interfaces';
 import RenderRows from './RenderRows/RenderRows';
 import { Id, toast } from 'react-toastify';
 import { showErrorToastMessage, showUpdateToast } from './tableToast';
 import Papa from 'papaparse';
 import { FieldInfo } from './types';
+import { CustomTableContext } from './tableContext';
 
 interface CustomTableProps {
   tableIcon: React.ReactNode;
   tableName: string;
   columnNames: string[];
-  tableFields: FieldInfo[];
+  fields: FieldInfo[];
   records: TableRecord[];
   searchBy: string;
   searchInputText: string;
@@ -26,7 +27,7 @@ function CustomTable({
   tableIcon,
   tableName = '',
   columnNames,
-  tableFields,
+  fields,
   records,
   searchBy,
   searchInputText,
@@ -44,6 +45,15 @@ function CustomTable({
   useEffect(() => {
     setFilterRecords(records);
   }, [records]);
+
+  const customTableContextValue: TableContext = {
+    columnNames,
+    fields,
+    records: filterRecords,
+    addNewRecordFunc,
+    deleteRecordFunc,
+    editRecordFunc,
+  };
 
   const handleInputSearch = (searchTerm: string = '') => {
     const filteredResult: TableRecord[] = filterBy(
@@ -127,20 +137,13 @@ function CustomTable({
             ))}
           </tr>
         </thead>
+
         <tbody>
-          {showAddNewRecordFields && (
-            <CreateNewRecord
-              fields={tableFields}
-              addNewRecordFunc={addNewRecordFunc}
-            />
-          )}
-          <RenderRows
-            columnNames={columnNames}
-            fields={tableFields}
-            records={filterRecords}
-            deleteRecordFunc={deleteRecordFunc}
-            editRecordFunc={editRecordFunc}
-          />
+          <CustomTableContext.Provider value={customTableContextValue}>
+            {showAddNewRecordFields && <CreateNewRecord />}
+
+            <RenderRows />
+          </CustomTableContext.Provider>
         </tbody>
       </table>
     </section>
