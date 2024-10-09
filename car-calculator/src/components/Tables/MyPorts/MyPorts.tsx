@@ -4,9 +4,13 @@ import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
 import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
-import createActionFunctions from '../useCreateActionFunctions';
+import createActionFunctions from '../hooks/useCreateActionFunctions';
 import { TableData } from '../../CustomTable/types';
-import { destinationPortsFields, shippingPortsFields } from './fields';
+import {
+  createShippingPortsFieldsConfig,
+  createDestinationPortsFieldsConfig,
+} from './fields';
+import useFields from '../hooks/useFields';
 
 function MyPorts() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -14,6 +18,9 @@ function MyPorts() {
     useState<TableData>([]);
   const [destinationPortsTableData, setDestinationPortsTableData] =
     useState<TableData>([]);
+
+  const destinationPortsFields = useFields(createDestinationPortsFieldsConfig);
+  const shippingPortsFields = useFields(createShippingPortsFieldsConfig);
 
   // вызывает сомнения
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { createTableFromJSON, createTableRecord, deleteTableRecord, editTableRecord } from "../../services/firebase/functions";
-import { CreateTableRecord, DeleteTableRowData, EditTableData } from "./interfaces";
+import { createTableFromJSON, createTableRecord, deleteTableRecord, editTableRecord } from "../../../services/firebase/functions";
+import { CreateTableRecord, DeleteTableRowData, EditTableData } from "../interfaces";
 
 function useCreateActionFunctions(tableName: string) {
     const [tableActionFunction] = useState(() => ({

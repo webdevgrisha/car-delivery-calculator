@@ -1,7 +1,10 @@
-import { FieldInfo } from "../../CustomTable/types";
+
+import { getColumnData } from "../../../services/firebase/firestoreDb";
+import { AsyncFieldInfo } from "../interfaces";
 import { validateNumberInput, validateSelect } from "../validateFunctions";
 
-const fields: FieldInfo[] = [
+const createFiledConfig = () => {
+  const fieldsConfig: AsyncFieldInfo[] = [
     {
       tagName: 'select',
       fieldConfig: {
@@ -30,7 +33,7 @@ const fields: FieldInfo[] = [
       tagName: 'select',
       fieldConfig: {
         name: 'To Port',
-        selectionOptions: ['None', 'IAAI', 'Copart'],
+        selectionOptions: getColumnData('shipping_ports_(from)', 'To Port'),
         validate: validateSelect,
       },
     },
@@ -90,5 +93,9 @@ const fields: FieldInfo[] = [
     },
   ];
 
+  return fieldsConfig;
+}
 
-  export default fields;
+
+
+export default createFiledConfig;

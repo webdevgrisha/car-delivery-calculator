@@ -4,13 +4,16 @@ import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
 import Loader from '../Loader/Loader';
 import { SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
-import createActionFunctions from '../useCreateActionFunctions';
+import createActionFunctions from '../hooks/useCreateActionFunctions';
 import { TableData } from '../../CustomTable/types';
-import fields from './fields';
+import createFieldsConfig from './fields';
+import useFields from '../hooks/useFields';
 
 function DeliveryByShip() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
+
+  const fields = useFields(createFieldsConfig);
 
   // вызывает сомнения
   useEffect(() => {

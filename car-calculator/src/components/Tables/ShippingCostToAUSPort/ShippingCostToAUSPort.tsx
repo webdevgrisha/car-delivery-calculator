@@ -4,15 +4,18 @@ import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
 import Loader from '../Loader/Loader';
 import { SVG_Laveta } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
-import useCreateActionFunctions from '../useCreateActionFunctions';
+import useCreateActionFunctions from '../hooks/useCreateActionFunctions';
 import { TableData } from '../../CustomTable/types';
-import fields from './fields';
+import createFiledConfig from './fields';
+import useFields from '../hooks/useFields';
 
 // стоит ли вынести в отдельный файл ?
 
 function ShippingCostToAUSPort() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
+
+  const fields = useFields(createFiledConfig);
 
   // вызывает сомнения
   useEffect(() => {

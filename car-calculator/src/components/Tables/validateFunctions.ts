@@ -3,7 +3,7 @@
 // }
 
 function portValidation(value: string) {
-    const regExp = /^[a-z]+/i;
+    const regExp = /^[a-z]+, [A-Z]{2}/i;
 
     return regExp.test(value);
 }
