@@ -7,7 +7,7 @@ const createShippingPortsFieldsConfig = () => {
             tagName: 'input',
             fieldConfig: {
                 name: 'To Port',
-                placeholder: 'To port',
+                placeholder: 'Texas, TX',
                 type: 'text',
                 validate: shippingPortValidation,
             },
@@ -24,7 +24,7 @@ const createDestinationPortsFieldsConfig = () => {
             tagName: 'input',
             fieldConfig: {
                 name: 'Destination',
-                placeholder: 'Destination port',
+                placeholder: 'Rotterdam',
                 type: 'text',
                 validate: destinationPortValidation,
             },

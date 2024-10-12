@@ -38,6 +38,7 @@ function RenderTableRow({
     if (!confirmCancel) return;
 
     setEditRowId('');
+    setEditRecordData({});
   };
 
   const handleDelete = (id: string) => {

@@ -57,8 +57,8 @@ function ShippingCostToAUSPort() {
         ]}
         fields={fields}
         records={tableData}
-        searchBy="From"
-        searchInputText="from port"
+        searchBy="Location"
+        searchInputText="location"
         {...useCreateActionFunctions('shipping_cost_to_a_US_port')}
       />
     </>

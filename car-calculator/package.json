@@ -13,6 +13,7 @@
     "deploy": "npm run build && gh-pages -d dist --dest hooks-and-routing"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "cors": "^2.8.5",
     "lodash.clonedeep": "^4.5.0",
     "papaparse": "^5.4.1",

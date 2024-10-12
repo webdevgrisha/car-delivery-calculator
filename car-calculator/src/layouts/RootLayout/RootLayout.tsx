@@ -1,7 +1,6 @@
 import { Outlet, NavLink, useMatch } from 'react-router-dom';
 
 import './RootLayout.css';
-import { useState } from 'react';
 
 import { userSignOut } from '../../services/firebase/auth';
 import { useAuth } from '../../utils/AuthProvider';
@@ -9,9 +8,6 @@ import { useAuth } from '../../utils/AuthProvider';
 import {
   SVG_Email,
   SVG_User,
-  SVG_CarFax,
-  SVG_Autocheck,
-  SVG_Sticekr,
   SVG_Clients,
   SVG_Calculator,
   SVG_Settings,
@@ -52,24 +48,6 @@ export default function RootLayout() {
       </header>
       <div className="app-container">
         <nav className={'main-nav ' + mainNavClass}>
-          <NavLink className="nav-link" to="/">
-            <span className="icon">
-              <SVG_CarFax />
-            </span>
-            <p>CarFax</p>
-          </NavLink>
-          <NavLink className="nav-link" to="autocheck">
-            <span className="icon">
-              <SVG_Autocheck />
-            </span>
-            <p>Autocheck</p>
-          </NavLink>
-          <NavLink className="nav-link" to="sticker">
-            <span className="icon">
-              <SVG_Sticekr />
-            </span>
-            <p>Sticker</p>
-          </NavLink>
           <NavLink className="nav-link" to="clients">
             <span className="icon">
               <SVG_Clients />

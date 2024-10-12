@@ -1,126 +1,93 @@
+import { useImmer } from 'use-immer';
+import { SVG_SelectArrow } from '../../assets';
 import './ManualCalculation.css';
+import getFormRows from './rowsConfig';
+import { FormRows } from './interface';
+import { ManualRow } from '.';
+import { RowNames } from './types';
+import { FormEvent } from 'react';
 
-interface SubSectionProps {
-  title: string;
-  currency: 'USD' | 'EUR' | 'PLN';
+interface FormData {
+  carPrice: string;
+  engineSize: string;
+  location: string;
+  customsCosts: string;
+  repairCosts: string;
+  carSize: string;
 }
 
 function ManualCalculation() {
+  const [formData, setFormData] = useImmer<FormData>({
+    carPrice: '',
+    engineSize: '',
+    location: '',
+    customsCosts: '',
+    repairCosts: '',
+    carSize: '',
+  });
+
+  const [inValidFields, setInValidFields] = useImmer<Record<string, boolean>>(
+    {},
+  );
+
+  const formRows: FormRows[] = getFormRows();
+
+  const handleFormDataChange = (name: RowNames, value: string) => {
+    setFormData((draft) => {
+      draft[name] = value;
+    });
+  };
+
+  const submitForm = (e: FormEvent) => {
+    console.log('form submit');
+
+    e.preventDefault();
+
+    const inValidFields = Object.entries(formData)
+      .map(([name, value]) => {
+        const formRow = formRows.find((row) => row.rowName === name)!;
+        const validate = formRow.validate;
+
+        const isValid = validate(value);
+
+        if (isValid) return null;
+
+        return [name, true];
+      })
+      .filter((value) => value !== null);
+
+    console.log('inValidFields: ', inValidFields);
+    setInValidFields(Object.fromEntries(inValidFields));
+  };
+
   return (
     <section className="manual-calculation">
       <div className="container">
         <header>
           <h5>Manual calculation</h5>
         </header>
-        <form>
-          <div className="row">
-            <label htmlFor="vehiclePrice">Cena pojazdu</label>
-            <div className="input-wrapper">
-              <input
-                type="number"
-                id="vehiclePrice"
-                name="vehiclePrice"
-                placeholder="0"
+        <form onSubmit={submitForm}>
+          {formRows.map((rowConfig) => {
+            const { rowName } = rowConfig;
+            const isError: boolean = !!inValidFields[rowName];
+
+            console.log('isError: ', isError);
+
+            return (
+              <ManualRow
+                key={rowName}
+                {...rowConfig}
+                isError={isError}
+                rowValue={formData[rowName]}
+                handleFormDataChange={handleFormDataChange}
               />
-              <span className="currency">USD</span>
-            </div>
-          </div>
-          <div className="row">
-            <label htmlFor="location">Lokalizacja</label>
-            <div className="input-wrapper">
-              <select
-                id="location"
-                name="location"
-                // placeholder=" Select location"
-              >
-                <option value="" selected>
-                  Select location
-                </option>
-                <option value="warsaw">Warszawa</option>
-                <option value="krakow">Kraków</option>
-                <option value="gdansk">Gdańsk</option>
-              </select>
-              <span className="arrow">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
-                    stroke="#7C8DB5"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-          </div>
-          <div className="row additional">
-            <p>Additionally</p>
-            <div className="selects">
-              <div className="select-wrap">
-                <label htmlFor="clo">CLO</label>
-                <div className="select">
-                  <select id="clo" name="clo">
-                    <option value="0">0%</option>
-                    <option value="1.7">1.7%</option>
-                    <option value="6">6%</option>
-                  </select>
-                  <span className="arrow">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
-                        stroke="#7C8DB5"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <div className="select-wrap">
-                <label htmlFor="vat">Vat</label>
-                <div className="select">
-                  <select id="vat" name="vat">
-                    <option value="19">19%</option>
-                    <option value="21">21%</option>
-                    <option value="23">23%</option>
-                  </select>
-                  <span className="arrow">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
-                        stroke="#7C8DB5"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+            );
+          })}
           <div className="btn-wrapper">
             <button className="save-jpg">Save JPG</button>
-            <button className="calculate">OK</button>
+            <button type="submit" className="calculate">
+              OK
+            </button>
           </div>
         </form>
       </div>

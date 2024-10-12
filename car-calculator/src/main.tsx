@@ -28,16 +28,8 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: 'carfax',
-        element: '',
-      },
-      {
-        path: 'autocheck',
-        element: '',
-      },
-      {
-        path: 'sticker',
-        element: '',
+        index: true,
+        element: <Navigate to="calculator" replace={true} />,
       },
       {
         path: 'clients',

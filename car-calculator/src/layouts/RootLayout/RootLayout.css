@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     gap: 2.5rem;
-    height: 4.13rem;
+    height: 5.13rem;
     padding: 0.75rem 0.81rem 0.75rem 1.56rem;
     background: rgb(255, 255, 255);
     border-bottom: 1px solid rgb(223, 231, 240);
@@ -18,8 +18,8 @@
 }
 
 .root-layout>header>.logo>img {
-    width: 5.56rem;
-    height: 1.5rem;
+    width: 8.56rem;
+    height: 4.5rem;
     cursor: pointer;
 }
 
