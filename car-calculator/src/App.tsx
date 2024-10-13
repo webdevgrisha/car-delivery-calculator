@@ -8,6 +8,7 @@ import {
   SubSection,
   TotalSum,
   ManualCalculation,
+  AdditionalServices,
 } from './components/index';
 
 const firstSubSection = [
@@ -73,6 +74,7 @@ function App() {
         <div className="colum-wrapper">
           <AutoCalculation />
           <ManualCalculation />
+          <AdditionalServices />
         </div>
       </div>
       {/* <button onClick={showToastMessage}>Notify</button> */}

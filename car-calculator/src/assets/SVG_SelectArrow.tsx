@@ -1,4 +1,8 @@
-const SVG_SelectArrow = () => (
+interface SVG_SelectArrowProps {
+  color?: string;
+}
+
+const SVG_SelectArrow = ({ color = '#7C8DB5' }: SVG_SelectArrowProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -8,7 +12,8 @@ const SVG_SelectArrow = () => (
   >
     <path
       d="M12.6666 5.66699L7.99992 10.3337L3.33325 5.66699"
-      stroke="#7C8DB5"
+      stroke={color}
+      // stroke="#7C8DB5"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
