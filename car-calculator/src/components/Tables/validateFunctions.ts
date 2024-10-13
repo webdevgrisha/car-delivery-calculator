@@ -14,8 +14,13 @@ function destinationPortValidation(value: string) {
     return regExp.test(value);
 }
 
+function validateLocation(value: string) {
+    return value.length > 0;
+}
+
 function validateSelect(value: string) {
-    return value !== 'None';
+    console.log('validateSelect: ', value);
+    return value !== 'None' && value.trim() !== "";
 }
 
 function validateNumberInput(value: string) {
@@ -28,4 +33,5 @@ export {
     destinationPortValidation,
     validateSelect,
     validateNumberInput,
+    validateLocation,
 }

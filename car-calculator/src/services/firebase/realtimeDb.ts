@@ -36,7 +36,7 @@ async function readAllUsers() {
     }
 }
 
-async function subscribeOnUserUpdate(setFunc: Function) {
+async function subscribeOnUsersUpdate(setFunc: Function) {
     const usersRef = ref(realtimeDb, 'users');
 
     const unsubscribe = onValue(usersRef, (snapshot) => {
@@ -54,10 +54,11 @@ async function subscribeOnUserUpdate(setFunc: Function) {
     return unsubscribe;
 }
 
+
 readAllUsers();
 
 export {
     writeUserData,
     readAllUsers,
-    subscribeOnUserUpdate,
+    subscribeOnUsersUpdate,
 }

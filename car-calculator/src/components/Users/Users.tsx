@@ -6,7 +6,7 @@ import {
   deleteUser,
   editUser,
 } from '../../services/firebase/functions';
-import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
+import { subscribeOnUsersUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
 import { SVG_User } from '../../assets';
 import { UserTable } from './UserTable/index';
@@ -64,7 +64,7 @@ function Users() {
     let unsubscribeFunc: () => void | undefined;
 
     const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnUserUpdate(setUsers);
+      unsubscribeFunc = await subscribeOnUsersUpdate(setUsers);
     };
 
     subcribe();

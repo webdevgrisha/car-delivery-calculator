@@ -2,10 +2,11 @@ import classNames from 'classnames';
 
 import { SVG_SelectArrow } from '../../../assets';
 import './ManualSelect.css';
+import { useEffect, useState } from 'react';
 
 interface ManaulSelectProps {
   value: string;
-  selectionOptions: string[];
+  selectionOptions: string[] | Promise<string[]>;
   changeEventFunc: (value: string) => void;
 }
 
@@ -18,6 +19,16 @@ function ManualSelect({
     'init-option': value === '',
   });
 
+  const [renderSelectionOptions, setRenderSelectionOptions] = useState(() =>
+    Array.isArray(selectionOptions) ? selectionOptions : [],
+  );
+
+  useEffect(() => {
+    if (Array.isArray(selectionOptions)) return;
+
+    selectionOptions.then((data) => setRenderSelectionOptions(data));
+  }, []);
+
   return (
     <>
       <select
@@ -25,7 +36,7 @@ function ManualSelect({
         className={selectClass}
         onChange={(e) => changeEventFunc(e.target.value)}
       >
-        {selectionOptions.map((option: string, index: number) => {
+        {renderSelectionOptions.map((option: string, index: number) => {
           const optionValue = index === 0 ? '' : option;
 
           return (

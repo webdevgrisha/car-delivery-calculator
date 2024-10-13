@@ -1,5 +1,5 @@
 
-import { getColumnData } from "../../../services/firebase/firestoreDb";
+import { getColumnData } from "../../services/firebase/firestoreDb";
 import { FormRows } from "./interface";
 import { validateInput, validateSelect } from "./validateFunc";
 
@@ -7,7 +7,7 @@ const getFormRows = () => {
     const formRows: FormRows[] = [
         {
             label: 'Cena pojazdu',
-            rowType: 'input',
+            tagName: 'input',
             rowName: 'carPrice',
             fieldConfig: {
                 currency: 'USD',
@@ -16,7 +16,7 @@ const getFormRows = () => {
         },
         {
             label: 'Engine size',
-            rowType: 'select',
+            tagName: 'select',
             rowName: 'engineSize',
             fieldConfig: {
                 selectionOptions: ['Select engine', 'Less 2L', 'More 2L']
@@ -25,17 +25,17 @@ const getFormRows = () => {
         },
         {
             label: 'Lokalizacja',
-            rowType: 'select',
+            tagName: 'select',
             rowName: 'location',
             fieldConfig: {
-                // selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location')
-                selectionOptions: [],
+                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location')
+                // selectionOptions: [],
             },
             validate: validateSelect,
         },
         {
             label: 'Koszt celny',
-            rowType: 'input',
+            tagName: 'input',
             rowName: 'customsCosts',
             fieldConfig: {
                 currency: 'USD',
@@ -44,7 +44,7 @@ const getFormRows = () => {
         },
         {
             label: 'Koszty naprawy',
-            rowType: 'input',
+            tagName: 'input',
             rowName: 'repairCosts',
             fieldConfig: {
                 currency: 'PLN',
@@ -53,7 +53,7 @@ const getFormRows = () => {
         },
         {
             label: 'Rozmiar Auta',
-            rowType: 'select',
+            tagName: 'select',
             rowName: 'carSize',
             fieldConfig: {
                 selectionOptions: ['Select car', 'Sedan', 'Suv', 'Duży Suv', 'Pickup', 'Van', 'Motor'],

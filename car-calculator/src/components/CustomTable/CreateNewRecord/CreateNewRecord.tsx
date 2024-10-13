@@ -49,11 +49,11 @@ function CreateNewRecord() {
     const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
       const { name, validate } = fieldConfig;
 
-      console.log('fieldConfig: ', fieldConfig);
-      console.log('validate: ', validate);
-
       const value = newRecordData[name];
       const isValid = validate(value);
+
+      console.log('fieldConfig: ', fieldConfig);
+      console.log('value: ', value);
 
       if (isValid) return true;
 

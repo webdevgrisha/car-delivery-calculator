@@ -1,11 +1,11 @@
 import { useImmer } from 'use-immer';
-import { SVG_SelectArrow } from '../../assets';
 import './ManualCalculation.css';
 import getFormRows from './rowsConfig';
 import { FormRows } from './interface';
 import { ManualRow } from '.';
 import { RowNames } from './types';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import { showWarningToastMessage } from '../CustomTable/tableToast';
 
 interface FormData {
   carPrice: string;
@@ -30,9 +30,17 @@ function ManualCalculation() {
     {},
   );
 
-  const formRows: FormRows[] = getFormRows();
+  const [formRows] = useState<FormRows[]>(() => getFormRows());
+
+  console.log('formRows: ', formRows);
 
   const handleFormDataChange = (name: RowNames, value: string) => {
+    if (inValidFields[name]) {
+      setInValidFields((draft) => {
+        draft[name] = false;
+      });
+    }
+
     setFormData((draft) => {
       draft[name] = value;
     });
@@ -52,11 +60,12 @@ function ManualCalculation() {
 
         if (isValid) return null;
 
+        showWarningToastMessage(name);
+
         return [name, true];
       })
       .filter((value) => value !== null);
 
-    console.log('inValidFields: ', inValidFields);
     setInValidFields(Object.fromEntries(inValidFields));
   };
 
@@ -70,8 +79,6 @@ function ManualCalculation() {
           {formRows.map((rowConfig) => {
             const { rowName } = rowConfig;
             const isError: boolean = !!inValidFields[rowName];
-
-            console.log('isError: ', isError);
 
             return (
               <ManualRow

@@ -10,13 +10,13 @@ interface InputConfig {
 }
 
 interface SelectConfig {
-  selectionOptions: string[];
+  selectionOptions: string[] | Promise<string[]>;
 }
 
 interface ManaulRowProps {
   isError: boolean;
   label: string;
-  rowType: 'input' | 'select';
+  tagName: 'input' | 'select';
   rowName: RowNames;
   rowValue: string;
   fieldConfig: FieldType;
@@ -29,7 +29,7 @@ function ManualRow({
   isError,
   label,
   fieldConfig,
-  rowType,
+  tagName,
   rowName,
   rowValue,
   handleFormDataChange,
@@ -43,7 +43,7 @@ function ManualRow({
     <div className={rowClass}>
       <label htmlFor={rowName}>{label}</label>
       <div className="field-wrapper">
-        {rowType === 'input' ? (
+        {tagName === 'input' ? (
           <ManualInput
             {...fieldConfig as InputConfig}
             value={rowValue}

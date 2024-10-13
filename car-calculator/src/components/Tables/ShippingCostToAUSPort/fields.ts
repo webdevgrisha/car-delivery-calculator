@@ -1,7 +1,7 @@
 
 import { getColumnData } from "../../../services/firebase/firestoreDb";
 import { AsyncFieldInfo } from "../interfaces";
-import { validateNumberInput, validateSelect } from "../validateFunctions";
+import { validateLocation, validateNumberInput, validateSelect } from "../validateFunctions";
 
 const createFiledConfig = () => {
   const fieldsConfig: AsyncFieldInfo[] = [
@@ -18,7 +18,7 @@ const createFiledConfig = () => {
       fieldConfig: {
         name: 'Location',
         placeholder: 'Anchorage',
-        validate: validateSelect,
+        validate: validateLocation,
       },
     },
     {
@@ -26,7 +26,7 @@ const createFiledConfig = () => {
       fieldConfig: {
         name: 'State',
         placeholder: 'AK',
-        validate: validateSelect,
+        validate: validateLocation,
       },
     },
     {

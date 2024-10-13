@@ -5,12 +5,12 @@ interface InputRow {
 }
 
 interface SelectRow {
-    selectionOptions: string[];
+    selectionOptions: string[] | Promise<string[]>;
 }
 
 interface FormRows {
     label: string;
-    rowType: 'input' | 'select';
+    tagName: 'input' | 'select';
     rowName: RowNames,
     fieldConfig: FieldConfig;
     validate: (value: string) => boolean,
