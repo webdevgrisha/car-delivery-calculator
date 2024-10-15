@@ -1,9 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import { SVG_Reload, SVG_Search, SVG_Settings } from '../../assets';
+import { SVG_Reload, SVG_Search, SVG_Settings } from '../../../assets';
 import './AutoCalculation.css';
 
 function AutoCalculation() {
-
   return (
     <section className="auto-calculation">
       <div className="container">

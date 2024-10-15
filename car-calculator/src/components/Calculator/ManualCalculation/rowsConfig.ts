@@ -1,5 +1,5 @@
 
-import { getColumnData } from "../../services/firebase/firestoreDb";
+import { getColumnData } from "../../../services/firebase/firestoreDb";
 import { FormRows } from "./interface";
 import { validateInput, validateSelect } from "./validateFunc";
 

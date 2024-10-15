@@ -1,27 +1,21 @@
-import SubSection from './SubSection/SubSection.tsx';
-import TotalSum from './TotalSum/TotalSum.tsx';
-import Currency from './Exchange/Exchange.tsx';
 import Loader from './Loader/Loader.tsx';
-import AutoCalculation from './AutoCalculation/AutoCalculation.tsx';
-import ManualCalculation from './ManualCalculation/ManualCalculation.tsx';
 import LoginForm from './ LoginForm/LoginForm.tsx';
 import PersonalInfo from './PersonalInfo/PersonalInfo.tsx';
 import Users from './Users/Users.tsx';
 import CustomTable from './CustomTable/CustomTable.tsx';
-import AdditionalServices from './AdditionalServices/AdditionalServices.tsx';
 import CalculatorSettings from './CalculatorSettings/CalculatorSettings.tsx';
+import Calculator from './Calculator/Calculator.tsx';
+import CustomInput from './ CustomInput/CustomInput.tsx';
+import CustomSelect from './CustomSelect/CustomSelect.tsx';
 
 export {
   LoginForm,
-  SubSection,
-  TotalSum,
-  Currency,
   Loader,
-  AutoCalculation,
-  ManualCalculation,
   PersonalInfo,
   Users,
   CustomTable,
-  AdditionalServices,
-  CalculatorSettings
+  CalculatorSettings,
+  Calculator,
+  CustomInput,
+  CustomSelect,
 };

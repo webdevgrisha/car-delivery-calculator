@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import App from './App.tsx';
-import { CalculatorSettings, LoginForm, PersonalInfo, Users } from './components/index.ts';
+import { Calculator, CalculatorSettings, LoginForm, PersonalInfo, Users } from './components/index.ts';
 
 import { RootLayout, LogInLayout, TablesLayout } from '../src/layouts/index.ts';
 
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'calculator',
-        element: <App />,
+        element: <Calculator />,
       },
       {
         path: 'settings',

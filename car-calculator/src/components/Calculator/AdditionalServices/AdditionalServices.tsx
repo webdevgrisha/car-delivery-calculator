@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SVG_SelectArrow } from '../../assets';
+import { SVG_SelectArrow } from '../../../assets';
 import './AdditionalServices.css';
 import classNames from 'classnames';
 import { useImmer } from 'use-immer';

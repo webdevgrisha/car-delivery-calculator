@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { SVG_SelectArrow } from '../../../assets';
+import { SVG_SelectArrow } from '../../../../assets';
 import './ManualSelect.css';
 import { useEffect, useState } from 'react';
 

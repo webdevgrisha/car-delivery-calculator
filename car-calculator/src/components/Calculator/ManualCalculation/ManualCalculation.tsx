@@ -5,7 +5,7 @@ import { FormRows } from './interface';
 import { ManualRow } from '.';
 import { RowNames } from './types';
 import { FormEvent, useState } from 'react';
-import { showWarningToastMessage } from '../CustomTable/tableToast';
+import { showWarningToastMessage } from '../../CustomTable/tableToast';
 
 interface FormData {
   carPrice: string;

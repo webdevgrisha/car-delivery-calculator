@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Loader } from '../index';
+import { Loader } from '../../index';
 
 import './Exchange.css';
 
-import { getConversion } from '../../services/exchnage-api';
+import { getConversion } from '../../../services/exchnage-api';
 
 interface CurrencyPair {
   baseCode: string;
