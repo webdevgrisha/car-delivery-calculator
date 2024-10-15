@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useImmer } from 'use-immer';
 import { SVG_Add } from '../../../../assets';
 
-import { CustomInput, CustomSelect } from '..';
+import { CustomInput, CustomSelect } from '../../../index';
 import {
   AddFunc,
   InputFieldInfo,

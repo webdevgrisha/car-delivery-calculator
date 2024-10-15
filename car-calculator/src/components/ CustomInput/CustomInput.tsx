@@ -19,6 +19,7 @@ function CustomInput({
 }: CustomInputProps) {
   return (
     <input
+    className='custom-input'
       type={type}
       name={name}
       placeholder={placeholder}

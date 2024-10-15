@@ -1,20 +1,15 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { SVG_Add } from '../../../assets';
 
 import './CreateNewRecord.css';
-import { CustomInput, CustomSelect } from '..';
+import { CustomInput, CustomSelect } from '../../index';
 import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
 import { FieldInfo } from '../types';
 import { useCustomTableContext } from '../tableContext';
-
-// interface CreateNewRecordProps {
-//   fields: FieldInfo[];
-//   addNewRecordFunc: Function;
-// }
 
 function CreateNewRecord() {
   const { fields, addNewRecordFunc } = useCustomTableContext();
@@ -44,16 +39,11 @@ function CreateNewRecord() {
   );
 
   const handleFormSubmit = () => {
-    console.log('Add new record');
-
     const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
       const { name, validate } = fieldConfig;
 
       const value = newRecordData[name];
       const isValid = validate(value);
-
-      console.log('fieldConfig: ', fieldConfig);
-      console.log('value: ', value);
 
       if (isValid) return true;
 
@@ -69,8 +59,6 @@ function CreateNewRecord() {
 
     const toastId: Id = toast.loading('Please wait...');
 
-    console.log('create user');
-
     addNewRecordFunc(newRecordData).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
 
@@ -82,8 +70,6 @@ function CreateNewRecord() {
     });
   };
 
-  console.log('newRecordData:', newRecordData);
-
   return (
     <tr className="add-new-record">
       {fields.map((field: FieldInfo, index: number) => {
@@ -91,10 +77,6 @@ function CreateNewRecord() {
         const errorClass = invalidFields[fieldConfig.name]
           ? 'error'
           : undefined;
-
-        console.log('errorClass: ', errorClass);
-
-        // handleFieldChange(fieldConfig.name, fieldConfig.defaultValue);
 
         const buttons: JSX.Element | null =
           index === fields.length - 1 ? (
@@ -135,7 +117,6 @@ function CreateNewRecord() {
 export default CreateNewRecord;
 
 function createConfig(fields: FieldInfo[]) {
-  console.log('config create!');
   const result = fields.reduce(
     (config, field) => {
       const { fieldConfig } = field;

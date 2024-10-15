@@ -23,8 +23,6 @@ function PersonalInfo() {
   const [surname, setSurname] = useState<string>(sernameInit);
   const [phone, setPhone] = useState<string>('');
 
-  // useEffect(() => {}, []);
-
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
   const handleSurnameChange = (e: React.ChangeEvent<HTMLInputElement>) =>

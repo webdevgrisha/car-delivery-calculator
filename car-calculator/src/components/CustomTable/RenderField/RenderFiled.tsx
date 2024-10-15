@@ -1,4 +1,4 @@
-import { CustomInput, CustomSelect } from '..';
+import { CustomInput, CustomSelect } from '../../index';
 import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
 import { FieldInfo } from '../types';
 
@@ -33,9 +33,6 @@ function RenderField({
     newValue = initValue;
   }
 
-  // console.log('rerender RenderField!');
-
-  // почему при вызове функции handleFieldChange происходит ререндер компонта
   if (tagName === 'input') {
     return (
       <CustomInput

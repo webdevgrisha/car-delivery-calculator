@@ -3,6 +3,7 @@ import { SVG_Cancel, SVG_Show, SVG_UnShow } from '../../../../../assets';
 
 import './RenderRow.css';
 import { useState } from 'react';
+import { CustomInput, CustomSelect } from '../../../..';
 
 interface RenderRowProps {
   service_id: string;
@@ -17,6 +18,12 @@ interface RenderRowProps {
   ) => void;
   handleServiceDelete: (id: string) => void;
 }
+
+const selectionOptions = {
+  PLN: 'zł',
+  USD: '$',
+  EUR: '€',
+};
 
 function RenderRow({
   service_id,
@@ -37,14 +44,28 @@ function RenderRow({
     hide: !isShown,
   });
 
+  console.log('service_name: ', !service_name);
+
   const serviveNameClasses = classNames({
-    'show-text': !isEditing,
+    'show-text': !isEditing && service_name.trim(),
   });
 
   return (
     <tr className={rowClasses}>
-      <td>
-        <input
+      <td
+        onFocus={() => setIsEditing(true)}
+        onBlur={() => setIsEditing(false)}
+        className={serviveNameClasses}
+      >
+        <CustomInput
+          name="service_name"
+          value={service_name}
+          // placeholder="service name"
+          changeEventFunc={(value: string) =>
+            handleFieldChange(service_id, 'service_name', value)
+          }
+        />
+        {/* <input
           name="service_name"
           value={service_name}
           onChange={(e) =>
@@ -53,30 +74,26 @@ function RenderRow({
           onFocus={() => setIsEditing(true)}
           onBlur={() => setIsEditing(false)}
           className={serviveNameClasses}
+        /> */}
+      </td>
+      <td>
+        <CustomSelect
+          name="currency"
+          selectionOptions={selectionOptions}
+          value={currency}
+          changeEventFunc={(value: string) =>
+            handleFieldChange(service_id, 'currency', value)
+          }
         />
       </td>
       <td>
-        <select
-          name="currency"
-          value={currency}
-          onChange={(e) =>
-            handleFieldChange(service_id, 'currency', e.target.value)
-          }
-        >
-          <option value="USD">$</option>
-          <option value="EUR">€</option>
-          <option value="PLN">zł</option>
-        </select>
-      </td>
-      <td>
-        <input
-          type="number"
+        <CustomInput
           name="price"
-          placeholder="0"
-          min="0"
           value={price}
-          onChange={(e) =>
-            handleFieldChange(service_id, 'price', e.target.value)
+          type="number"
+          placeholder="0"
+          changeEventFunc={(value: string) =>
+            handleFieldChange(service_id, 'price', value)
           }
         />
       </td>
