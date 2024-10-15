@@ -18,7 +18,8 @@
     margin-right: auto;
 }
 
-.auto-calculation header span {
+.auto-calculation header span,
+.auto-calculation header a {
     width: 1rem;
     height: 1rem;
     display: flex;
@@ -31,12 +32,13 @@
     transition: transform 0.4s;
 }
 
-.auto-calculation header span:last-child {
+.auto-calculation header a:last-child {
     width: 1.25rem;
     height: 1.25rem;
 }
 
-.auto-calculation header span:hover {
+.auto-calculation header span:hover,
+.auto-calculation header a:hover {
     transform: rotate(180deg);
 }
 

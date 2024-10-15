@@ -12,6 +12,10 @@ import SVG_Ports from "./SVG_Ports";
 import SVG_Ship from "./SVG_Ship";
 import SVG_Laveta from "./SVG_Laveta";
 import SVG_SelectArrow from './SVG_SelectArrow';
+import SVG_Reload from "./SVG_Reload";
+import SVG_Search from "./SVG_Search";
+import SVG_Show from "./SVG_Show";
+import SVG_UnShow from "./SVG_UnShow";
 
 export {
     SVG_Add,
@@ -27,5 +31,9 @@ export {
     SVG_Ports,
     SVG_Ship,
     SVG_Laveta,
-    SVG_SelectArrow
+    SVG_SelectArrow,
+    SVG_Reload,
+    SVG_Search,
+    SVG_Show,
+    SVG_UnShow
 }

@@ -8,7 +8,9 @@ import LoginForm from './ LoginForm/LoginForm.tsx';
 import PersonalInfo from './PersonalInfo/PersonalInfo.tsx';
 import Users from './Users/Users.tsx';
 import CustomTable from './CustomTable/CustomTable.tsx';
-import AdditionalServices from './AdditionalServices/AdditionalServices.tsx'
+import AdditionalServices from './AdditionalServices/AdditionalServices.tsx';
+import CalculatorSettings from './CalculatorSettings/CalculatorSettings.tsx';
+
 export {
   LoginForm,
   SubSection,
@@ -20,5 +22,6 @@ export {
   PersonalInfo,
   Users,
   CustomTable,
-  AdditionalServices
+  AdditionalServices,
+  CalculatorSettings
 };

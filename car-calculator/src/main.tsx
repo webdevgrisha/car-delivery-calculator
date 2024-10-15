@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import App from './App.tsx';
-import { LoginForm, PersonalInfo, Users } from './components/index.ts';
+import { CalculatorSettings, LoginForm, PersonalInfo, Users } from './components/index.ts';
 
 import { RootLayout, LogInLayout, TablesLayout } from '../src/layouts/index.ts';
 
@@ -16,7 +16,11 @@ import './reset.css';
 import AuthProvider from './utils/AuthProvider.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { DeliveryByShip, MyPorts, ShippingCostToAUSPort } from './components/Tables/index.ts';
+import {
+  DeliveryByShip,
+  MyPorts,
+  ShippingCostToAUSPort,
+} from './components/Tables/index.ts';
 
 const router = createBrowserRouter([
   {
@@ -57,7 +61,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'calculator',
-            element: '',
+            element: <CalculatorSettings />,
           },
           {
             path: 'tables',

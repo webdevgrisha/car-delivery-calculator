@@ -1,0 +1,79 @@
+.additional-services-settings>.container>table>tbody>tr>td:not(:last-child) {
+    line-height: 0px;
+    padding-right: 5px;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td:not(:last-child) {
+    line-height: 0px;
+    padding-right: 5px;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td:first-child {
+    padding-left: 0px;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td>input.show-text {
+    padding-left: 0px;
+    font-weight: 400;
+    line-height: 150%;
+    font-size: 0.91rem;
+    opacity: 1;
+    color: gray;
+    background: none;
+    border: none;
+}
+
+.additional-services-settings>.container>table>tbody>tr.hide {
+    opacity: 0.5;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td>p:first-child {
+    padding: 0px;
+    font-weight: 400;
+    line-height: 150%;
+    font-size: 0.91rem;
+    opacity: 1;
+    color: gray;
+    background: none;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td>input,
+.additional-services-settings>.container>table>tbody>tr>td>select {
+    width: 100%;
+    padding: 0px 0.63rem;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    font-weight: 300;
+    border: 1px solid rgb(223, 231, 240);
+    color: black;
+    border-radius: 0.31rem;
+    background-color: rgb(250, 251, 252);
+    outline: none;
+    appearance: none;
+    overflow: hidden;
+    z-index: 1;
+    height: 1.5rem;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td>.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.additional-services-settings>.container>table>tbody>tr>td>.buttons>.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    transition: all 0.4s;
+    cursor: pointer;
+
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}

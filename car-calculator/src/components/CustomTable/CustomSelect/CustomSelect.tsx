@@ -13,8 +13,6 @@ function CustomSelect({
   value = '',
   changeEventFunc,
 }: CustomSelectProps) {
-  console.log('select: ', selectionOptions);
-  console.log('select value: ', value);
   return (
     <select
       name={name}

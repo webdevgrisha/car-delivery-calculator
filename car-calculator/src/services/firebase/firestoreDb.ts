@@ -1,4 +1,4 @@
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc } from 'firebase/firestore';
 import { firestoteDb } from './firebaseConfig';
 
 async function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
@@ -15,7 +15,7 @@ async function subscribeOnTableUpdate(tableName: string, sortBy: string, setData
                 return aData.localeCompare(bData);
             });
         }
-        
+
         setData(tableData);
     })
 
@@ -26,7 +26,7 @@ async function getColumnData(tableName: string, columnName: string): Promise<str
     const querySnapshot = await getDocs(collection(firestoteDb, tableName));
 
     const columnData: string[] = [];
-    
+
     querySnapshot.forEach((doc) => {
         const docData = doc.data();
 
@@ -39,8 +39,12 @@ async function getColumnData(tableName: string, columnName: string): Promise<str
     return columnData;
 }
 
+async function generateRowId(tableName: string): Promise<string> {
+    return doc(collection(firestoteDb, tableName)).id;
+}
 
 export {
     subscribeOnTableUpdate,
-    getColumnData
+    getColumnData,
+    generateRowId
 }

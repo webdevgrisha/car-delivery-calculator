@@ -36,50 +36,42 @@ const currencyPairs = [
 ];
 
 function App() {
-  // const showToastMessage = () => {
-  //   toast.success('Success Notification !', {
-  //     position: "top-right",
-  //   });
-  // };
-
   return (
-    <>
-      <div className="calculator">
-        <div className="colum-wrapper">
-          <section>
-            <div className="container">
-              <header>
-                <img src="./logo-black.png" alt="logo" />
-              </header>
-              <SubSection
-                title="Aukcja i wysyłka"
-                rows={firstSubSection}
-                currency="USD"
-              />
-              <SubSection
-                title="Odprawa celna"
-                rows={secondSubSection}
-                currency="EUR"
-              />
-              <SubSection
-                title="Inne płatności"
-                rows={thirdSubSection}
-                currency="PLN"
-              />
-            </div>
-            <TotalSum title="Całkowity koszt samochodu:" currency="PLN" />
-          </section>
-          <Currency currencyPairs={currencyPairs} />
-        </div>
-        <div className="colum-wrapper">
+    <div className="calculator">
+      <div className="colum-wrapper">
+        <section className="calculation-result">
+          <div className="container">
+            <header>
+              <img src="./logo-black.png" alt="logo" />
+            </header>
+            <SubSection
+              title="Aukcja i wysyłka"
+              rows={firstSubSection}
+              currency="USD"
+            />
+            <SubSection
+              title="Odprawa celna"
+              rows={secondSubSection}
+              currency="EUR"
+            />
+            <SubSection
+              title="Inne płatności"
+              rows={thirdSubSection}
+              currency="PLN"
+            />
+          </div>
+          <TotalSum title="Całkowity koszt samochodu:" currency="PLN" />
+        </section>
+        <Currency currencyPairs={currencyPairs} />
+      </div>
+      <div className="colum-wrapper">
+        <div className="manual">
           <AutoCalculation />
           <ManualCalculation />
           <AdditionalServices />
         </div>
       </div>
-      {/* <button onClick={showToastMessage}>Notify</button> */}
-      
-    </>
+    </div>
   );
 }
 
