@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
+import { useState } from 'react';
 import Loader from '../Loader/Loader';
 import { SVG_Laveta } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
@@ -8,8 +6,7 @@ import useCreateActionFunctions from '../hooks/useCreateActionFunctions';
 import { FieldInfo, TableData } from '../../CustomTable/types';
 import createFiledConfig from './fields';
 import useFields from '../hooks/useFields';
-
-// стоит ли вынести в отдельный файл ?
+import { useTableSubscriptiontsts } from '../../../hooks';
 
 function ShippingCostToAUSPort() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -17,24 +14,11 @@ function ShippingCostToAUSPort() {
 
   const fields = useFields(createFiledConfig) as FieldInfo[];
 
-  // вызывает сомнения
-  useEffect(() => {
-    let unsubscribeFunc: () => void | undefined;
-
-    const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnTableUpdate(
-        'shipping_cost_to_a_US_port',
-        'Location',
-        setTableData,
-      );
-    };
-
-    subcribe();
-
-    return () => {
-      if (unsubscribeFunc) unsubscribeFunc();
-    };
-  }, []);
+  useTableSubscriptiontsts(
+    'shipping_cost_to_a_US_port',
+    'Location',
+    setTableData,
+  );
 
   console.log('TableData: ', tableData);
 

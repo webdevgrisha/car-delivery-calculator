@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
+import { useState } from 'react';
 import Loader from '../Loader/Loader';
 import { SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
@@ -8,6 +6,7 @@ import createActionFunctions from '../hooks/useCreateActionFunctions';
 import { FieldInfo, TableData } from '../../CustomTable/types';
 import createFieldsConfig from './fields';
 import useFields from '../hooks/useFields';
+import { useTableSubscriptiontsts } from '../../../hooks';
 
 function DeliveryByShip() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,24 +14,7 @@ function DeliveryByShip() {
 
   const fields = useFields(createFieldsConfig) as FieldInfo[];
 
-  // вызывает сомнения
-  useEffect(() => {
-    let unsubscribeFunc: () => void | undefined;
-
-    const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnTableUpdate(
-        'delivery_by_ship',
-        'From',
-        setTableData,
-      );
-    };
-
-    subcribe();
-
-    return () => {
-      if (unsubscribeFunc) unsubscribeFunc();
-    };
-  }, []);
+  useTableSubscriptiontsts('delivery_by_ship', 'From', setTableData);
 
   console.log('TableData: ', tableData);
 

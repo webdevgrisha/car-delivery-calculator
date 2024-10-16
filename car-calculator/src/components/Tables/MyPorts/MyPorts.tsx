@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import { subscribeOnTableUpdate } from '../../../services/firebase/firestoreDb';
+import { useState } from 'react';
 import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
@@ -11,6 +9,7 @@ import {
   createDestinationPortsFieldsConfig,
 } from './fields';
 import useFields from '../hooks/useFields';
+import { useTableSubscriptiontsts } from '../../../hooks';
 
 function MyPorts() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -19,45 +18,24 @@ function MyPorts() {
   const [destinationPortsTableData, setDestinationPortsTableData] =
     useState<TableData>([]);
 
-  const destinationPortsFields = useFields(createDestinationPortsFieldsConfig) as FieldInfo[];
-  const shippingPortsFields = useFields(createShippingPortsFieldsConfig) as FieldInfo[];
+  const destinationPortsFields = useFields(
+    createDestinationPortsFieldsConfig,
+  ) as FieldInfo[];
+  const shippingPortsFields = useFields(
+    createShippingPortsFieldsConfig,
+  ) as FieldInfo[];
 
-  // вызывает сомнения
-  useEffect(() => {
-    let unsubscribeFunc: () => void | undefined;
+  useTableSubscriptiontsts(
+    'shipping_ports_(from)',
+    'To Port',
+    setShippingPortsTableData,
+  );
 
-    const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnTableUpdate(
-        'shipping_ports_(from)',
-        'To Port',
-        setShippingPortsTableData,
-      );
-    };
-
-    subcribe();
-
-    return () => {
-      if (unsubscribeFunc) unsubscribeFunc();
-    };
-  }, []);
-
-  useEffect(() => {
-    let unsubscribeFunc: () => void | undefined;
-
-    const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnTableUpdate(
-        'destination_ports_(to)',
-        'Destination',
-        setDestinationPortsTableData,
-      );
-    };
-
-    subcribe();
-
-    return () => {
-      if (unsubscribeFunc) unsubscribeFunc();
-    };
-  }, []);
+  useTableSubscriptiontsts(
+    'destination_ports_(to)',
+    'Destination',
+    setDestinationPortsTableData,
+  );
 
   return (
     <>

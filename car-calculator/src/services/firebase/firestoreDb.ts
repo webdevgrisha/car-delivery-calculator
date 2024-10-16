@@ -1,7 +1,7 @@
 import { collection, getDocs, onSnapshot, doc } from 'firebase/firestore';
 import { firestoteDb } from './firebaseConfig';
 
-async function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
+function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
     const tableRef = collection(firestoteDb, tableName);
 
     const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {

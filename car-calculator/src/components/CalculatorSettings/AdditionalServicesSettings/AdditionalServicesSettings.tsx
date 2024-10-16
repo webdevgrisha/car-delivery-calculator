@@ -1,68 +1,121 @@
 import { useImmer } from 'use-immer';
 import './AdditionalServicesSettings.css';
 import SettingsTable from './SettingsTable/SettingsTable';
-import { ServiceData } from './SettingsTable/interfaces';
+import {
+  InvalidServicesIds,
+  RowData,
+  ServiceData,
+} from './SettingsTable/interfaces';
 import { generateRowId } from '../../../services/firebase/firestoreDb';
-
-// interface ServiceData {
-//   service_id: string;
-//   service_name: string;
-//   currency: Currency;
-//   price: number;
-//   isShown: boolean;
-// }
+import { useRef } from 'react';
+import {
+  createServiceAction,
+  deleteServiceAction,
+  editServiceAction,
+} from './SettingsTable/serviceActionFunctions';
+import { ServiceAction } from './SettingsTable/types';
+import { useTableSubscriptiontsts } from '../../../hooks';
+import { showUpdateToast } from '../../CustomTable/tableToast';
+import { Id, toast } from 'react-toastify';
 
 const config: ServiceData[] = [
   {
-    service_id: '1',
-    service_name: 'bobr',
-    currency: 'USD',
-    price: '10',
-    isShown: true,
+    id: '1',
+    rowData: {
+      service_name: 'bobr',
+      currency: 'USD',
+      price: '10',
+      isShown: true,
+    },
   },
 ];
 
 function AdditionalServicesSettings() {
   const [services, setServices] = useImmer<ServiceData[]>(config);
+  const servicesAction = useRef<ServiceAction[]>([]);
+  const [invalidServicesIds, setInvalidServicesIds] =
+    useImmer<InvalidServicesIds>({});
 
-  const handleFieldChange = (
+  useTableSubscriptiontsts('additional_services', 'service_name', setServices);
+
+  const handleFieldChange = <K extends keyof ServiceData['rowData']>(
     id: string,
-    name: string,
-    value: string | boolean,
+    name: K,
+    value: ServiceData['rowData'][K],
   ): void => {
     setServices((draft) => {
-      const service = draft.find((service) => service.service_id === id);
+      const serviceIndex = draft.findIndex((service) => service.id === id);
 
-      if (service) {
-        service[name] = value;
+      if (serviceIndex !== -1) {
+        draft[serviceIndex].rowData[name] = value;
+      }
+    });
+
+    console.log(id, name, value);
+    editServiceAction(servicesAction.current, id, name, value);
+
+    setInvalidServicesIds((draft) => {
+      if (id in draft && draft[id]) {
+        draft[id] = false;
       }
     });
   };
 
   const handleServiceDelete = (id: string): void => {
     setServices((draft) => {
-      const serviceIndex = draft.findIndex(
-        (service) => service.service_id === id,
-      );
+      const serviceIndex = draft.findIndex((service) => service.id === id);
 
       if (serviceIndex !== -1) {
         draft.splice(serviceIndex, 1);
       }
     });
+
+    deleteServiceAction(servicesAction.current, id);
   };
 
   const handleAddField = async () => {
     const service_id: string = await generateRowId('services');
+
+    const rowData: RowData = {
+      service_name: '',
+      currency: 'PLN',
+      price: '0',
+      isShown: true,
+    };
+
+    const config: ServiceData = {
+      id: service_id,
+      rowData,
+    };
+
     setServices((draft) => {
-      draft.push({
-        service_id: service_id,
-        service_name: '',
-        currency: 'PLN',
-        price: '',
-        isShown: true,
-      });
+      draft.push(config);
     });
+
+    createServiceAction(servicesAction.current, service_id, rowData);
   };
+
+  const handleSaveCahnge = () => {
+    const toastId: Id = toast.loading('Please wait...');
+
+    const invalidServicesIds = services
+      .filter((service) => +service.rowData.price < 0 || service.rowData.price === '')
+      .reduce((newInvalidObj, services) => {
+        const { id } = services;
+
+        newInvalidObj[id] = true;
+
+        return newInvalidObj;
+      }, {} as InvalidServicesIds);
+
+    setInvalidServicesIds(() => invalidServicesIds);
+
+    if (Object.keys(invalidServicesIds).length) {
+      showUpdateToast(toastId, "the price can't be less than zero or empty", 'error');
+    }
+  };
+
+  console.log('servicesAction:', servicesAction.current);
 
   return (
     <section className="additional-services-settings">
@@ -72,6 +125,7 @@ function AdditionalServicesSettings() {
         </header>
         <SettingsTable
           services={services}
+          invalidServicesIds={invalidServicesIds}
           handleFieldChange={handleFieldChange}
           handleServiceDelete={handleServiceDelete}
         />
@@ -79,7 +133,9 @@ function AdditionalServicesSettings() {
           <button className="btn add" onClick={handleAddField}>
             Add Field
           </button>
-          <button className="btn save">Save</button>
+          <button className="btn save" onClick={handleSaveCahnge}>
+            Save
+          </button>
         </footer>
       </div>
     </section>

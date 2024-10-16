@@ -1,20 +1,28 @@
 import classNames from 'classnames';
-import { SVG_Cancel, SVG_Show, SVG_UnShow } from '../../../../../assets';
+import {
+  SVG_Cancel,
+  SVG_Edit,
+  SVG_Show,
+  SVG_UnShow,
+} from '../../../../../assets';
 
 import './RenderRow.css';
 import { useState } from 'react';
 import { CustomInput, CustomSelect } from '../../../..';
+import { ServiceData } from '../interfaces';
+import { Currency } from '../types';
 
 interface RenderRowProps {
+  isError: boolean;
   service_id: string;
   service_name: string;
-  currency: 'USD' | 'EUR' | 'PLN';
+  currency: Currency;
   price: string;
   isShown: boolean;
-  handleFieldChange: (
+  handleFieldChange: <K extends keyof ServiceData['rowData']>(
     id: string,
-    name: string,
-    value: string | boolean,
+    name: K,
+    value: ServiceData['rowData'][K],
   ) => void;
   handleServiceDelete: (id: string) => void;
 }
@@ -26,6 +34,7 @@ const selectionOptions = {
 };
 
 function RenderRow({
+  isError,
   service_id,
   service_name,
   currency,
@@ -35,6 +44,7 @@ function RenderRow({
   handleServiceDelete,
 }: RenderRowProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [showEditBtn, setShowEditBtn] = useState(false);
 
   const handleVisability = () => {
     handleFieldChange(service_id, 'isShown', !isShown);
@@ -42,12 +52,14 @@ function RenderRow({
 
   const rowClasses = classNames({
     hide: !isShown,
+    error: isError,
   });
 
-  console.log('service_name: ', !service_name);
+  const isShowText = !isEditing && service_name.trim();
 
   const serviveNameClasses = classNames({
-    'show-text': !isEditing && service_name.trim(),
+    'show-text': isShowText,
+    'show-edt-btn': showEditBtn && isShowText,
   });
 
   return (
@@ -55,26 +67,21 @@ function RenderRow({
       <td
         onFocus={() => setIsEditing(true)}
         onBlur={() => setIsEditing(false)}
+        onMouseEnter={() => setShowEditBtn(true)}
+        onMouseLeave={() => setShowEditBtn(false)}
         className={serviveNameClasses}
       >
         <CustomInput
           name="service_name"
           value={service_name}
-          // placeholder="service name"
+          placeholder="service name"
           changeEventFunc={(value: string) =>
             handleFieldChange(service_id, 'service_name', value)
           }
         />
-        {/* <input
-          name="service_name"
-          value={service_name}
-          onChange={(e) =>
-            handleFieldChange(service_id, 'service_name', e.target.value)
-          }
-          onFocus={() => setIsEditing(true)}
-          onBlur={() => setIsEditing(false)}
-          className={serviveNameClasses}
-        /> */}
+        <button className="btn">
+          <SVG_Edit />
+        </button>
       </td>
       <td>
         <CustomSelect
@@ -82,7 +89,7 @@ function RenderRow({
           selectionOptions={selectionOptions}
           value={currency}
           changeEventFunc={(value: string) =>
-            handleFieldChange(service_id, 'currency', value)
+            handleFieldChange(service_id, 'currency', value as Currency)
           }
         />
       </td>

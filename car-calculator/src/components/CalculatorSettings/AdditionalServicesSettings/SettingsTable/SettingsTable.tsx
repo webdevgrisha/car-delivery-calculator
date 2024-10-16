@@ -1,20 +1,22 @@
-import { ServiceData } from './interfaces';
+import { InvalidServicesIds, ServiceData } from './interfaces';
 import RenderRow from './RenderRow/RenderRow';
 
 import './SettingsTable.css';
 
 interface SettingsTableProps {
   services: ServiceData[];
-  handleFieldChange: (
+  invalidServicesIds: InvalidServicesIds;
+  handleFieldChange: <K extends keyof ServiceData['rowData']>(
     id: string,
-    name: string,
-    value: string | boolean,
+    name: K,
+    value: ServiceData['rowData'][K],
   ) => void;
   handleServiceDelete: (id: string) => void;
 }
 
 function SettingsTable({
   services,
+  invalidServicesIds,
   handleFieldChange,
   handleServiceDelete,
 }: SettingsTableProps) {
@@ -38,11 +40,14 @@ function SettingsTable({
         </tr>
       </thead>
       <tbody>
-        {services.map((serive) => {
+        {services.map(({ id, rowData: service }) => {
+          const isErrorRow: boolean = !!invalidServicesIds[id];
           return (
             <RenderRow
-              key={serive.service_id}
-              {...serive}
+              key={id}
+              isError={isErrorRow}
+              service_id={id}
+              {...service}
               handleFieldChange={handleFieldChange}
               handleServiceDelete={handleServiceDelete}
             />
