@@ -36,7 +36,7 @@ async function readAllUsers() {
     }
 }
 
-async function subscribeOnUsersUpdate(setFunc: Function) {
+function subscribeOnUsersUpdate(setFunc: Function) {
     const usersRef = ref(realtimeDb, 'users');
 
     const unsubscribe = onValue(usersRef, (snapshot) => {
@@ -55,10 +55,29 @@ async function subscribeOnUsersUpdate(setFunc: Function) {
 }
 
 
+function subscribeOnUserUpdate(uid: string, setFunc: Function) {
+    const usersRef = ref(realtimeDb, `users/${uid}`);
+
+    const unsubscribe = onValue(usersRef, (snapshot) => {
+        if (!snapshot.exists()) {
+            console.log("Нет данных о пользователе");
+            setFunc({});
+        } else {
+            console.log('snapshot: ', Object.entries(snapshot.val()));
+            const userData = Object.entries(snapshot.val()).map(([uid, userData]) => ({ uid: uid, userData: Object.values(userData) }));
+            console.log('userData: ', userData);
+            setFunc(userData);
+        }
+    });
+
+    return unsubscribe;
+}
+
 readAllUsers();
 
 export {
     writeUserData,
     readAllUsers,
     subscribeOnUsersUpdate,
+    subscribeOnUserUpdate,
 }

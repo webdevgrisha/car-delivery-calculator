@@ -22,7 +22,7 @@ function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Func
     return unsubscribe;
 }
 
-async function getColumnData(tableName: string, columnName: string): Promise<string[]> {
+async function getColumnData(tableName: string, columnName: string, placeholder: string = 'None'): Promise<string[]> {
     const querySnapshot = await getDocs(collection(firestoteDb, tableName));
 
     const columnData: string[] = [];
@@ -33,7 +33,7 @@ async function getColumnData(tableName: string, columnName: string): Promise<str
         columnData.push(docData[columnName]);
     });
 
-    columnData.sort().unshift('None');
+    columnData.sort().unshift(placeholder);
 
     console.log('column Data: ', columnData);
     return columnData;

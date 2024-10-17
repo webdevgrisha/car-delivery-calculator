@@ -9,7 +9,7 @@ const createFiledConfig = () => {
       tagName: 'select',
       fieldConfig: {
         name: 'Auction',
-        selectionOptions: ['None', 'IAAI', 'Copart'],
+        selectionOptions: ['Select auction', 'IAAI', 'Copart'],
         validate: validateSelect,
       },
     },
@@ -33,7 +33,7 @@ const createFiledConfig = () => {
       tagName: 'select',
       fieldConfig: {
         name: 'To Port',
-        selectionOptions: getColumnData('shipping_ports_(from)', 'To Port'),
+        selectionOptions: getColumnData('shipping_ports_(from)', 'To Port', 'Select port from'),
         validate: validateSelect,
       },
     },

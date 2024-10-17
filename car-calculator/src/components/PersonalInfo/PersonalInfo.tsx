@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { error } from 'firebase-functions/logger';
 import { updateUserName } from '../../services/firebase/auth';
 import { useAuth } from '../../utils/AuthProvider';
+import { useImmer } from 'use-immer';
+import { subscribeOnUsersUpdate } from '../../services/firebase/realtimeDb';
 
 type validateInput =
   | {
@@ -15,6 +17,14 @@ type validateInput =
 
 function PersonalInfo() {
   const userData = useAuth();
+
+  const [personalInfo, setPersonalInfo] = useImmer({});
+
+  useEffect(() => {
+    const unsubscribeFunc = subscribeOnUsersUpdate(setPersonalInfo);
+
+    return unsubscribeFunc;
+  }, []);
 
   const [nameInit = '', sernameInit = ''] =
     userData.currentUser.displayName.split(' ');
@@ -49,9 +59,6 @@ function PersonalInfo() {
 
       updateUserName(newName);
     }
-    // validateName(name);
-    // validateName(surname);
-    // validatePhoneNumber(phone);
   };
 
   return (

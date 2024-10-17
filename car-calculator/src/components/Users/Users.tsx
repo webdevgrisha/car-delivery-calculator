@@ -49,7 +49,7 @@ const fields: FieldInfo[] = [
     fieldConfig: {
       name: 'role',
       defaultValue: 'user',
-      selectionOptions: ['user', 'admin'],
+      selectionOptions: ['Select user role', 'user', 'admin'],
       validate: (value: string) => true,
     },
   },
@@ -59,19 +59,10 @@ function Users() {
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<TableRecord[]>([]);
 
-  // вызывает сомнения
   useEffect(() => {
-    let unsubscribeFunc: () => void | undefined;
+    const unsubscribeFunc = subscribeOnUsersUpdate(setUsers);
 
-    const subcribe = async () => {
-      unsubscribeFunc = await subscribeOnUsersUpdate(setUsers);
-    };
-
-    subcribe();
-
-    return () => {
-      if (unsubscribeFunc) unsubscribeFunc();
-    };
+    return unsubscribeFunc;
   }, []);
 
   console.log('users: ', users);

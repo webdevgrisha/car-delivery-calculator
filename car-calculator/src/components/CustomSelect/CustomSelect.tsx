@@ -22,7 +22,7 @@ function RenderOption({ options }: RenderOptionProps) {
   if (isArray) {
     return (options as OptionStringArr).map((option: string, index: number) => {
       return (
-        <option value={option} key={index}>
+        <option value={index === 0 ? '' : option} key={index}>
           {option}
         </option>
       );

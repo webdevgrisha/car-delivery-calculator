@@ -1,20 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SVG_SelectArrow } from '../../../assets';
 import './AdditionalServices.css';
 import classNames from 'classnames';
 import { useImmer } from 'use-immer';
 import ServiceComp from './ServiceComp/ServiceComp';
+import { getColumnData } from '../../../services/firebase/firestoreDb';
+
+interface Services {
+  [key: string]: boolean;
+}
 
 function AdditionalServices() {
-  const [selectedServices, setSelectedServices] = useImmer({ bike: false });
+  const [additionalServices, setAdditionalServices] = useImmer<Services>({});
   const [showServices, setShowServices] = useState<boolean>(false);
+
+  useEffect(() => {
+    getColumnData('additional_services', 'service_name').then((data) => {
+      const serviceConfig = data.slice(1).reduce((serviceConfig, serviceName) => {
+        serviceConfig[serviceName] = false;
+
+        return serviceConfig;
+      }, {} as Services);
+
+      setAdditionalServices(() => serviceConfig);
+    });
+  }, []);
 
   const handleArrowClick = () => {
     setShowServices(!showServices);
   };
 
   const handleAddService = (name: string) => {
-    setSelectedServices((draft) => {
+    setAdditionalServices((draft) => {
       draft[name] = !draft[name];
     });
   };
@@ -43,11 +60,16 @@ function AdditionalServices() {
           </span>
         </header>
         <div className={servicesClass}>
-          <ServiceComp
-            name={'bike'}
-            isSelected={selectedServices['bike']}
-            changeEventFunc={handleAddService}
-          />
+          {Object.entries(additionalServices).map(([name, value], index) => {
+            return (
+              <ServiceComp
+                key={index}
+                name={name}
+                isSelected={value}
+                changeEventFunc={handleAddService}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

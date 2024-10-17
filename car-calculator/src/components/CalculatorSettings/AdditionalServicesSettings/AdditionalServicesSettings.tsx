@@ -17,21 +17,11 @@ import { ServiceAction } from './SettingsTable/types';
 import { useTableSubscriptiontsts } from '../../../hooks';
 import { showUpdateToast } from '../../CustomTable/tableToast';
 import { Id, toast } from 'react-toastify';
+import { updateServicesData } from '../../../services/firebase/functions';
 
-const config: ServiceData[] = [
-  {
-    id: '1',
-    rowData: {
-      service_name: 'bobr',
-      currency: 'USD',
-      price: '10',
-      isShown: true,
-    },
-  },
-];
 
 function AdditionalServicesSettings() {
-  const [services, setServices] = useImmer<ServiceData[]>(config);
+  const [services, setServices] = useImmer<ServiceData[]>([]);
   const servicesAction = useRef<ServiceAction[]>([]);
   const [invalidServicesIds, setInvalidServicesIds] =
     useImmer<InvalidServicesIds>({});
@@ -99,7 +89,9 @@ function AdditionalServicesSettings() {
     const toastId: Id = toast.loading('Please wait...');
 
     const invalidServicesIds = services
-      .filter((service) => +service.rowData.price < 0 || service.rowData.price === '')
+      .filter(
+        (service) => +service.rowData.price < 0 || service.rowData.price === '',
+      )
       .reduce((newInvalidObj, services) => {
         const { id } = services;
 
@@ -111,8 +103,25 @@ function AdditionalServicesSettings() {
     setInvalidServicesIds(() => invalidServicesIds);
 
     if (Object.keys(invalidServicesIds).length) {
-      showUpdateToast(toastId, "the price can't be less than zero or empty", 'error');
+      showUpdateToast(
+        toastId,
+        "the price can't be less than zero or empty",
+        'error',
+      );
     }
+
+    updateServicesData({
+      tableName: 'additional_services',
+      servicesAction: servicesAction.current,
+    }).then(({ data }) => {
+      const status = 'message' in data ? 'success' : 'error';
+
+      const message: string = data.message || data.error;
+
+      showUpdateToast(toastId, message, status);
+
+      if (status !== 'error') setNewRecordData(newRecordDataConfig);
+    });
   };
 
   console.log('servicesAction:', servicesAction.current);

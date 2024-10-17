@@ -10,7 +10,7 @@ const createFieldsConfig = () => {
             tagName: 'select',
             fieldConfig: {
                 name: 'From',
-                selectionOptions: getColumnData('shipping_ports_(from)', 'To Port'),
+                selectionOptions: getColumnData('shipping_ports_(from)', 'To Port', 'Select from port'),
                 validate: validateSelect,
             },
         },
@@ -18,7 +18,7 @@ const createFieldsConfig = () => {
             tagName: 'select',
             fieldConfig: {
                 name: 'Destination',
-                selectionOptions: getColumnData('destination_ports_(to)', 'Destination'),
+                selectionOptions: getColumnData('destination_ports_(to)', 'Destination', 'Select destination port'),
                 validate: validateSelect,
             },
         },

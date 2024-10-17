@@ -28,7 +28,7 @@ const getFormRows = () => {
             tagName: 'select',
             rowName: 'location',
             fieldConfig: {
-                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location')
+                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location')
                 // selectionOptions: [],
             },
             validate: validateSelect,
