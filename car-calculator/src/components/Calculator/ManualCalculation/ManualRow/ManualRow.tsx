@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import ManualInput from '../ManualInput/ManualInput';
-import ManualSelect from '../ManualSelect/ManualSelect';
 import { RowNames } from '../types';
 
-import './ManualRow.css'
+import './ManualRow.css';
+import { CustomInput, CustomSelect } from '../../..';
 
 interface InputConfig {
   currency: 'PLN' | 'USD' | 'EUR';
@@ -17,8 +16,8 @@ interface ManaulRowProps {
   isError: boolean;
   label: string;
   tagName: 'input' | 'select';
-  rowName: RowNames;
-  rowValue: string;
+  name: RowNames;
+  value: string;
   fieldConfig: FieldType;
   handleFormDataChange: (name: RowNames, value: string) => void;
 }
@@ -30,30 +29,45 @@ function ManualRow({
   label,
   fieldConfig,
   tagName,
-  rowName,
-  rowValue,
+  name,
+  value,
   handleFormDataChange,
 }: ManaulRowProps) {
   const rowClass = classNames({
-    'row': true,
-    'error': isError,
+    row: true,
+    error: isError,
   });
 
   return (
     <div className={rowClass}>
-      <label htmlFor={rowName}>{label}</label>
-      <div className="field-wrapper">
+      <div className="column">
+        <p>{label}</p>
+      </div>
+      <div className="column">
         {tagName === 'input' ? (
-          <ManualInput
-            {...fieldConfig as InputConfig}
-            value={rowValue}
-            changeEventFunc={(value: string) => handleFormDataChange(rowName, value)}
-          />
+          <div className="custom-input-wrapper">
+            <CustomInput
+              name={name}
+              value={value}
+              type="number"
+              placeholder="0"
+              changeEventFunc={(value: string) =>
+                handleFormDataChange(name, value)
+              }
+            />
+
+            <span className="currency">
+              {(fieldConfig as InputConfig).currency}
+            </span>
+          </div>
         ) : (
-          <ManualSelect
-            {...fieldConfig as SelectConfig}
-            value={rowValue}
-            changeEventFunc={(value: string) => handleFormDataChange(rowName, value)}
+          <CustomSelect
+            name={''}
+            selectionOptions={(fieldConfig as SelectConfig).selectionOptions}
+            value={value}
+            changeEventFunc={(value: string) =>
+              handleFormDataChange(name, value)
+            }
           />
         )}
       </div>

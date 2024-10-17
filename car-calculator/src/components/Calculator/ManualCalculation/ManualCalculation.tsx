@@ -1,6 +1,6 @@
 import { useImmer } from 'use-immer';
 import './ManualCalculation.css';
-import getFormRows from './rowsConfig';
+import getFormFields from './fieldsConfig';
 import { FormRows } from './interface';
 import { ManualRow } from '.';
 import { RowNames } from './types';
@@ -30,9 +30,8 @@ function ManualCalculation() {
     {},
   );
 
-  const [formRows] = useState<FormRows[]>(() => getFormRows());
+  const [formFields] = useState<FormRows[]>(() => getFormFields());
 
-  console.log('formRows: ', formRows);
 
   const handleFormDataChange = (name: RowNames, value: string) => {
     if (inValidFields[name]) {
@@ -53,7 +52,7 @@ function ManualCalculation() {
 
     const inValidFields = Object.entries(formData)
       .map(([name, value]) => {
-        const formRow = formRows.find((row) => row.rowName === name)!;
+        const formRow = formFields.find((row) => row.name === name)!;
         const validate = formRow.validate;
 
         const isValid = validate(value);
@@ -76,16 +75,16 @@ function ManualCalculation() {
           <h5>Manual calculation</h5>
         </header>
         <form onSubmit={submitForm}>
-          {formRows.map((rowConfig) => {
-            const { rowName } = rowConfig;
-            const isError: boolean = !!inValidFields[rowName];
+          {formFields.map((rowConfig) => {
+            const { name } = rowConfig;
+            const isError: boolean = !!inValidFields[name];
 
             return (
               <ManualRow
-                key={rowName}
+                key={name}
                 {...rowConfig}
                 isError={isError}
-                rowValue={formData[rowName]}
+                value={formData[name]}
                 handleFormDataChange={handleFormDataChange}
               />
             );

@@ -10,7 +10,7 @@ interface InputFieldInfo {
 
 interface SelectedFieldInfo {
     name: string;
-    selectionOptions: string[];
+    selectionOptions: string[] | Promise<string[]>;
     defaultValue?: string;
     validate: (value: string) => boolean,
 }

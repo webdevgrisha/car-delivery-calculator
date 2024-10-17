@@ -3,16 +3,17 @@ import Loader from '../Loader/Loader';
 import { SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
-import { FieldInfo, TableData } from '../../CustomTable/types';
+import { TableData } from '../../CustomTable/types';
 import createFieldsConfig from './fields';
-import useFields from '../hooks/useFields';
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function DeliveryByShip() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
-  const fields = useFields(createFieldsConfig) as FieldInfo[];
+  // const fields = useFields(createFieldsConfig) as FieldInfo[];
+
+  const fields = createFieldsConfig();
 
   useTableSubscriptiontsts('delivery_by_ship', 'From', setTableData);
 

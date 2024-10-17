@@ -2,24 +2,65 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.38rem;
     width: 100%;
     margin-bottom: 15px;
 }
 
-.manual-calculation form .row label {
+.manual-calculation form .row>.column {
+    flex: 1;
+}
+
+.manual-calculation form .row>.column>p {
     font-weight: 400;
     font-size: 0.88rem;
     line-height: 150%;
     color: rgb(124, 141, 181);
 }
 
-.manual-calculation form .row .field-wrapper {
-    width: 50%;
-    position: relative;
+.manual-calculation form .row>.column input,
+.manual-calculation form .row>.column select {
+    height: 2rem;
+    background-color: transparent;
 }
 
-.manual-calculation form .row.error .field-wrapper>input,
-.manual-calculation form .row.error .field-wrapper>select {
+.manual-calculation form .row>.column>.custom-input-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    position: relative;
+
+    line-height: 0px;
+}
+
+.manual-calculation form .row>.column>.custom-input-wrapper>input {
+    padding: 0px 2.38rem 0px 0.63rem;
+}
+
+
+
+.manual-calculation form .row>.column>.custom-input-wrapper .currency {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    z-index: 1;
+    right: 0.6rem;
+
+    pointer-events: none;
+
+    font-weight: 300;
+    font-size: 0.75rem;
+    line-height: 0.88rem;
+    letter-spacing: 0.02em;
+    color: rgb(149, 144, 144);
+}
+
+.manual-calculation form .row.error input,
+.manual-calculation form .row.error select {
     border: 1px solid rgb(224, 59, 75);
     color: rgb(224, 59, 75);
 }

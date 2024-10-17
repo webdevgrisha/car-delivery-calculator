@@ -3,12 +3,11 @@ import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
-import { FieldInfo, TableData } from '../../CustomTable/types';
+import { TableData } from '../../CustomTable/types';
 import {
   createShippingPortsFieldsConfig,
   createDestinationPortsFieldsConfig,
 } from './fields';
-import useFields from '../hooks/useFields';
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function MyPorts() {
@@ -18,12 +17,8 @@ function MyPorts() {
   const [destinationPortsTableData, setDestinationPortsTableData] =
     useState<TableData>([]);
 
-  const destinationPortsFields = useFields(
-    createDestinationPortsFieldsConfig,
-  ) as FieldInfo[];
-  const shippingPortsFields = useFields(
-    createShippingPortsFieldsConfig,
-  ) as FieldInfo[];
+  const destinationPortsFields = createShippingPortsFieldsConfig();
+  const shippingPortsFields = createDestinationPortsFieldsConfig();
 
   useTableSubscriptiontsts(
     'shipping_ports_(from)',

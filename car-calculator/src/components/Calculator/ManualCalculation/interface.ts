@@ -11,7 +11,7 @@ interface SelectRow {
 interface FormRows {
     label: string;
     tagName: 'input' | 'select';
-    rowName: RowNames,
+    name: RowNames,
     fieldConfig: FieldConfig;
     validate: (value: string) => boolean,
 }

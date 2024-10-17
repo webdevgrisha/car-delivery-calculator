@@ -3,12 +3,12 @@ import { getColumnData } from "../../../services/firebase/firestoreDb";
 import { FormRows } from "./interface";
 import { validateInput, validateSelect } from "./validateFunc";
 
-const getFormRows = () => {
+const getFormFields = () => {
     const formRows: FormRows[] = [
         {
             label: 'Cena pojazdu',
             tagName: 'input',
-            rowName: 'carPrice',
+            name: 'carPrice',
             fieldConfig: {
                 currency: 'USD',
             },
@@ -17,7 +17,7 @@ const getFormRows = () => {
         {
             label: 'Engine size',
             tagName: 'select',
-            rowName: 'engineSize',
+            name: 'engineSize',
             fieldConfig: {
                 selectionOptions: ['Select engine', 'Less 2L', 'More 2L']
             },
@@ -26,7 +26,7 @@ const getFormRows = () => {
         {
             label: 'Lokalizacja',
             tagName: 'select',
-            rowName: 'location',
+            name: 'location',
             fieldConfig: {
                 selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location')
                 // selectionOptions: [],
@@ -36,7 +36,7 @@ const getFormRows = () => {
         {
             label: 'Koszt celny',
             tagName: 'input',
-            rowName: 'customsCosts',
+            name: 'customsCosts',
             fieldConfig: {
                 currency: 'USD',
             },
@@ -45,7 +45,7 @@ const getFormRows = () => {
         {
             label: 'Koszty naprawy',
             tagName: 'input',
-            rowName: 'repairCosts',
+            name: 'repairCosts',
             fieldConfig: {
                 currency: 'PLN',
             },
@@ -54,7 +54,7 @@ const getFormRows = () => {
         {
             label: 'Rozmiar Auta',
             tagName: 'select',
-            rowName: 'carSize',
+            name: 'carSize',
             fieldConfig: {
                 selectionOptions: ['Select car', 'Sedan', 'Suv', 'Duży Suv', 'Pickup', 'Van', 'Motor'],
             },
@@ -65,4 +65,4 @@ const getFormRows = () => {
     return formRows;
 };
 
-export default getFormRows;
+export default getFormFields;

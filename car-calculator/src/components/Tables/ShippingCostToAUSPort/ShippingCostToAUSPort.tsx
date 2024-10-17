@@ -3,16 +3,15 @@ import Loader from '../Loader/Loader';
 import { SVG_Laveta } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import useCreateActionFunctions from '../hooks/useCreateActionFunctions';
-import { FieldInfo, TableData } from '../../CustomTable/types';
+import { TableData } from '../../CustomTable/types';
 import createFiledConfig from './fields';
-import useFields from '../hooks/useFields';
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function ShippingCostToAUSPort() {
   const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
-  const fields = useFields(createFiledConfig) as FieldInfo[];
+  const fields = createFiledConfig();
 
   useTableSubscriptiontsts(
     'shipping_cost_to_a_US_port',

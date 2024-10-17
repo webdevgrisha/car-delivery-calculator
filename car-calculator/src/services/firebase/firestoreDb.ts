@@ -30,6 +30,8 @@ async function getColumnData(tableName: string, columnName: string, placeholder:
     querySnapshot.forEach((doc) => {
         const docData = doc.data();
 
+        if ('isShown' in docData && !docData.isShown) return;
+
         columnData.push(docData[columnName]);
     });
 

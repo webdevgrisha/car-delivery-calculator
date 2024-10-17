@@ -8,6 +8,7 @@ import { Id, toast } from 'react-toastify';
 import { useImmer } from 'use-immer';
 import { RenderField } from '..';
 import { useCustomTableContext } from '../tableContext';
+import classNames from 'classnames';
 
 interface CreateTableRowProps {
   id: string;
@@ -156,7 +157,7 @@ function RenderTableRow({
 
         const fieldName = fields[index].fieldConfig.name;
         const initValue = rowData[colName];
-        const errorClass = invalidFields[fieldName] ? 'error' : '';
+        const errorClass = classNames({error: invalidFields[fieldName]});
 
         return (
           <td className={errorClass} key={index}>
