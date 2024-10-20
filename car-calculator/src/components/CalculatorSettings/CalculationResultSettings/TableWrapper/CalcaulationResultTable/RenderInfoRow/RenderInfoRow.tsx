@@ -4,20 +4,19 @@ import {
   SVG_Edit,
   SVG_Show,
   SVG_UnShow,
-} from '../../../../../assets';
+} from '../../../../../../assets';
 
-import './RenderRow.css';
+import './RenderInfoRow.css';
 import { useState } from 'react';
-import { CustomInput, CustomSelect } from '../../../..';
+import { CustomInput, CustomSelect } from '../../../../..';
 import { Currency } from '../../types';
-import { useAdditionaServiceTableContext } from '../../AdditionaServiceTableContext';
+import { useTableWrapperContext } from '../../tableWrapperContext';
 
 interface RenderRowProps {
-  isError: boolean;
-  serviceId: string;
+  rowId: string;
   rowName: string;
   currency: Currency;
-  price: string;
+  formula: string;
   isShown: boolean;
 }
 
@@ -27,29 +26,24 @@ const selectionOptions = {
   EUR: '€',
 };
 
-function RenderRow({
-  isError,
-  serviceId,
+function RenderInfoRow({
+  rowId,
   rowName,
   currency,
-  price,
+  formula,
   isShown,
 }: RenderRowProps) {
-  const {
-    deleteRecordFunc: handleServiceDelete,
-    editRecordFunc: handleFieldChange,
-  } = useAdditionaServiceTableContext();
+  const { editRecordFunc, deleteRecordFunc } = useTableWrapperContext();
 
   const [isEditing, setIsEditing] = useState(false);
   const [showEditBtn, setShowEditBtn] = useState(false);
 
   const handleVisability = () => {
-    handleFieldChange(serviceId, 'isShown', !isShown);
+    editRecordFunc(rowId, 'isShown', !isShown);
   };
 
   const rowClasses = classNames({
     hide: !isShown,
-    error: isError,
   });
 
   const isShowText = !isEditing && rowName.trim();
@@ -71,9 +65,9 @@ function RenderRow({
         <CustomInput
           name="rowName"
           value={rowName}
-          placeholder="service name"
+          placeholder="row name"
           changeEventFunc={(value: string) =>
-            handleFieldChange(serviceId, 'rowName', value)
+            editRecordFunc(rowId, 'rowName', value)
           }
         />
         <button className="btn">
@@ -86,21 +80,21 @@ function RenderRow({
           selectionOptions={selectionOptions}
           value={currency}
           changeEventFunc={(value: string) =>
-            handleFieldChange(serviceId, 'currency', value as Currency)
+            editRecordFunc(rowId, 'currency', value as Currency)
           }
         />
       </td>
-      <td>
+      {/* <td>
         <CustomInput
           name="price"
           value={price}
           type="number"
           placeholder="0"
           changeEventFunc={(value: string) =>
-            handleFieldChange(serviceId, 'price', value)
+            editRecordFunc(rowId, 'price', value)
           }
         />
-      </td>
+      </td> */}
       <td>
         <div className="buttons">
           <button className="btn" onClick={handleVisability}>
@@ -108,7 +102,7 @@ function RenderRow({
           </button>
           <button
             className="btn"
-            onClick={() => handleServiceDelete(serviceId)}
+            onClick={() => deleteRecordFunc(rowId)}
           >
             <SVG_Cancel />
           </button>
@@ -118,4 +112,4 @@ function RenderRow({
   );
 }
 
-export default RenderRow;
+export default RenderInfoRow;

@@ -1,6 +1,7 @@
 import { CreateEditActionConfig, DeleteActionConfig, RowData } from "./interfaces";
 import { ServiceAction } from "./types";
 
+// n
 function findeServiceAction(servicesAction: ServiceAction[], id: string) {
     const serviceAction: ServiceAction | undefined = servicesAction.find(
         (service) => {

@@ -7,21 +7,32 @@ import { error } from 'firebase-functions/logger';
 import { updateUserName } from '../../services/firebase/auth';
 import { useAuth } from '../../utils/AuthProvider';
 import { useImmer } from 'use-immer';
-import { subscribeOnUsersUpdate } from '../../services/firebase/realtimeDb';
+import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 
-type validateInput =
+type ValidateInput =
   | {
       error: string;
     }
   | boolean;
+
+interface PersonalInfo {
+  displayName: string;
+  email: string;
+  role: 'user' | 'admin';
+}
 
 function PersonalInfo() {
   const userData = useAuth();
 
   const [personalInfo, setPersonalInfo] = useImmer({});
 
+  console.log('personalInfo: ', personalInfo);
+
   useEffect(() => {
-    const unsubscribeFunc = subscribeOnUsersUpdate(setPersonalInfo);
+    const unsubscribeFunc = subscribeOnUserUpdate(
+      userData.currentUser.uid,
+      setPersonalInfo,
+    );
 
     return unsubscribeFunc;
   }, []);
@@ -63,9 +74,7 @@ function PersonalInfo() {
 
   return (
     <form action="" className="personal-info" onSubmit={handleFormSubmit}>
-      {/* <header> */}
       <h2>Personal info</h2>
-      {/* </header> */}
       <div className="group">
         <h3>Personal</h3>
         <p>Your name, e-mail and phone</p>
@@ -101,7 +110,7 @@ function PersonalInfo() {
   );
 }
 
-function validateName(name: string): validateInput {
+function validateName(name: string): ValidateInput {
   if (name.trim().length === 0) return true;
 
   const regex: RegExp = /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s-]+$/;
@@ -117,7 +126,7 @@ function validateName(name: string): validateInput {
   return isValid;
 }
 
-function validatePhoneNumber(tel: string): validateInput {
+function validatePhoneNumber(tel: string): ValidateInput {
   if (tel.length === 0) return true;
 
   const isValid: boolean = tel.length >= 10 && tel.length <= 15;

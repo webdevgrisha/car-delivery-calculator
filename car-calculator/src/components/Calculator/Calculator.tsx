@@ -63,11 +63,9 @@ function Calculator() {
         <Exchange currencyPairs={currencyPairs} />
       </div>
       <div className="colum-wrapper">
-        <div className="manual">
-          <AutoCalculation />
-          <ManualCalculation />
-          <AdditionalServices />
-        </div>
+        <AutoCalculation />
+        <ManualCalculation />
+        <AdditionalServices />
       </div>
     </div>
   );

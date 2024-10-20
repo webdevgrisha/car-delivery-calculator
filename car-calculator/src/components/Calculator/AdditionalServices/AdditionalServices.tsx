@@ -15,12 +15,17 @@ function AdditionalServices() {
   const [showServices, setShowServices] = useState<boolean>(false);
 
   useEffect(() => {
-    getColumnData('additional_services', 'service_name').then((data) => {
-      const serviceConfig = data.slice(1).reduce((serviceConfig, serviceName) => {
-        serviceConfig[serviceName] = false;
+    getColumnData('additional_services', 'rowName').then((data) => {
+      const serviceConfig = data
+        .slice(1)
+        .filter((serviceName) => serviceName.trim() !== '')
+        .reduce((serviceConfig, serviceName) => {
+          serviceConfig[serviceName] = false;
 
-        return serviceConfig;
-      }, {} as Services);
+          console.log('serviceConfig: ', serviceConfig);
+
+          return serviceConfig;
+        }, {} as Services);
 
       setAdditionalServices(() => serviceConfig);
     });

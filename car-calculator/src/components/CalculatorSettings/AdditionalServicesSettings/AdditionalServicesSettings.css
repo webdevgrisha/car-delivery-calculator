@@ -25,36 +25,3 @@
     width: 100%;
 }
 
-.additional-services-settings footer>.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0.25rem;
-    transition: transform 0.4s;
-    box-sizing: border-box;
-    user-select: none;
-    padding: 0px 1.5rem;
-    height: 2.75rem;
-    background: rgb(227, 234, 255);
-    cursor: pointer;
-    text-decoration: none !important;
-    width: 100%;
-    border: none;
-
-    font-weight: 500;
-    font-size: 0.88rem;
-    line-height: 1rem;
-    align-items: center;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    color: rgb(33, 109, 209);
-
-    &:hover {
-        transform: scale(0.97);
-    }
-}
-
-.additional-services-settings footer>.btn.save {
-    background-color: rgb(33, 109, 209);
-    color: rgb(255, 255, 255);
-}

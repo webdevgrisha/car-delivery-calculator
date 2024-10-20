@@ -1,25 +1,11 @@
-import { InvalidServicesIds, ServiceData } from './interfaces';
+import { useAdditionaServiceTableContext } from '../AdditionaServiceTableContext';
 import RenderRow from './RenderRow/RenderRow';
 
 import './SettingsTable.css';
 
-interface SettingsTableProps {
-  services: ServiceData[];
-  invalidServicesIds: InvalidServicesIds;
-  handleFieldChange: <K extends keyof ServiceData['rowData']>(
-    id: string,
-    name: K,
-    value: ServiceData['rowData'][K],
-  ) => void;
-  handleServiceDelete: (id: string) => void;
-}
+function SettingsTable() {
+  const { tableRows: services } = useAdditionaServiceTableContext();
 
-function SettingsTable({
-  services,
-  invalidServicesIds,
-  handleFieldChange,
-  handleServiceDelete,
-}: SettingsTableProps) {
   return (
     <table>
       <colgroup>
@@ -40,16 +26,18 @@ function SettingsTable({
         </tr>
       </thead>
       <tbody>
+        <tr className="spacer-row" key="gap-row">
+          <td colSpan={4}></td>
+        </tr>
         {services.map(({ id, rowData: service }) => {
-          const isErrorRow: boolean = !!invalidServicesIds[id];
+          const isErrorRow: boolean = Boolean(service.error);
+          
           return (
             <RenderRow
               key={id}
               isError={isErrorRow}
-              service_id={id}
+              serviceId={id}
               {...service}
-              handleFieldChange={handleFieldChange}
-              handleServiceDelete={handleServiceDelete}
             />
           );
         })}

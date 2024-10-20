@@ -63,10 +63,10 @@ function subscribeOnUserUpdate(uid: string, setFunc: Function) {
             console.log("Нет данных о пользователе");
             setFunc({});
         } else {
-            console.log('snapshot: ', Object.entries(snapshot.val()));
-            const userData = Object.entries(snapshot.val()).map(([uid, userData]) => ({ uid: uid, userData: Object.values(userData) }));
-            console.log('userData: ', userData);
-            setFunc(userData);
+            // console.log('snapshot: ', Object.entries(snapshot.val()));
+            // const userData = Object.entries(snapshot.val()).map(([uid, userData]) => ({ uid: uid, userData: Object.values(userData) }));
+            // console.log('userData: ', userData);
+            setFunc(snapshot.val());
         }
     });
 

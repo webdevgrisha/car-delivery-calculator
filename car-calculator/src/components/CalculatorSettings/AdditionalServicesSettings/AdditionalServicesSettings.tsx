@@ -1,130 +1,107 @@
-import { useImmer } from 'use-immer';
-import './AdditionalServicesSettings.css';
+import { useImmer, useImmerReducer } from 'use-immer';
 import SettingsTable from './SettingsTable/SettingsTable';
 import {
+  InitActionData,
   InvalidServicesIds,
-  RowData,
   ServiceData,
-} from './SettingsTable/interfaces';
-import { generateRowId } from '../../../services/firebase/firestoreDb';
+  TableContext,
+} from './interfaces';
 import { useRef } from 'react';
-import {
-  createServiceAction,
-  deleteServiceAction,
-  editServiceAction,
-} from './SettingsTable/serviceActionFunctions';
-import { ServiceAction } from './SettingsTable/types';
+import { Action, ServiceAction } from './types';
 import { useTableSubscriptiontsts } from '../../../hooks';
 import { showUpdateToast } from '../../CustomTable/tableToast';
 import { Id, toast } from 'react-toastify';
-import { updateServicesData } from '../../../services/firebase/functions';
+import { updateCalculatorSettingsData } from '../../../services/firebase/functions';
+import tableReducer from './tableReducer';
+import { AdditionaServiceTableContext } from './AdditionaServiceTableContext';
 
+import './AdditionalServicesSettings.css';
+import { generateRowId } from '../../../services/firebase/firestoreDb';
 
 function AdditionalServicesSettings() {
-  const [services, setServices] = useImmer<ServiceData[]>([]);
+  const [services, dispatch] = useImmerReducer<ServiceData[], Action>(
+    tableReducer,
+    [],
+  );
   const servicesAction = useRef<ServiceAction[]>([]);
-  const [invalidServicesIds, setInvalidServicesIds] =
-    useImmer<InvalidServicesIds>({});
 
-  useTableSubscriptiontsts('additional_services', 'service_name', setServices);
+  useTableSubscriptiontsts(
+    'additional_services',
+    'service_name',
+    (initServices) => {
+      console.log('effect services: ', initServices);
+      dispatch({ type: 'init', initServices } as InitActionData);
+    },
+  );
 
   const handleFieldChange = <K extends keyof ServiceData['rowData']>(
     id: string,
     name: K,
     value: ServiceData['rowData'][K],
   ): void => {
-    setServices((draft) => {
-      const serviceIndex = draft.findIndex((service) => service.id === id);
-
-      if (serviceIndex !== -1) {
-        draft[serviceIndex].rowData[name] = value;
-      }
-    });
-
-    console.log(id, name, value);
-    editServiceAction(servicesAction.current, id, name, value);
-
-    setInvalidServicesIds((draft) => {
-      if (id in draft && draft[id]) {
-        draft[id] = false;
-      }
+    dispatch({
+      type: 'edit',
+      rowId: id,
+      rowName: name,
+      newValue: value,
+      servicesAction: servicesAction.current,
     });
   };
 
   const handleServiceDelete = (id: string): void => {
-    setServices((draft) => {
-      const serviceIndex = draft.findIndex((service) => service.id === id);
-
-      if (serviceIndex !== -1) {
-        draft.splice(serviceIndex, 1);
-      }
+    dispatch({
+      type: 'delete',
+      rowId: id,
+      servicesAction: servicesAction.current,
     });
-
-    deleteServiceAction(servicesAction.current, id);
   };
 
-  const handleAddField = async () => {
-    const service_id: string = await generateRowId('services');
-
-    const rowData: RowData = {
-      service_name: '',
-      currency: 'PLN',
-      price: '0',
-      isShown: true,
-    };
-
-    const config: ServiceData = {
-      id: service_id,
-      rowData,
-    };
-
-    setServices((draft) => {
-      draft.push(config);
+  const handleAddService = async () => {
+    const serviceId = await generateRowId('additional_services');
+    dispatch({
+      type: 'add',
+      rowId: serviceId,
+      servicesAction: servicesAction.current,
     });
-
-    createServiceAction(servicesAction.current, service_id, rowData);
   };
 
+  // стоит ли вынести в reduce ?
   const handleSaveCahnge = () => {
+    dispatch({ type: 'save' });
+
     const toastId: Id = toast.loading('Please wait...');
 
-    const invalidServicesIds = services
-      .filter(
-        (service) => +service.rowData.price < 0 || service.rowData.price === '',
-      )
-      .reduce((newInvalidObj, services) => {
-        const { id } = services;
+    const invalidServices = services.filter((service) => service.rowData.error);
 
-        newInvalidObj[id] = true;
-
-        return newInvalidObj;
-      }, {} as InvalidServicesIds);
-
-    setInvalidServicesIds(() => invalidServicesIds);
-
-    if (Object.keys(invalidServicesIds).length) {
+    if (invalidServices.length) {
       showUpdateToast(
         toastId,
-        "the price can't be less than zero or empty",
+        "The price can't be less than zero or empty",
         'error',
       );
+
+      return;
     }
 
-    updateServicesData({
+    updateCalculatorSettingsData({
       tableName: 'additional_services',
-      servicesAction: servicesAction.current,
+      tableAction: servicesAction.current,
     }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
 
       const message: string = data.message || data.error;
 
       showUpdateToast(toastId, message, status);
-
-      if (status !== 'error') setNewRecordData(newRecordDataConfig);
     });
   };
 
-  console.log('servicesAction:', servicesAction.current);
+  console.log('services: ', services);
+
+  const additionaServiceTableContextValue: TableContext = {
+    tableRows: services,
+    deleteRecordFunc: handleServiceDelete,
+    editRecordFunc: handleFieldChange,
+  };
 
   return (
     <section className="additional-services-settings">
@@ -132,14 +109,13 @@ function AdditionalServicesSettings() {
         <header>
           <h5>Dodatkowe usługi</h5>
         </header>
-        <SettingsTable
-          services={services}
-          invalidServicesIds={invalidServicesIds}
-          handleFieldChange={handleFieldChange}
-          handleServiceDelete={handleServiceDelete}
-        />
+        <AdditionaServiceTableContext.Provider
+          value={additionaServiceTableContextValue}
+        >
+          <SettingsTable />
+        </AdditionaServiceTableContext.Provider>
         <footer>
-          <button className="btn add" onClick={handleAddField}>
+          <button className="btn add" onClick={handleAddService}>
             Add Field
           </button>
           <button className="btn save" onClick={handleSaveCahnge}>
