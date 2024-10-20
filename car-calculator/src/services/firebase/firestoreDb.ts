@@ -4,9 +4,11 @@ import { firestoteDb } from './firebaseConfig';
 function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
     const tableRef = collection(firestoteDb, tableName);
 
+    // console.log('tableName: ', tableName);
+
     const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
         const tableData = querySnapshot.docs.map(doc => ({ id: doc.id, rowData: doc.data() }));
-
+        // console.log('tableData: ', tableData);
         if (sortBy in tableData[0].rowData) {
             tableData.sort((a, b) => {
                 const aData: string = a.rowData[sortBy];
@@ -17,6 +19,41 @@ function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Func
         }
 
         setData(tableData);
+    })
+
+    return unsubscribe;
+}
+
+function subscribeOnTableSettingsUpdate(tableName: string, setData: Function) {
+    const tableRef = collection(firestoteDb, tableName);
+
+    const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
+        const initRowsConfig = {
+            info: {},
+            result: {},
+            order: {},
+        };
+
+        querySnapshot.docs.map(doc => {
+            const row = { id: doc.id, rowData: doc.data() };
+
+            const { rowType } = row.rowData;
+
+            switch (rowType) {
+                case 'info':
+                    {
+                        initRowsConfig.info[row.id] = row.rowData;
+                    }
+                    break;
+                case 'result':
+                    initRowsConfig.result = row;
+                    break;
+                case 'order':
+                    initRowsConfig.order = row;
+            }
+        });
+
+        setData(initRowsConfig);
     })
 
     return unsubscribe;
@@ -47,6 +84,7 @@ async function generateRowId(tableName: string): Promise<string> {
 
 export {
     subscribeOnTableUpdate,
+    subscribeOnTableSettingsUpdate,
     getColumnData,
     generateRowId
 }

@@ -1,8 +1,8 @@
-import { useImmer, useImmerReducer } from 'use-immer';
+import { useImmerReducer } from 'use-immer';
 import SettingsTable from './SettingsTable/SettingsTable';
 import {
+  HandleFieldChange,
   InitActionData,
-  InvalidServicesIds,
   ServiceData,
   TableContext,
 } from './interfaces';
@@ -25,20 +25,12 @@ function AdditionalServicesSettings() {
   );
   const servicesAction = useRef<ServiceAction[]>([]);
 
-  useTableSubscriptiontsts(
-    'additional_services',
-    'service_name',
-    (initServices) => {
-      console.log('effect services: ', initServices);
-      dispatch({ type: 'init', initServices } as InitActionData);
-    },
-  );
+  useTableSubscriptiontsts('additional_services', 'rowName', (initServices) => {
+    console.log('effect services: ', initServices);
+    dispatch({ type: 'init', initServices } as InitActionData);
+  });
 
-  const handleFieldChange = <K extends keyof ServiceData['rowData']>(
-    id: string,
-    name: K,
-    value: ServiceData['rowData'][K],
-  ): void => {
+  const handleFieldChange: HandleFieldChange = (id, name, value) => {
     dispatch({
       type: 'edit',
       rowId: id,
@@ -92,10 +84,10 @@ function AdditionalServicesSettings() {
       const message: string = data.message || data.error;
 
       showUpdateToast(toastId, message, status);
+
+      servicesAction.current = [];
     });
   };
-
-  console.log('services: ', services);
 
   const additionaServiceTableContextValue: TableContext = {
     tableRows: services,

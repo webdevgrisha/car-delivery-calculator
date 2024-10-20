@@ -31,7 +31,7 @@ function SettingsTable() {
         </tr>
         {services.map(({ id, rowData: service }) => {
           const isErrorRow: boolean = Boolean(service.error);
-          
+
           return (
             <RenderRow
               key={id}

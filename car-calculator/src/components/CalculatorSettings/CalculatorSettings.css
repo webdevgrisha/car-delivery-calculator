@@ -8,7 +8,7 @@
     padding-bottom: 0.44rem;
     margin-bottom: 0.94rem;
     border-bottom: 1px solid rgb(217, 217, 217);
-    border-spacing: 0px;
+    border-spacing: 0px 2px;
 }
 
 .calculator-settings table>colgroup>col:first-child {
@@ -40,10 +40,13 @@
     text-align: left;
 }
 
-
-
 .calculator-settings table>.spacer-row {
     height: 0.44rem;
+}
+
+.calculator-settings table>tbody>tr:not(:first-child):not(:last-child) {
+    cursor: grab;
+    z-index: 2;
 }
 
 .calculator-settings table>tbody>tr>td {

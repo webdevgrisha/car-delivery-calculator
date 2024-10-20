@@ -1,7 +1,5 @@
 import classNames from 'classnames';
-import {
-  SVG_Edit,
-} from '../../../../../../assets';
+import { SVG_Edit } from '../../../../../../assets';
 
 import './RenderResultRow.css';
 import { useState } from 'react';
@@ -21,11 +19,7 @@ const selectionOptions = {
   EUR: '€',
 };
 
-function RenderResultRow({
-  rowId,
-  rowName,
-  currency,
-}: RenderResultRowProps) {
+function RenderResultRow({ rowId, rowName, currency }: RenderResultRowProps) {
   const { editRecordFunc } = useTableWrapperContext();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -39,7 +33,7 @@ function RenderResultRow({
   });
 
   return (
-    <tr className='result-row'>
+    <tr className="result-row">
       <td
         onFocus={() => setIsEditing(true)}
         onBlur={() => setIsEditing(false)}
@@ -48,11 +42,11 @@ function RenderResultRow({
         className={serviveNameClasses}
       >
         <CustomInput
-          name="service_name"
+          name="rowName"
           value={rowName}
-          placeholder="service name"
+          placeholder="result row name"
           changeEventFunc={(value: string) =>
-            editRecordFunc(rowId, 'service_name', value)
+            editRecordFunc(rowId, 'rowName', value, 'result')
           }
         />
         <button className="btn">
@@ -65,7 +59,7 @@ function RenderResultRow({
           selectionOptions={selectionOptions}
           value={currency}
           changeEventFunc={(value: string) =>
-            editRecordFunc(rowId, 'currency', value as Currency)
+            editRecordFunc(rowId, 'currency', value as Currency, 'result')
           }
         />
       </td>

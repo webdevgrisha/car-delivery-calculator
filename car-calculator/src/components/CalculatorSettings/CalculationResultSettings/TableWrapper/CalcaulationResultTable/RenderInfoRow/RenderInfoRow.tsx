@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { CustomInput, CustomSelect } from '../../../../..';
 import { Currency } from '../../types';
 import { useTableWrapperContext } from '../../tableWrapperContext';
+import { Reorder } from 'framer-motion';
 
 interface RenderRowProps {
   rowId: string;
@@ -26,6 +27,21 @@ const selectionOptions = {
   EUR: '€',
 };
 
+const variants = {
+  initial: {
+    opacity: 0,
+    height: 0,
+  },
+  animate: {
+    opacity: 1,
+    height: 'auto',
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+  },
+};
+
 function RenderInfoRow({
   rowId,
   rowName,
@@ -39,7 +55,7 @@ function RenderInfoRow({
   const [showEditBtn, setShowEditBtn] = useState(false);
 
   const handleVisability = () => {
-    editRecordFunc(rowId, 'isShown', !isShown);
+    editRecordFunc(rowId, 'isShown', !isShown, 'info');
   };
 
   const rowClasses = classNames({
@@ -48,26 +64,35 @@ function RenderInfoRow({
 
   const isShowText = !isEditing && rowName.trim();
 
-  const serviveNameClasses = classNames({
+  const rowNameClasses = classNames({
     'show-text': isShowText,
     'show-edt-btn': showEditBtn && isShowText,
   });
 
   return (
-    <tr className={rowClasses}>
+    <Reorder.Item
+      className={rowClasses}
+      value={rowId}
+      as="tr"
+      whileDrag={{
+        scale: 1.05,
+        backgroundColor: '#f0f8ff',
+      }}
+      {...variants}
+    >
       <td
         onFocus={() => setIsEditing(true)}
         onBlur={() => setIsEditing(false)}
         onMouseEnter={() => setShowEditBtn(true)}
         onMouseLeave={() => setShowEditBtn(false)}
-        className={serviveNameClasses}
+        className={rowNameClasses}
       >
         <CustomInput
           name="rowName"
           value={rowName}
           placeholder="row name"
           changeEventFunc={(value: string) =>
-            editRecordFunc(rowId, 'rowName', value)
+            editRecordFunc(rowId, 'rowName', value, 'info')
           }
         />
         <button className="btn">
@@ -80,21 +105,21 @@ function RenderInfoRow({
           selectionOptions={selectionOptions}
           value={currency}
           changeEventFunc={(value: string) =>
-            editRecordFunc(rowId, 'currency', value as Currency)
+            editRecordFunc(rowId, 'currency', value as Currency, 'info')
           }
         />
       </td>
-      {/* <td>
+      <td>
         <CustomInput
-          name="price"
-          value={price}
+          name="formula"
+          value={formula}
           type="number"
           placeholder="0"
           changeEventFunc={(value: string) =>
-            editRecordFunc(rowId, 'price', value)
+            editRecordFunc(rowId, 'formula', value, 'info')
           }
         />
-      </td> */}
+      </td>
       <td>
         <div className="buttons">
           <button className="btn" onClick={handleVisability}>
@@ -102,13 +127,15 @@ function RenderInfoRow({
           </button>
           <button
             className="btn"
-            onClick={() => deleteRecordFunc(rowId)}
+            onClick={() => {
+              deleteRecordFunc(rowId);
+            }}
           >
             <SVG_Cancel />
           </button>
         </div>
       </td>
-    </tr>
+    </Reorder.Item>
   );
 }
 

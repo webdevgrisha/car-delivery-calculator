@@ -53,14 +53,18 @@ interface SaveActionData {
     type: 'save';
 }
 
+interface HandleFieldChange {
+    <K extends keyof ServiceData['rowData']>(
+        id: string,
+        name: K,
+        value: ServiceData['rowData'][K]
+    ): void;
+}
+
 interface TableContext {
     tableRows: ServiceData[];
     deleteRecordFunc: (id: string) => void;
-    editRecordFunc: <K extends keyof ServiceData['rowData']>(
-        id: string,
-        name: K,
-        value: ServiceData['rowData'][K],
-    ) => void;
+    editRecordFunc: HandleFieldChange;
 }
 
 
@@ -74,5 +78,6 @@ export type {
     DeleteActionData,
     AddActionData,
     SaveActionData,
-    TableContext
+    HandleFieldChange,
+    TableContext,
 }

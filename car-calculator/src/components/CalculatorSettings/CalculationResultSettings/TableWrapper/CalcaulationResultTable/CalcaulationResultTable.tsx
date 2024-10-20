@@ -3,8 +3,12 @@ import { useTableWrapperContext } from '../tableWrapperContext';
 import RenderInfoRow from './RenderInfoRow/RenderInfoRow';
 import RenderResultRow from './RenderResultRow/RenderResultRow';
 
+import { Reorder, AnimatePresence } from 'framer-motion';
+
 function SettingsTable() {
-  const { tableName, tableRows } = useTableWrapperContext();
+  const { tableName, tableRows, moveRowsFunc } = useTableWrapperContext();
+
+  const { info, result, order } = tableRows;
 
   return (
     <table>
@@ -27,30 +31,32 @@ function SettingsTable() {
           </th>
         </tr>
       </thead>
-      <tbody>
-        {tableRows.map(({ id, rowData }) => {
-          if (rowData.rowType === 'info') {
-            return (
-              <RenderInfoRow
-                key={id}
-                rowId={id}
-                rowName={rowData.rowName}
-                currency={rowData.currency}
-                formula=""
-                isShown={rowData.isShown}
-              />
-            );
-          }
-          return (
+      <Reorder.Group
+        as="tbody"
+        axys="y"
+        values={order.rowData.rowsOrder}
+        onReorder={moveRowsFunc}
+      >
+        <AnimatePresence>
+          <tr className="spacer-row" key="gap-row">
+            <td colSpan={4}></td>
+          </tr>
+
+          {order.rowData.rowsOrder.map((rowId) => {
+            const rowData = info[rowId];
+            return <RenderInfoRow rowId={rowId} key={rowId} {...rowData} />;
+          })}
+
+          {result && (
             <RenderResultRow
-              key={id}
-              rowId={id}
-              rowName={rowData.rowName}
-              currency={rowData.currency}
+              key={result.id}
+              rowId={result.id}
+              rowName={result.rowData.rowName}
+              currency={result.rowData.currency}
             />
-          );
-        })}
-      </tbody>
+          )}
+        </AnimatePresence>
+      </Reorder.Group>
     </table>
   );
 }
