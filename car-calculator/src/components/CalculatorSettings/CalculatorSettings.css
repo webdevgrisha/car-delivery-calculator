@@ -80,7 +80,7 @@
 
 .calculator-settings table>tbody>tr>td:first-child .btn {
     position: absolute;
-    right: 0px;
+    right: 5px;
 
     transition: 0.4s opacity;
     opacity: 0;

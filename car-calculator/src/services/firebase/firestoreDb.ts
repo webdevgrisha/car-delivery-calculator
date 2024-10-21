@@ -30,8 +30,17 @@ function subscribeOnTableSettingsUpdate(tableName: string, setData: Function) {
     const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
         const initRowsConfig = {
             info: {},
-            result: {},
-            order: {},
+            result: {
+                id: '',
+                rowData: {
+                    rowName: '',
+                },
+            },
+            order: {
+                rowData: {
+                    rowsOrder: [],
+                },
+            },
         };
 
         querySnapshot.docs.map(doc => {
@@ -77,6 +86,8 @@ async function getColumnData(tableName: string, columnName: string, placeholder:
     console.log('column Data: ', columnData);
     return columnData;
 }
+
+// async function getColumnsData(tableName: string, columnNames: string[], )
 
 async function generateRowId(tableName: string): Promise<string> {
     return doc(collection(firestoteDb, tableName)).id;

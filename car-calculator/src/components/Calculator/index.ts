@@ -2,7 +2,7 @@ import AdditionalServices from "./AdditionalServices/AdditionalServices";
 import AutoCalculation from "./AutoCalculation/AutoCalculation";
 import Exchange from "./Exchange/Exchange";
 import ManualCalculation from "./ManualCalculation/ManualCalculation";
-import SubSection from "./SubSection/SubSection";
+import CalculationResultSection from "./CalculationResultSection/CalculationResultSection";
 import TotalSum from "./TotalSum/TotalSum";
 
 export {
@@ -10,6 +10,6 @@ export {
     AutoCalculation,
     Exchange,
     ManualCalculation,
-    SubSection,
+    CalculationResultSection,
     TotalSum,
 }

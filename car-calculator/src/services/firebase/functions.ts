@@ -11,8 +11,8 @@ const deleteTableRecord = httpsCallable(functions, "deleteTableRecord");
 const editTableRecord = httpsCallable(functions, "editTableRecord");
 const createTableRecord = httpsCallable(functions, "createTableRecord");
 const updateCalculatorSettingsData = httpsCallable(functions, "updateCalculatorSettingsData");
-// console.log('createTableFromCSV: ', createTableFromCSV);
-// createTableFromCSV();
+const getCalculatorSettingsData = httpsCallable(functions, "getCalculatorSettingsData");
+
 import { writeUserData, readAllUsers } from './realtimeDb';
 
 export {
@@ -25,7 +25,8 @@ export {
     deleteTableRecord,
     editTableRecord,
     createTableRecord,
-    updateCalculatorSettingsData
+    updateCalculatorSettingsData,
+    getCalculatorSettingsData
 }
 
 readAllUsers();

@@ -34,7 +34,7 @@ function SettingsTable() {
       <Reorder.Group
         as="tbody"
         axys="y"
-        values={order.rowData.rowsOrder}
+        values={order.rowData?.rowsOrder || []}
         onReorder={moveRowsFunc}
       >
         <AnimatePresence>
@@ -42,7 +42,7 @@ function SettingsTable() {
             <td colSpan={4}></td>
           </tr>
 
-          {order.rowData.rowsOrder.map((rowId) => {
+          {(order.rowData?.rowsOrder || []).map((rowId) => {
             const rowData = info[rowId];
 
             // как решить проблему с рассинхрном ???

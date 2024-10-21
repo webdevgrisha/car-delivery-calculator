@@ -59,7 +59,7 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     return unsubscrive;
   }, []);
 
-  console.log('table update: ', tableAction);
+  console.log('table rows: ', tableRows);
 
   const handleFieldChange: HandleFieldChange = (id, name, value, rowType) => {
     dispatch({
@@ -94,8 +94,6 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     dispatch({
       type: 'move',
       newRowsOrder,
-      orderRowId: tableRows.order.id,
-      servicesAction: tableAction.current,
     });
   };
 
@@ -130,8 +128,6 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     editRecordFunc: handleFieldChange,
     moveRowsFunc: handleMoveRow,
   };
-
-  // console.log('tableRows: ', tableRows);
 
   return (
     <div className="table-wrapper-container">
