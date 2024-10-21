@@ -1,32 +1,13 @@
-import { CreateEditActionConfig, DeleteActionConfig, RowData } from "./interfaces";
+import { CreateEditActionConfig, DeleteActionConfig, OrderActionConfig, RowData } from "./interfaces";
 import { TableAction } from "./types";
 
-// стоит ли седать данный файл общим для всех таблиц в данной папке.
-function findeServiceAction(servicesAction: TableAction[], id: string) {
-    const serviceAction: TableAction | undefined = servicesAction.find(
-        (service) => {
-            return (
-                service.action !== 'delete' &&
-                (service as CreateEditActionConfig).id === id
-            );
-        },
-    );
-
-    return serviceAction;
-}
-
 function editRowAction<K extends keyof RowData>(
-    servicesAction: TableAction[],
+    servicesAction: TableAction,
     id: string,
     name: K,
     value: RowData[K],
 ) {
-    const serviceAction = findeServiceAction(servicesAction, id) as
-        | CreateEditActionConfig
-        | undefined;
-
-    console.log('serviceAction: ', serviceAction);
-    if (!serviceAction) {
+    if (!(id in servicesAction)) {
         const config = {
             action: 'edit',
             id: id,
@@ -35,73 +16,63 @@ function editRowAction<K extends keyof RowData>(
             } as unknown as RowData,
         };
 
-        servicesAction.push(config as TableAction);
-    } else {
-        serviceAction.action = 'edit';
-        serviceAction.config = {
-            ...serviceAction.config,
-            [name]: value
-        };
+        servicesAction[id] = config as CreateEditActionConfig;
+
+        return;
     }
+
+    if (servicesAction[id].action === 'delete') return;
+
+    servicesAction[id].action = 'edit';
+    servicesAction[id].config = {
+        ...servicesAction[id].config,
+        [name]: value
+    };
+
 }
 
-function deleteRowAction(servicesAction: TableAction[], id: string) {
+function deleteRowAction(servicesAction: TableAction, id: string) {
 
-    const serviceAction: TableAction | undefined = findeServiceAction(
-        servicesAction,
-        id,
-    );
+    if (servicesAction[id]?.action === 'delete') return;
 
-    if (!serviceAction) {
-        const config: DeleteActionConfig = {
-            action: 'delete',
-            id: id,
-        };
-
-        servicesAction.push(config);
-    } else {
-        serviceAction.action = 'delete';
-        delete serviceAction.config;
-    }
+    servicesAction[id] = {
+        action: 'delete',
+        id: id,
+    } as DeleteActionConfig;
 }
 
 function createRowAction(
-    servicesAction: TableAction[],
+    servicesAction: TableAction,
     id: string,
     config: RowData,
 ) {
-    const newConfig = {
+    if (id in servicesAction) return;
+
+    const newConfig: CreateEditActionConfig = {
         action: 'create',
         id: id,
         config,
     };
 
-    servicesAction.push(newConfig as TableAction);
+    servicesAction[id] = newConfig;
 }
 
 function moveRowAction(
-    servicesAction: TableAction[],
+    servicesAction: TableAction,
     id: string,
     newRowsOrder: string[],
 ) {
-    const reorderAction = servicesAction.find((row) => row.action === 'order');
-    if (!reorderAction) {
-        const newConfig = {
-            action: 'order',
-            id: id,
-            config: {
-                rowsOrder: newRowsOrder,
-            }
-        };
+    if (id in servicesAction) return;
 
-        servicesAction.push(newConfig as TableAction);
+    const newConfig: OrderActionConfig = {
+        action: 'order',
+        id: id,
+        config: {
+            rowsOrder: newRowsOrder,
+        }
+    };
 
-        return;
-    }
-
-    reorderAction.config.rowsOrder = newRowsOrder;
-
-    console.log('reorderAction: ', reorderAction);
+    servicesAction[id] = newConfig;
 }
 
 

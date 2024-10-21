@@ -35,6 +35,13 @@
     color: rgb(0, 0, 0);
 }
 
+.calculator-settings table>thead>tr>p {
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 150%;
+    color: rgb(0, 0, 0);
+}
+
 .calculator-settings table>thead>tr>th:first-child p {
     color: rgb(33, 109, 209);
     text-align: left;
@@ -53,12 +60,12 @@
     line-height: 0px;
 }
 
-.calculator-settings table>tbody>tr>td:not(:first-child):not(:last-child) {
+.calculator-settings table>tbody>tr>td:not(:last-child) {
     padding-right: 5px;
 }
 
-.calculator-settings table>tbody>tr>td:not(:last-child) {
-    margin-right: 0.5rem;
+.calculator-settings table>tbody tr.result-row>td {
+    padding-right: 5px;
 }
 
 .calculator-settings table>tbody>tr>td:first-child {
@@ -93,6 +100,16 @@
     background: none;
     border: none;
     cursor: pointer;
+}
+
+.calculator-settings table>tbody>tr>td>.custom-input:autofill,
+.calculator-settings table>tbody>tr>td.show-text>.custom-input:autofill {
+    -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.51) inset !important;
+    -webkit-text-fill-color: grey !important;
+}
+
+.calculator-settings .table-wrapper-container table>tbody>tr:last-child>td.show-text>.custom-input {
+    color: rgb(41, 41, 41);
 }
 
 .calculator-settings table>tbody>tr.error input[name='price'] {

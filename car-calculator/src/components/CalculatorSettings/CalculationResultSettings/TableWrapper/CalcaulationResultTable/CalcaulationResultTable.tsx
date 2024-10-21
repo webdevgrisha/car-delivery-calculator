@@ -44,6 +44,14 @@ function SettingsTable() {
 
           {order.rowData.rowsOrder.map((rowId) => {
             const rowData = info[rowId];
+
+            // как решить проблему с рассинхрном ???
+            // без данной строки будет ошибка
+
+            // ошибка происходит так как firestore возврашает данные которрые еще небыли полностью обновленны. updateCalculatorSettings
+            // транзакции решат данную проблему ?
+            if (!rowData) return null;
+
             return <RenderInfoRow rowId={rowId} key={rowId} {...rowData} />;
           })}
 

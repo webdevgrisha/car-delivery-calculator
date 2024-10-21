@@ -59,6 +59,7 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
                 delete draft.info[rowId]
 
                 const rowIndex = draft.order.rowData.rowsOrder.findIndex((id) => id === rowId);
+                console.log('delete form index: ', rowIndex);
                 draft.order.rowData.rowsOrder.splice(rowIndex, 1);
 
                 deleteRowAction(servicesAction, rowId);

@@ -2,7 +2,9 @@ import { AddActionData, CreateEditActionConfig, DeleteActionConfig, DeleteAction
 
 type Currency = 'USD' | 'EUR' | 'PLN';
 
-type TableAction = DeleteActionConfig | CreateEditActionConfig | OrderActionConfig;
+interface TableAction {
+    [key: string]: DeleteActionConfig | CreateEditActionConfig | OrderActionConfig
+}
 
 type Action = InitActionData | EidtActionData | DeleteActionData | AddActionData | SaveActionData | MoveActionData;
 

@@ -66,26 +66,26 @@ interface EidtActionData {
     rowName: keyof InfoRow | keyof ResultRow;
     rowType: 'info' | 'result';
     newValue: InfoRow[keyof InfoRow] | ResultRow[keyof ResultRow];
-    servicesAction: TableAction[];
+    servicesAction: TableAction;
 }
 
 interface DeleteActionData {
     type: 'delete';
     rowId: string;
-    servicesAction: TableAction[];
+    servicesAction: TableAction;
 }
 
 interface AddActionData {
     type: 'add';
     rowId: string;
-    servicesAction: TableAction[];
+    servicesAction: TableAction;
 }
 
 interface SaveActionData {
     type: 'save';
     orderRowId: string;
     newRowsOrder: string[];
-    servicesAction: TableAction[];
+    servicesAction: TableAction;
 }
 
 interface MoveActionData {

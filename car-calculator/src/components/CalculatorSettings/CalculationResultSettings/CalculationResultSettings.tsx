@@ -5,7 +5,7 @@ function CalculationResultSettings() {
     <section className="calculation-result-settings">
       <div className="container">
         <header>
-          <h5>Dodatkowe usługi</h5>
+          <img src="../logo-black.png" alt="logo" />
         </header>
         <TableWrapper
           tableName="Aukcja i wysyłka"

@@ -4,13 +4,8 @@ import CalcaulationResultTable from './CalcaulationResultTable/CalcaulationResul
 import {
   CalculatorSettingsTable,
   HandleFieldChange,
-  InfoRow,
   InitActionData,
-  OrderRow,
-  ResultRow,
-  RowData,
   TableContext,
-  TableRow,
 } from './interfaces';
 
 import './TableWrapper.css';
@@ -51,7 +46,7 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     CalculatorSettingsTable,
     Action
   >(tableReducer, tableRowsInitConfig);
-  const tableAction = useRef<TableAction[]>([]);
+  const tableAction = useRef<TableAction>({});
 
   useEffect(() => {
     const unsubscrive = subscribeOnTableSettingsUpdate(
@@ -99,19 +94,12 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     dispatch({
       type: 'move',
       newRowsOrder,
-      orderRowId: tableRows.order?.id || '',
+      orderRowId: tableRows.order.id,
       servicesAction: tableAction.current,
     });
   };
 
   const handleSaveCahnge = () => {
-    // dispatch({
-    //   type: 'save',
-    //   orderRowId: tableRows.order.id || '',
-    //   newRowsOrder: tableRows.order.rowData.rowsOrder,
-    //   servicesAction: tableAction.current,
-    // });
-
     moveRowAction(
       tableAction.current,
       tableRows.order.id,
@@ -123,7 +111,7 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
 
     updateCalculatorSettingsData({
       tableName: tablePath,
-      tableAction: tableAction.current,
+      tableAction: Object.values(tableAction.current),
     }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
 
@@ -131,7 +119,7 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
 
       showUpdateToast(toastId, message, status);
 
-      tableAction.current = [];
+      tableAction.current = {};
     });
   };
 
