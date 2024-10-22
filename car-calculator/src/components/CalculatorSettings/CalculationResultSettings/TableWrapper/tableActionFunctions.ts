@@ -32,7 +32,6 @@ function editRowAction<K extends keyof RowData>(
 }
 
 function deleteRowAction(servicesAction: TableAction, id: string) {
-
     if (servicesAction[id]?.action === 'delete') return;
 
     servicesAction[id] = {

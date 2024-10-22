@@ -1,4 +1,4 @@
-import { Currency, ServiceAction } from "./types";
+import { Currency } from "./types";
 
 interface RowData {
     rowName: string;
@@ -26,7 +26,7 @@ interface ServiceData {
 
 interface InitActionData {
     type: 'init';
-    initServices: ServiceData[];
+    initServices: ServiceData;
 }
 
 interface EidtActionData {
@@ -34,19 +34,19 @@ interface EidtActionData {
     rowId: string;
     rowName: keyof RowData;
     newValue: RowData[keyof RowData];
-    servicesAction: ServiceAction[];
+    servicesAction: ServiceAction;
 }
 
 interface DeleteActionData {
     type: 'delete';
     rowId: string;
-    servicesAction: ServiceAction[];
+    servicesAction: ServiceAction;
 }
 
 interface AddActionData {
     type: 'add';
     rowId: string;
-    servicesAction: ServiceAction[];
+    servicesAction: ServiceAction;
 }
 
 interface SaveActionData {
@@ -67,6 +67,9 @@ interface TableContext {
     editRecordFunc: HandleFieldChange;
 }
 
+interface ServiceAction {
+    [key: string]: DeleteActionConfig | CreateEditActionConfig;
+}
 
 export type {
     RowData,
@@ -80,4 +83,5 @@ export type {
     SaveActionData,
     HandleFieldChange,
     TableContext,
+    ServiceAction,
 }

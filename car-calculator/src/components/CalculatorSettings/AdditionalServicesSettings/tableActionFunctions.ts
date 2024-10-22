@@ -1,31 +1,12 @@
-import { CreateEditActionConfig, DeleteActionConfig, RowData } from "./interfaces";
-import { ServiceAction } from "./types";
-
-// стоит ли седать данный файл общим для всех таблиц в данной папке.
-function findeServiceAction(servicesAction: ServiceAction[], id: string) {
-    const serviceAction: ServiceAction | undefined = servicesAction.find(
-        (service) => {
-            return (
-                service.action !== 'delete' &&
-                (service as CreateEditActionConfig).id === id
-            );
-        },
-    );
-
-    return serviceAction;
-}
+import { CreateEditActionConfig, DeleteActionConfig, RowData, ServiceAction } from "./interfaces";
 
 function editServiceAction<K extends keyof RowData>(
-    servicesAction: ServiceAction[],
+    servicesAction: ServiceAction,
     id: string,
     name: K,
     value: RowData[K],
 ) {
-    const serviceAction = findeServiceAction(servicesAction, id) as
-        | CreateEditActionConfig
-        | undefined;
-
-    if (!serviceAction) {
+    if (!(id in servicesAction)) {
         const config = {
             action: 'edit',
             id: id,
@@ -34,47 +15,43 @@ function editServiceAction<K extends keyof RowData>(
             } as unknown as RowData,
         };
 
-        servicesAction.push(config as ServiceAction);
-    } else {
-        serviceAction.action = 'edit';
-        serviceAction.config = {
-            ...serviceAction.config,
-            [name]: value
-        };
+        servicesAction[id] = config as CreateEditActionConfig;
+
+        return;
     }
+
+    if (servicesAction[id].action === 'delete') return;
+
+    servicesAction[id].action = 'edit';
+    servicesAction[id].config = {
+        ...servicesAction[id].config,
+        [name]: value
+    };
 }
 
-function deleteServiceAction(servicesAction: ServiceAction[], id: string) {
-    const serviceAction: ServiceAction | undefined = findeServiceAction(
-        servicesAction,
-        id,
-    );
+function deleteServiceAction(servicesAction: ServiceAction, id: string) {
+    if (servicesAction[id]?.action === 'delete') return;
 
-    if (!serviceAction) {
-        const config: DeleteActionConfig = {
-            action: 'delete',
-            id: id,
-        };
-
-        servicesAction.push(config);
-    } else {
-        serviceAction.action = 'delete';
-        delete serviceAction.config;
-    }
+    servicesAction[id] = {
+        action: 'delete',
+        id: id,
+    } as DeleteActionConfig;
 }
 
 function createServiceAction(
-    servicesAction: ServiceAction[],
+    servicesAction: ServiceAction,
     id: string,
     config: RowData,
 ) {
-    const newConfig = {
+    if (id in servicesAction) return;
+
+    const newConfig: CreateEditActionConfig = {
         action: 'create',
         id: id,
         config,
     };
 
-    servicesAction.push(newConfig as ServiceAction);
+    servicesAction[id] = newConfig;
 }
 
 

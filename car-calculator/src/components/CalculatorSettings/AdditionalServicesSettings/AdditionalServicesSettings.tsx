@@ -23,7 +23,7 @@ function AdditionalServicesSettings() {
     tableReducer,
     [],
   );
-  const servicesAction = useRef<ServiceAction[]>([]);
+  const servicesAction = useRef<ServiceAction>({});
 
   useTableSubscriptiontsts('additional_services', 'rowName', (initServices) => {
     console.log('effect services: ', initServices);
@@ -75,9 +75,16 @@ function AdditionalServicesSettings() {
       return;
     }
 
+    const actionToUpdate = Object.values(servicesAction.current);
+
+    if (!actionToUpdate.length) {
+      showUpdateToast(toastId, `There's nothing to update!`, 'warning');
+      return;
+    }
+
     updateCalculatorSettingsData({
       tableName: 'additional_services',
-      tableAction: servicesAction.current,
+      tableAction: actionToUpdate,
     }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
 

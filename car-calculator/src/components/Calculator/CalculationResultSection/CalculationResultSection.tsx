@@ -15,7 +15,7 @@ function CalculationResultSection({ title, rows }: SubSectionProps) {
       {rows.map(({ rowName, currency }, index) => {
         const rowClass = classNames({
           row: true,
-          lasr: index === rows.length - 1,
+          last: index === rows.length - 1,
         });
 
         return (
