@@ -117,8 +117,12 @@
     color: rgb(224, 59, 75);
 }
 
+.calculator-settings table>tbody>tr {
+    transition: 0.4s opacity;
+}
+
 .calculator-settings table>tbody>tr.hide {
-    opacity: 0.5;
+    opacity: 0.5 !important;
 }
 
 .calculator-settings table>tbody>tr>td>.buttons {
@@ -150,7 +154,7 @@
     width: 100%;
 }
 
-.calculator-settings footer>.btn {
+.calculator-settings .btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,7 +183,7 @@
     }
 }
 
-.calculator-settings footer>.btn.save {
+.calculator-settings .btn.save {
     background-color: rgb(33, 109, 209);
     color: rgb(255, 255, 255);
 }

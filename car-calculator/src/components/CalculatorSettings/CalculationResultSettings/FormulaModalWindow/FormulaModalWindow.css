@@ -1,0 +1,164 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    overflow: hidden;
+
+    transition: 0.4s opacity;
+}
+
+.modal-overlay.hide {
+    /* display: none; */
+    height: 0;
+    opacity: 0;
+}
+
+.modal-overlay .formula-modal-window {
+    display: flex;
+    position: absolute;
+    z-index: 110 !important;
+    width: auto;
+    overflow: visible;
+
+    transition: 0.4s height, 0.4s opacity;
+}
+
+.modal-overlay .formula-modal-window.hide {
+    height: 0;
+    opacity: 0;
+}
+
+.modal-overlay .formula-modal-window.error input {
+    border: 1px solid rgb(224, 59, 75) !important;
+    color: rgb(224, 59, 75) !important;
+}
+
+.modal-overlay .formula-modal-window>.container {
+    gap: 1rem;
+}
+
+.modal-overlay .formula-modal-window>.container header {
+    position: relative;
+    margin-right: 0px;
+    justify-content: space-between;
+    width: 100%;
+
+    border-bottom: 1px solid rgb(223, 231, 240);
+}
+
+.modal-overlay .formula-modal-window header>h3 {
+    font-weight: 400;
+    margin-right: auto;
+    color: rgb(33, 109, 209);
+    font-size: 1.8rem;
+}
+
+
+.modal-overlay .formula-modal-window header .close-btn {
+    position: absolute;
+    box-sizing: border-box;
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+
+    border: 1px solid #c2c7cc;
+    background-color: transparent;
+    color: transparent;
+    cursor: pointer;
+    transition: all ease 0.3s;
+
+    position: relative;
+}
+
+.modal-overlay .formula-modal-window header .close-btn:before,
+.modal-overlay .formula-modal-window header .close-btn:after {
+    position: absolute;
+    width: 1rem;
+    height: 1px;
+    left: 50%;
+    top: 50%;
+    margin-left: -0.5rem;
+    content: '';
+    background: #8a9199;
+    transition: all ease 1s;
+}
+
+.modal-overlay .formula-modal-window header .close-btn:before {
+    transform: rotate(-45deg);
+}
+
+.modal-overlay .formula-modal-window header .close-btn:after {
+    transform: rotate(45deg);
+}
+
+.modal-overlay .formula-modal-window header .close-btn:hover,
+.modal-overlay .formula-modal-window header .close-btn:focus {
+    transform: rotate(180deg);
+    border-color: #f26a3d;
+    background: rgba(242, 106, 61, 0.1);
+
+    cursor: pointer;
+}
+
+.modal-overlay .formula-modal-window header .close-btn:hover:before,
+.modal-overlay .formula-modal-window header .close-btn:hover:after {
+    background: rgb(224, 59, 75);
+}
+
+
+.modal-overlay .formula-modal-window .content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+.modal-overlay .formula-modal-window .content .attention {
+    color: rgb(224, 59, 75);
+    font-size: 0.88rem;
+    font-weight: 350;
+    margin-bottom: 0.5rem;
+}
+
+.modal-overlay .formula-modal-window footer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+
+    width: 100%;
+}
+
+/* .modal-overlay .formula-modal-window footer>.col {
+    width: 50%;
+}
+
+.modal-overlay .formula-modal-window footer>.col:first-child {
+    width: 70%;
+} */
+
+.modal-overlay .formula-modal-window footer>.col:last-child {
+    margin-left: 10px;
+}
+
+.modal-overlay .formula-modal-window footer>.col>h4 {
+    font-weight: 350;
+    font-size: 1rem;
+    color: rgb(41, 41, 41);
+}
+
+.modal-overlay .formula-modal-window footer>.col>ul {
+    padding-left: 1rem;
+}
+
+.modal-overlay .formula-modal-window footer>.col>ul>li {
+    font-size: 0.88rem;
+}

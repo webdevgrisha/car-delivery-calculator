@@ -7,6 +7,7 @@ interface CustomInputProps {
   value: string;
   placeholder?: string;
   type?: InputFiledType;
+  isDisabled?: boolean;
   changeEventFunc: (value: string) => void;
 }
 
@@ -15,15 +16,17 @@ function CustomInput({
   value = '',
   placeholder = '',
   type = 'text',
+  isDisabled = false,
   changeEventFunc,
 }: CustomInputProps) {
   return (
     <input
-    className='custom-input'
+      className="custom-input"
       type={type}
       name={name}
       placeholder={placeholder}
       value={value}
+      disabled={isDisabled}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         changeEventFunc(e.target.value)
       }

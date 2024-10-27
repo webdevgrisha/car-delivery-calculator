@@ -12,6 +12,7 @@ import { CustomInput, CustomSelect } from '../../../../..';
 import { Currency } from '../../types';
 import { useTableWrapperContext } from '../../tableWrapperContext';
 import { Reorder } from 'framer-motion';
+import FormulaInput from '../FormulaInput/FormulaInput';
 
 interface RenderRowProps {
   rowId: string;
@@ -46,8 +47,8 @@ function RenderInfoRow({
   rowId,
   rowName,
   currency,
-  formula,
   isShown,
+  formula,
 }: RenderRowProps) {
   const { editRecordFunc, deleteRecordFunc } = useTableWrapperContext();
 
@@ -110,15 +111,9 @@ function RenderInfoRow({
         />
       </td>
       <td>
-        <CustomInput
-          name="formula"
-          value={formula}
-          type="number"
-          placeholder="0"
-          changeEventFunc={(value: string) =>
+        <FormulaInput formula={formula} setFormula={(value: string) =>
             editRecordFunc(rowId, 'formula', value, 'info')
-          }
-        />
+          } />
       </td>
       <td>
         <div className="buttons">

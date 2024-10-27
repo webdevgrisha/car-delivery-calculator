@@ -1,14 +1,13 @@
+import { ShowModalFunc } from "../interfaces";
 import { Currency, RowData, TableAction } from "./types";
 
 interface ResultRow {
-    // id: string;
     rowType: 'result';
     rowName: string;
     currency: Currency;
 }
 
 interface InfoRow {
-    // id: string;
     rowType: 'info';
     rowName: string;
     currency: Currency;
@@ -108,8 +107,8 @@ interface TableContext {
     deleteRecordFunc: (id: string) => void;
     editRecordFunc: HandleFieldChange;
     moveRowsFunc: (newRowsOrder: string[]) => void;
+    showModal: ShowModalFunc;
 }
-
 
 export type {
     ResultRow,

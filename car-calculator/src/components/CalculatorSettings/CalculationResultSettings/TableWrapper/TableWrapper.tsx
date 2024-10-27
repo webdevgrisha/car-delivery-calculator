@@ -20,10 +20,12 @@ import { updateCalculatorSettingsData } from '../../../../services/firebase/func
 import { showUpdateToast } from '../../../CustomTable/tableToast';
 import { Id, toast } from 'react-toastify';
 import { moveRowAction } from './tableActionFunctions';
+import { ShowModalFunc } from '../interfaces';
 
 interface TableWrapperProps {
   tableName: string;
   tablePath: string;
+  showModal: ShowModalFunc;
 }
 
 const tableRowsInitConfig: CalculatorSettingsTable = {
@@ -41,7 +43,7 @@ const tableRowsInitConfig: CalculatorSettingsTable = {
   },
 };
 
-function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
+function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
   const [tableRows, dispatch] = useImmerReducer<
     CalculatorSettingsTable,
     Action
@@ -127,6 +129,7 @@ function TableWrapper({ tableName, tablePath }: TableWrapperProps) {
     deleteRecordFunc: handleServiceDelete,
     editRecordFunc: handleFieldChange,
     moveRowsFunc: handleMoveRow,
+    showModal,
   };
 
   return (
