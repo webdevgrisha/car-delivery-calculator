@@ -3,52 +3,36 @@ import { Loader } from '../../index';
 
 import './Exchange.css';
 
-import { getConversion } from '../../../services/exchnage-api';
+import { subscribeOnFirstTableRecord } from '../../../services/firebase/firestoreDb';
 
-interface CurrencyPair {
-  baseCode: string;
-  targetCode: string;
+interface ExchangeData {
+  exchangeRate: ExchangeRate;
+  isShown: IsShown;
+  usd_pln: string;
+  usd_eur: string;
 }
 
-interface ExchangeProps {
-  currencyPairs: CurrencyPair[];
-}
-
-function Exchange(props: ExchangeProps) {
-  const [exchangeRates, setExchangeRates] = useState([]);
+function Exchange() {
+  const [exchangeData, setExchangeData] = useState<ExchangeData>({});
   const [loading, setLoading] = useState(true);
 
-  const { currencyPairs } = props;
+  useEffect(() => {
+    const unsubscibe = subscribeOnFirstTableRecord('exchange', (row) => {
+      setExchangeData(row.rowData);
+      setLoading(false);
+    });
 
-  // useEffect(() => {
-  //   const fetchExchangeRate = async () => {
-  //     const promiseArr = currencyPairs.map(({ baseCode, targetCode }) =>
-  //       getConversion(baseCode, targetCode),
-  //     );
+    return unsubscibe;
+  }, []);
 
-  //     const result = await Promise.all(promiseArr);
+  if (loading) return <Loader />;
 
-  //     setExchangeRates(result);
-  //     setLoading(false);
-  //   };
-
-  //   fetchExchangeRate();
-  // }, []);
-
-  // if (loading) return <Loader />;
+  if(exchangeData.isShown === 'No') return null;
 
   return (
     <div className="currency-block">
-      {/* {currencyPairs.map(({ baseCode, targetCode }, index: number) => {
-        const price = exchangeRates[index];
-
-        return (
-          <p key={`${baseCode}/${targetCode}`}>
-            {baseCode}/{targetCode} - {price}
-          </p>
-        );
-      })} */}
-      <p>USD/EUR - 0.91</p>
+      <p>USD/EUR - {exchangeData.usd_eur}</p>
+      <p>USD/PLN - {exchangeData.usd_pln}</p>
     </div>
   );
 }

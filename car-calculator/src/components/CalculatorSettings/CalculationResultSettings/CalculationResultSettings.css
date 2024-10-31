@@ -15,5 +15,6 @@
     width: 110%;
     height: 1px;
     border: none;
-    background-color: #004080;
+    /* background-color: #004080; */
+    background-color: rgb(191, 63, 63);
 }

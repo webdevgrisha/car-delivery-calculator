@@ -1,15 +1,19 @@
+type Currency = 'USD' | 'PLN' | 'EUR';
+
 interface RowData {
     rowName: string;
     rowType: 'info' | 'result';
-    currency: 'USD' | 'PLN' | 'EUR';
+    currency: Currency;
 }
 
 interface CalculationResultSectionData {
-    [key: string]: RowData[];
+    [key: string]: RowData[] | Currency;
 }
 
 
 export type {
     RowData,
-    CalculationResultSectionData
+    CalculationResultSectionData,
+    TotalRow,
+    Currency
 }

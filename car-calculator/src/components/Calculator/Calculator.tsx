@@ -11,8 +11,13 @@ import {
   AdditionalServices,
 } from './index';
 import Loader from '../Loader/Loader';
-import { CalculationResultSectionData, RowData } from './interfaces';
+import {
+  CalculationResultSectionData,
+  Currency,
+  RowData,
+} from './interfaces';
 import { toast } from 'react-toastify';
+import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
 
 // const firstSubSection = [
 //   'Cena samochodu na aukcji',
@@ -42,6 +47,7 @@ const calculationResultSectionData: CalculationResultSectionData = {
   auction_and_shipping: [],
   customs_clearance: [],
   other_payments: [],
+  total_car_cost: 'PLN',
 };
 
 function Calculator() {
@@ -58,18 +64,19 @@ function Calculator() {
       getCalculatorSettingsData({
         tableName: 'other_payments',
       }),
+      getFirstTableRecord('total_car_cost'),
     ];
 
     Promise.all(dataPromiseArr).then((sectionsData) => {
       const tableNames: string[] = Object.keys(calculationResultSectionData);
-
+      console.log('sectionsData: ', sectionsData);
       try {
         sectionsData.forEach(({ data }, index) => {
           if ('error' in data) throw Error(data.error);
 
           console.log('data: ', data);
           calculationResultSectionData[tableNames[index]] =
-            data.tableRows as RowData;
+            (data.tableRows as RowData) || (data.currency as Currency);
         });
 
         setIsLoading(false);
@@ -96,20 +103,25 @@ function Calculator() {
             </header>
             <CalculationResultSection
               title="Aukcja i wysyłka"
-              rows={calculationResultSectionData.auction_and_shipping}
+              rows={
+                calculationResultSectionData.auction_and_shipping as RowData[]
+              }
             />
             <CalculationResultSection
               title="Odprawa celna"
-              rows={calculationResultSectionData.customs_clearance}
+              rows={calculationResultSectionData.customs_clearance as RowData[]}
             />
             <CalculationResultSection
               title="Inne płatności"
-              rows={calculationResultSectionData.other_payments}
+              rows={calculationResultSectionData.other_payments as RowData[]}
             />
           </div>
-          <TotalSum title="Całkowity koszt samochodu:" currency="PLN" />
+          <TotalSum
+            title="Całkowity koszt samochodu:"
+            currency={calculationResultSectionData.total_car_cost as Currency}
+          />
         </section>
-        <Exchange currencyPairs={currencyPairs} />
+        <Exchange />
       </div>
       <div className="colum-wrapper">
         <AutoCalculation />

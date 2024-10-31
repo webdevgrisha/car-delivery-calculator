@@ -1,5 +1,4 @@
-import AdditionalServicesSettings from './AdditionalServicesSettings/AdditionalServicesSettings';
-import CalculationResultSettings from './CalculationResultSettings/CalculationResultSettings';
+import { AdditionalServicesSettings, CalculationResultSettings, ExchangeSettings } from '.';
 import './CalculatorSettings.css';
 
 function CalculatorSettings() {
@@ -10,7 +9,7 @@ function CalculatorSettings() {
         <AdditionalServicesSettings />
       </div>
       <div className="colum-wrapper">
-        {/* <AdditionalServicesSettings /> */}
+        <ExchangeSettings />
       </div>
     </div>
   );

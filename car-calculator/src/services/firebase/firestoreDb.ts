@@ -68,6 +68,32 @@ function subscribeOnTableSettingsUpdate(tableName: string, setData: Function) {
     return unsubscribe;
 }
 
+function subscribeOnFirstTableRecord(tableName: string, setData: Function) {
+    const tableRef = collection(firestoteDb, tableName);
+
+    const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
+        if (querySnapshot.empty) {
+            setData(null);
+        } else {
+            const doc = querySnapshot.docs[0];
+            const row = { id: doc.id, rowData: doc.data() };
+            console.log('doc data: ', doc.data());
+            setData(row);
+        }
+    });
+
+    return unsubscribe;
+}
+
+// rename
+function getFirstTableRecord(tableName: string) {
+    return getDocs(collection(firestoteDb, tableName)).then((query) => {
+        const doc = query.docs[0];
+
+        return { data: doc.data() };
+    });
+}
+
 async function getColumnData(tableName: string, columnName: string, placeholder: string = 'None'): Promise<string[]> {
     const querySnapshot = await getDocs(collection(firestoteDb, tableName));
 
@@ -83,11 +109,8 @@ async function getColumnData(tableName: string, columnName: string, placeholder:
 
     columnData.sort().unshift(placeholder);
 
-    console.log('column Data: ', columnData);
     return columnData;
 }
-
-// async function getColumnsData(tableName: string, columnNames: string[], )
 
 async function generateRowId(tableName: string): Promise<string> {
     return doc(collection(firestoteDb, tableName)).id;
@@ -96,6 +119,8 @@ async function generateRowId(tableName: string): Promise<string> {
 export {
     subscribeOnTableUpdate,
     subscribeOnTableSettingsUpdate,
+    subscribeOnFirstTableRecord,
     getColumnData,
-    generateRowId
+    generateRowId,
+    getFirstTableRecord,
 }

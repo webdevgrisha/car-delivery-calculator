@@ -1,23 +1,15 @@
 import { useImmer } from 'use-immer';
 import './ManualCalculation.css';
 import getFormFields from './fieldsConfig';
-import { FormRows } from './interface';
+import { FormRows, FormData } from './interface';
 import { ManualRow } from '.';
 import { RowNames } from './types';
 import { FormEvent, useState } from 'react';
 import { showWarningToastMessage } from '../../CustomTable/tableToast';
 
-interface FormData {
-  carPrice: string;
-  engineSize: string;
-  location: string;
-  customsCosts: string;
-  repairCosts: string;
-  carSize: string;
-}
-
 function ManualCalculation() {
   const [formData, setFormData] = useImmer<FormData>({
+    auction: '',
     carPrice: '',
     engineSize: '',
     location: '',
@@ -31,7 +23,6 @@ function ManualCalculation() {
   );
 
   const [formFields] = useState<FormRows[]>(() => getFormFields());
-
 
   const handleFormDataChange = (name: RowNames, value: string) => {
     if (inValidFields[name]) {
@@ -66,6 +57,10 @@ function ManualCalculation() {
       .filter((value) => value !== null);
 
     setInValidFields(Object.fromEntries(inValidFields));
+
+    // if (!inValidFields.length) {
+
+    // }
   };
 
   return (

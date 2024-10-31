@@ -16,8 +16,19 @@ interface FormRows {
     validate: (value: string) => boolean,
 }
 
+interface FormData {
+    auction: string;
+    carPrice: string;
+    engineSize: string;
+    location: string;
+    customsCosts: string;
+    repairCosts: string;
+    carSize: string;
+  }
+
 export type {
     InputRow,
     SelectRow,
     FormRows,
+    FormData
 }

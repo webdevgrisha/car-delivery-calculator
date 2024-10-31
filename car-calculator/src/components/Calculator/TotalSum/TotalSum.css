@@ -9,14 +9,14 @@
 
 .total-sum .title {
     font-weight: 400;
-    font-size: 0.88rem;
+    font-size: 1.1rem;
     line-height: 150%;
     color: rgb(33, 109, 209);
 }
 
 .total-sum .price {
     font-weight: 400;
-    font-size: 1.13rem;
+    font-size: 1.1rem;
     line-height: 150%;
     color: rgb(54, 155, 77);
 }

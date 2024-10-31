@@ -6,6 +6,15 @@ import { validateInput, validateSelect } from "./validateFunc";
 const getFormFields = () => {
     const formRows: FormRows[] = [
         {
+            label: 'Aukcja',
+            tagName: 'select',
+            name: 'auction',
+            fieldConfig: {
+                selectionOptions: ['Select auction', 'IAAI', 'Copart']
+            },
+            validate: validateSelect,
+        },
+        {
             label: 'Cena pojazdu',
             tagName: 'input',
             name: 'carPrice',

@@ -1,8 +1,9 @@
 import './CalculationResultSettings.css';
-import FormulaModalWindow from './FormulaModalWindow/FormulaModalWindow';
-import TableWrapper from './TableWrapper/TableWrapper';
 import { useImmer } from 'use-immer';
 import { FormulaModalWindowData, ShowModalFunc } from './interfaces';
+import TableWrapper from './TableWrapper/TableWrapper';
+import FormulaModalWindow from './FormulaModalWindow/FormulaModalWindow';
+import TotalCost from './TotalCost/TotalCost';
 
 function CalculationResultSettings() {
   const [modalWindowData, setModalWindowData] =
@@ -48,6 +49,10 @@ function CalculationResultSettings() {
             tablePath="other_payments"
             showModal={showModal}
           />
+
+          <hr className="table-delimiter" />
+
+          <TotalCost tablePath='total_car_cost'/>
         </div>
       </div>
 

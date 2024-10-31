@@ -17,6 +17,7 @@
 .sub-section h3 {
     text-align: left;
     margin-bottom: 0.94rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 150%;
     color: rgb(33, 109, 209);
@@ -33,7 +34,8 @@
 }
 
 .sub-section .last.row .name {
-    color: rgb(41, 41, 41);
+    font-size: 0.88rem;
+    color: rgb(124, 141, 181);
 }
 
 .sub-section .last.row .price {

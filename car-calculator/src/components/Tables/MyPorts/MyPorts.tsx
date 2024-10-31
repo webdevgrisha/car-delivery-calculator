@@ -17,8 +17,8 @@ function MyPorts() {
   const [destinationPortsTableData, setDestinationPortsTableData] =
     useState<TableData>([]);
 
-  const destinationPortsFields = createShippingPortsFieldsConfig();
-  const shippingPortsFields = createDestinationPortsFieldsConfig();
+  const shippingPortsFields = createShippingPortsFieldsConfig();
+  const destinationPortsFields = createDestinationPortsFieldsConfig();
 
   useTableSubscriptiontsts(
     'shipping_ports_(from)',

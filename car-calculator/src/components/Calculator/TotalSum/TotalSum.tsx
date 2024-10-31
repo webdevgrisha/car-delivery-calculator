@@ -1,8 +1,9 @@
+import { Currency } from '../interfaces';
 import './TotalSum.css';
 
 interface TotalSumProps {
   title: string;
-  currency: 'USD' | 'EUR' | 'PLN';
+  currency: Currency;
 }
 
 function TotalSum(props: TotalSumProps) {
