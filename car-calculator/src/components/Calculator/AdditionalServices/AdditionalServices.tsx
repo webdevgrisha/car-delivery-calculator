@@ -4,30 +4,31 @@ import './AdditionalServices.css';
 import classNames from 'classnames';
 import { useImmer } from 'use-immer';
 import ServiceComp from './ServiceComp/ServiceComp';
-import { getColumnData } from '../../../services/firebase/firestoreDb';
+import { getTableData } from '../../../services/firebase/firestoreDb';
+import { Currency } from '../interfaces';
 
-interface Services {
-  [key: string]: boolean;
+interface AdditionalServices {
+  [key: string]: AdditionalService;
+}
+
+interface AdditionalService {
+  rowName: string;
+  isShow: boolean;
+  price: string;
+  currency: Currency;
+  isSelected: boolean;
 }
 
 function AdditionalServices() {
-  const [additionalServices, setAdditionalServices] = useImmer<Services>({});
+  const [additionalServices, setAdditionalServices] =
+    useImmer<AdditionalServices | null>(null);
   const [showServices, setShowServices] = useState<boolean>(false);
 
   useEffect(() => {
-    getColumnData('additional_services', 'rowName').then((data) => {
-      const serviceConfig = data
-        .slice(1)
-        .filter((serviceName) => serviceName.trim() !== '')
-        .reduce((serviceConfig, serviceName) => {
-          serviceConfig[serviceName] = false;
+    getTableData('additional_services', 'rowName').then((data) => {
+      console.log('additional_services data: ', data);
 
-          console.log('serviceConfig: ', serviceConfig);
-
-          return serviceConfig;
-        }, {} as Services);
-
-      setAdditionalServices(() => serviceConfig);
+      setAdditionalServices(data as AdditionalServices);
     });
   }, []);
 
@@ -35,9 +36,11 @@ function AdditionalServices() {
     setShowServices(!showServices);
   };
 
-  const handleAddService = (name: string) => {
+  const handleAddService = (id: string) => {
     setAdditionalServices((draft) => {
-      draft[name] = !draft[name];
+      if (draft === null) return;
+
+      draft[id].isSelected = !draft[id].isSelected;
     });
   };
 
@@ -65,13 +68,13 @@ function AdditionalServices() {
           </span>
         </header>
         <div className={servicesClass}>
-          {Object.entries(additionalServices).map(([name, value], index) => {
+          {Object.entries(additionalServices || {}).map(([id, serviceData]) => {
             return (
               <ServiceComp
-                key={index}
-                name={name}
-                isSelected={value}
-                changeEventFunc={handleAddService}
+                key={id}
+                {...serviceData}
+                // isSelected={value}
+                changeEventFunc={() => handleAddService(id)}
               />
             );
           })}

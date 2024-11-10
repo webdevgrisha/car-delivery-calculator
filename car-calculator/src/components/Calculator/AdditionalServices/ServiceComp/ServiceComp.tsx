@@ -1,15 +1,20 @@
 import classNames from 'classnames';
 
 import './ServiceComp.css';
+import { Currency } from '../../interfaces';
 
 interface ServiceCompProps {
-  name: string;
+  rowName: string;
+  currency: Currency;
+  price: string;
   isSelected: boolean;
-  changeEventFunc: (name: string) => void;
+  changeEventFunc: () => void;
 }
 
 function ServiceComp({
-  name,
+  rowName,
+  currency,
+  price,
   isSelected = false,
   changeEventFunc,
 }: ServiceCompProps) {
@@ -22,11 +27,14 @@ function ServiceComp({
     <div className={serviceClass}>
       <input
         type="checkbox"
-        name={name}
-        onChange={() => changeEventFunc(name)}
+        name={rowName}
+        onChange={changeEventFunc}
         checked={isSelected}
       />
-      <p>{name}</p>
+      <p>{rowName}</p>
+      <p className="price">
+        {price} {currency}
+      </p>
     </div>
   );
 }

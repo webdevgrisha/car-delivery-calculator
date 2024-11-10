@@ -1,4 +1,4 @@
-import { collection, getDocs, onSnapshot, doc, where, limit, query } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc, where, limit, query, orderBy, DocumentData } from 'firebase/firestore';
 import { firestoreDb } from './firebaseConfig';
 
 function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
@@ -95,25 +95,43 @@ function getFirstTableRecord(tableName: string) {
 }
 
 async function getColumnData(tableName: string, columnName: string, placeholder: string = 'None'): Promise<string[]> {
-    const querySnapshot = await getDocs(collection(firestoreDb, tableName));
+    const collectionRef = collection(firestoreDb, tableName);
+
+    const q = query(collectionRef, where('isShown', '==', true), orderBy(columnName, 'asc'))
+
+    const querySnapshot = await getDocs(q);
 
     const columnData: string[] = [];
 
     querySnapshot.forEach((doc) => {
         const docData = doc.data();
 
-        if ('isShown' in docData && !docData.isShown) return;
-
         columnData.push(docData[columnName]);
     });
 
-    columnData.sort().unshift(placeholder);
+    columnData.unshift(placeholder);
 
     return columnData;
 }
 
 async function generateRowId(tableName: string): Promise<string> {
     return doc(collection(firestoreDb, tableName)).id;
+}
+
+async function getTableData(tableName: string, sortByColName: string) {
+    const collectionRef = collection(firestoreDb, tableName);
+
+    const q = query(collectionRef, where('isShown', '==', true), orderBy(sortByColName, 'asc'));
+
+    const querySnapshot = await getDocs(q);
+
+    const tableRows: Record<string, DocumentData> = {};
+
+    querySnapshot.forEach((doc) => {
+        tableRows[doc.id] = doc.data();
+    });
+
+    return tableRows;
 }
 
 
@@ -157,4 +175,5 @@ export {
     getColumnData,
     generateRowId,
     getFirstTableRecord,
+    getTableData
 }

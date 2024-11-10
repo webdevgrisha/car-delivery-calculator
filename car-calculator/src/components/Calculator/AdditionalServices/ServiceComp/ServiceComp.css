@@ -24,3 +24,11 @@
 .additional-services>.container>.services>.service.selected {
     background-color: rgb(241, 246, 252);
 }
+
+.additional-services>.container>.services>.service .price {
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 150%;
+    color: rgb(124, 141, 181);
+    margin-left: auto;
+}
