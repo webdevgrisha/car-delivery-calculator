@@ -68,7 +68,7 @@ function Users() {
   console.log('users: ', users);
 
   return (
-    <>
+    <div className="users">
       <UserTable
         tableIcon={<SVG_User />}
         tableName="Users"
@@ -81,7 +81,7 @@ function Users() {
         deleteUserFunc={deleteUser}
         editUserFunc={editUser}
       />
-    </>
+    </div>
   );
 }
 

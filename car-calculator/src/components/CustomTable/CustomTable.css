@@ -161,6 +161,14 @@
     line-height: 0px;
 }
 
+.table-section .custom-table>tbody td.copart>p {
+    color: rgb(33, 109, 209);
+}
+
+.table-section .custom-table>tbody td.iaai>p {
+    color: rgb(228, 76, 76);
+}
+
 .table-section .custom-table>tbody td.error>input,
 .table-section .custom-table>tbody td.error>select {
     border: 1px solid rgb(224, 59, 75);

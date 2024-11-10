@@ -6,6 +6,8 @@ import { Id, toast } from 'react-toastify';
 import { useImmer } from 'use-immer';
 import { RenderField } from '..';
 import { FieldInfo } from '../types';
+import classNames from 'classnames';
+import { useAuth } from '../../../../utils/AuthProvider';
 
 interface CreateTableRowProps {
   uid: string;
@@ -155,10 +157,14 @@ function RenderTableRow({
         const buttons = userData.length - 1 === index ? <ActionBtns /> : null;
         const fieldName = fields[index].fieldConfig.name;
 
-        const errorClass = invalidFields[fieldName] ? 'error' : '';
+        const tdClass = classNames({
+          admin: initValue === 'admin',
+          user: initValue === 'user',
+          error: invalidFields[fieldName],
+        });
 
         return (
-          <td className={errorClass} key={index}>
+          <td className={tdClass} key={index}>
             <RenderField
               isEdit={isEdit}
               initValue={initValue}

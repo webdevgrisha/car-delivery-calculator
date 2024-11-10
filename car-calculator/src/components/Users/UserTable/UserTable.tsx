@@ -1,3 +1,4 @@
+import './UserTable.css'
 import { useEffect, useState } from 'react';
 import { CreateNewRecord } from '.';
 import { AddFunc, DeleteFunc, EditFunc, TableRecord } from './interfaces';

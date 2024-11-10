@@ -4,19 +4,10 @@ import { firestoreDb } from './firebaseConfig';
 function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
     const tableRef = collection(firestoreDb, tableName);
 
-    // console.log('tableName: ', tableName);
+    const q = query(tableRef, orderBy(sortBy, 'asc'));
 
-    const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const tableData = querySnapshot.docs.map(doc => ({ id: doc.id, rowData: doc.data() }));
-        // console.log('tableData: ', tableData);
-        if (sortBy in tableData[0].rowData) {
-            tableData.sort((a, b) => {
-                const aData: string = a.rowData[sortBy];
-                const bData: string = b.rowData[sortBy];
-
-                return aData.localeCompare(bData);
-            });
-        }
 
         setData(tableData);
     })
@@ -97,7 +88,7 @@ function getFirstTableRecord(tableName: string) {
 async function getColumnData(tableName: string, columnName: string, placeholder: string = 'None'): Promise<string[]> {
     const collectionRef = collection(firestoreDb, tableName);
 
-    const q = query(collectionRef, where('isShown', '==', true), orderBy(columnName, 'asc'))
+    const q = query(collectionRef, orderBy(columnName, 'asc'));
 
     const querySnapshot = await getDocs(q);
 

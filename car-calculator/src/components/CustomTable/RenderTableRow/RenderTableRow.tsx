@@ -157,10 +157,15 @@ function RenderTableRow({
 
         const fieldName = fields[index].fieldConfig.name;
         const initValue = rowData[colName];
-        const errorClass = classNames({error: invalidFields[fieldName]});
+
+        const tdClass = classNames({
+          copart: initValue === 'Copart',
+          iaai: initValue === 'IAAI',
+          error: invalidFields[fieldName],
+        });
 
         return (
-          <td className={errorClass} key={index}>
+          <td className={tdClass} key={index}>
             <RenderField
               isEdit={isEdit}
               initValue={initValue}
