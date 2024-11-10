@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Loader from '../Loader/Loader';
 import { SVG_Ports, SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
@@ -11,7 +10,6 @@ import {
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function MyPorts() {
-  const [loading, setLoading] = useState<boolean>(true);
   const [shippingPortsTableData, setShippingPortsTableData] =
     useState<TableData>([]);
   const [destinationPortsTableData, setDestinationPortsTableData] =

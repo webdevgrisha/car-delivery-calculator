@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Loader from '../Loader/Loader';
 import { SVG_Laveta } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import useCreateActionFunctions from '../hooks/useCreateActionFunctions';
@@ -8,7 +7,6 @@ import createFiledConfig from './fields';
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function ShippingCostToAUSPort() {
-  const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
   const fields = createFiledConfig();

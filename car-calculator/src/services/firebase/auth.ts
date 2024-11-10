@@ -1,5 +1,5 @@
 import './firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User } from "firebase/auth";
 
 
 const auth = getAuth();
@@ -13,17 +13,17 @@ const auth = getAuth();
 // getUsers().then((result) => console.log("Users:", result));
 
 
-function testCreateUser(email: string, password: string) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentail) => {
-            console.log('User create: ', userCredentail)
-            const user = userCredentail.user;
-            console.log('User: ', user);
-        })
-        .catch((err) => {
-            console.log('user not create: ', err.message);
-        });
-}
+// function testCreateUser(email: string, password: string) {
+//     createUserWithEmailAndPassword(auth, email, password)
+//         .then((userCredentail) => {
+//             console.log('User create: ', userCredentail)
+//             const user = userCredentail.user;
+//             console.log('User: ', user);
+//         })
+//         .catch((err) => {
+//             console.log('user not create: ', err.message);
+//         });
+// }
 
 function signInUser(email: string, password: string) {
     signInWithEmailAndPassword(auth, email, password)
@@ -44,7 +44,7 @@ function userSignOut() {
 }
 
 // subscriptions
-function subscribeOnAuthStateChanged(stateChangedFunc: Function) {
+function subscribeOnAuthStateChanged(stateChangedFunc: NextOrObserver<User>) {
     return onAuthStateChanged(auth, stateChangedFunc);
 }
 

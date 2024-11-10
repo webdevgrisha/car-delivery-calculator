@@ -26,7 +26,7 @@ interface SelectField {
     fieldConfig: SelectedFieldInfo;
 }
 
-interface TableRecord {
+interface UserRecord {
     uid: string;
     userData: string[];
 }
@@ -62,7 +62,7 @@ export type {
     InputField,
     SelectField,
     SelectedFieldInfo,
-    TableRecord,
+    UserRecord,
     NewUserData,
     FunctionSuccesResult,
     FunctionErrorResult,

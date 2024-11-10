@@ -57,7 +57,7 @@ function FormulaModalWindow({
     );
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const allowedKeys = [
       'Backspace',
       'Tab',

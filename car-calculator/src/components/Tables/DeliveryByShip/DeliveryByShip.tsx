@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Loader from '../Loader/Loader';
 import { SVG_Ship } from '../../../assets';
 import CustomTable from '../../CustomTable/CustomTable';
 import createActionFunctions from '../hooks/useCreateActionFunctions';
@@ -8,7 +7,6 @@ import createFieldsConfig from './fields';
 import { useTableSubscriptiontsts } from '../../../hooks';
 
 function DeliveryByShip() {
-  const [loading, setLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<TableData>([]);
 
   // const fields = useFields(createFieldsConfig) as FieldInfo[];

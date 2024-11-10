@@ -33,7 +33,7 @@ function SettingsTable() {
       </thead>
       <Reorder.Group
         as="tbody"
-        axys="y"
+        axis="y"
         values={order.rowData?.rowsOrder || []}
         onReorder={moveRowsFunc}
       >

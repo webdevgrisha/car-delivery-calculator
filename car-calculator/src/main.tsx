@@ -6,10 +6,9 @@ import {
   Outlet,
   RouterProvider,
 } from 'react-router-dom';
-import App from './App.tsx';
 import { Calculator, CalculatorSettings, LoginForm, PersonalInfo, Users } from './components/index.ts';
 
-import { RootLayout, LogInLayout, TablesLayout } from '../src/layouts/index.ts';
+import { RootLayout, TablesLayout } from '../src/layouts/index.ts';
 
 import './index.css';
 import './reset.css';

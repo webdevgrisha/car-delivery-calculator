@@ -7,7 +7,6 @@ import { useImmer } from 'use-immer';
 import { RenderField } from '..';
 import { FieldInfo } from '../types';
 import classNames from 'classnames';
-import { useAuth } from '../../../../utils/AuthProvider';
 
 interface CreateTableRowProps {
   uid: string;

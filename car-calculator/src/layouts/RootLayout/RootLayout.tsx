@@ -3,7 +3,6 @@ import { Outlet, NavLink, useMatch } from 'react-router-dom';
 import './RootLayout.css';
 
 import { userSignOut } from '../../services/firebase/auth';
-import { useAuth } from '../../utils/AuthProvider';
 
 import {
   SVG_Email,
@@ -12,18 +11,18 @@ import {
   SVG_Calculator,
   SVG_Settings,
 } from '../../assets';
+import classNames from 'classnames';
+import { useUserLogIn } from '../../hooks';
 
 export default function RootLayout() {
   const match = useMatch('/settings/*');
-  const userData = useAuth();
+  const currentUser = useUserLogIn()
 
-  const email = userData.currentUser.email;
-  const role = userData.currentUser.role;
-  console.log('Auth: ', userData.currentUser.email);
-  // console.log('match: ', match);
-  // const [isSettingActive, setSettingActive] = useState<boolean>(false);
+  const email = currentUser.email;
+  const role = currentUser.role;
+  console.log('Auth: ', currentUser.email);
 
-  const mainNavClass = match ? 'remove-p' : '';
+  const mainNavClass = classNames({ 'remove-p': match });
   return (
     <div className="root-layout">
       <header>

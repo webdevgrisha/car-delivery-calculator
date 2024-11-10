@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './LoginForm.css';
 
-import { createUser, signInUser } from '../../services/firebase/auth';
+import { signInUser } from '../../services/firebase/auth';
 import { useAuth } from '../../utils/AuthProvider';
 import { Navigate } from 'react-router-dom';
 
@@ -9,14 +9,16 @@ function LoginForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { currentUser } = useAuth();
-  // createUser('test1@gmail.com', '12345678');
-  const handleSubmitForm = (e) => {
+
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signInUser(email, password);
   };
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
 
   if (currentUser) {
     return <Navigate to="/" />;

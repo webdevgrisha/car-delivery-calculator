@@ -3,11 +3,10 @@ import 'react-phone-input-2/lib/style.css'; // Подключаем стили
 
 import './PersonalInfo.css';
 import { useEffect, useState } from 'react';
-import { error } from 'firebase-functions/logger';
 import { updateUserName } from '../../services/firebase/auth';
-import { useAuth } from '../../utils/AuthProvider';
 import { useImmer } from 'use-immer';
 import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
+import { useUserLogIn } from '../../hooks';
 
 type ValidateInput =
   | {
@@ -22,7 +21,7 @@ interface PersonalInfo {
 }
 
 function PersonalInfo() {
-  const userData = useAuth();
+  const currentUser = useUserLogIn();
 
   const [personalInfo, setPersonalInfo] = useImmer({});
 
@@ -30,15 +29,14 @@ function PersonalInfo() {
 
   useEffect(() => {
     const unsubscribeFunc = subscribeOnUserUpdate(
-      userData.currentUser.uid,
+      currentUser.uid,
       setPersonalInfo,
     );
 
     return unsubscribeFunc;
   }, []);
 
-  const [nameInit = '', sernameInit = ''] =
-    userData.currentUser.displayName.split(' ');
+  const [nameInit = '', sernameInit = ''] = currentUser.displayName.split(' ');
 
   const [name, setName] = useState<string>(nameInit);
   const [surname, setSurname] = useState<string>(sernameInit);
@@ -91,7 +89,6 @@ function PersonalInfo() {
           onChange={handleSurnameChange}
           value={surname}
         />
-        {/* <input type="text" placeholder="" /> */}
 
         <PhoneInput
           inputClass="phone-input-field"

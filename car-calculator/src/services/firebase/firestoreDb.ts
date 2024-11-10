@@ -1,5 +1,6 @@
-import { collection, getDocs, onSnapshot, doc, where, limit, query, orderBy, DocumentData } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc, where, query, orderBy, DocumentData } from 'firebase/firestore';
 import { firestoreDb } from './firebaseConfig';
+
 
 function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
     const tableRef = collection(firestoreDb, tableName);

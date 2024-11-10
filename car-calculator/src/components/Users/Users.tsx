@@ -7,11 +7,10 @@ import {
   editUser,
 } from '../../services/firebase/functions';
 import { subscribeOnUsersUpdate } from '../../services/firebase/realtimeDb';
-import Loader from '../Loader/Loader';
 import { SVG_User } from '../../assets';
 import { UserTable } from './UserTable/index';
 import { FieldInfo } from './UserTable/types';
-import { TableRecord } from './UserTable/interfaces';
+import { UserRecord } from './UserTable/interfaces';
 
 interface UserProfile {
   uid: string;
@@ -56,8 +55,7 @@ const fields: FieldInfo[] = [
 ];
 
 function Users() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<TableRecord[]>([]);
+  const [users, setUsers] = useState<UserRecord[]>([]);
 
   useEffect(() => {
     const unsubscribeFunc = subscribeOnUsersUpdate(setUsers);
