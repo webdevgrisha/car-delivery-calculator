@@ -6,8 +6,14 @@ import { ManualRow } from '.';
 import { RowNames } from './types';
 import { FormEvent, useState } from 'react';
 import { showWarningToastMessage } from '../../CustomTable/tableToast';
+import { calculateRowsData } from '../../../services/firebase/functions';
+import { ClalculationResult } from '../interfaces';
 
-function ManualCalculation() {
+interface ManualCalculationProps {
+  setCalculationResult: (value: ClalculationResult) => void;
+}
+
+function ManualCalculation({ setCalculationResult }: ManualCalculationProps) {
   const [formData, setFormData] = useImmer<FormData>({
     auction: '',
     carPrice: '',
@@ -58,9 +64,14 @@ function ManualCalculation() {
 
     setInValidFields(Object.fromEntries(inValidFields));
 
-    // if (!inValidFields.length) {
+    if (inValidFields.length) return;
 
-    // }
+    console.log({ variables: formData });
+
+    calculateRowsData({ variables: formData }).then(({ data }) => {
+      console.log(data);
+      setCalculationResult(data as ClalculationResult);
+    });
   };
 
   return (

@@ -4,14 +4,18 @@ import './TotalSum.css';
 interface TotalSumProps {
   title: string;
   currency: Currency;
+  totalResult: number[] | null;
 }
 
-function TotalSum(props: TotalSumProps) {
-  const { title, currency } = props;
+function TotalSum({ title, currency, totalResult }: TotalSumProps) {
+  const price: number = totalResult?.[0] || 0;
+
   return (
     <div className="total-sum">
       <p className="title">{title}</p>
-      <p className="price">0 {currency}</p>
+      <p className="price">
+        {price} {currency}
+      </p>
     </div>
   );
 }

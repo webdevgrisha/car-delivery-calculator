@@ -6,6 +6,7 @@ import { MentionsInput, Mention } from 'react-mentions';
 import mentionStyle from './MentionStyle';
 import { tableMention, variableMention } from './mentionData';
 import isFormulaValid from './formulaValidation';
+import { toast } from 'react-toastify';
 
 interface FormulaModalWindowProps {
   isShown: boolean;
@@ -39,7 +40,7 @@ function FormulaModalWindow({
   const handleInputChange = (value: string) => {
     if (invalidInput) setInvalidInput(false);
 
-    setFormula(value)
+    setFormula(value);
   };
 
   const handleFormulaSave = () => {
@@ -48,7 +49,12 @@ function FormulaModalWindow({
 
     setInvalidInput(!isValid);
 
-    if (isValid) setRowFormula(formula);
+    if (!isValid) return;
+
+    setRowFormula(formula);
+    toast.success(
+      "The formula is saved don't forget to save it for the section",
+    );
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -64,7 +70,7 @@ function FormulaModalWindow({
     ];
 
     const isKeyEnable =
-      allowedKeys.includes(event.key) || /[\d\s#$*+/\-)(]/.test(event.key);
+      allowedKeys.includes(event.key) || /[\d\s#$%*+/\-)(]/.test(event.key);
 
     if (!isKeyEnable) {
       event.preventDefault();

@@ -12,6 +12,7 @@ const editTableRecord = httpsCallable(functions, "editTableRecord");
 const createTableRecord = httpsCallable(functions, "createTableRecord");
 const updateCalculatorSettingsData = httpsCallable(functions, "updateCalculatorSettingsData");
 const getCalculatorSettingsData = httpsCallable(functions, "getCalculatorSettingsData");
+const calculateRowsData = httpsCallable(functions, "calculateRowsData");
 
 import { writeUserData, readAllUsers } from './realtimeDb';
 
@@ -26,7 +27,8 @@ export {
     editTableRecord,
     createTableRecord,
     updateCalculatorSettingsData,
-    getCalculatorSettingsData
+    getCalculatorSettingsData,
+    calculateRowsData
 }
 
 readAllUsers();

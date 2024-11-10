@@ -33,11 +33,11 @@
     line-height: 1.06rem;
 }
 
-.sub-section .last.row .name {
+.sub-section .row.last .name {
     font-size: 0.88rem;
-    color: rgb(124, 141, 181);
+    color: rgb(41, 41, 41);
 }
 
-.sub-section .last.row .price {
+.sub-section .row.last .price {
     color: rgb(33, 109, 209);
 }

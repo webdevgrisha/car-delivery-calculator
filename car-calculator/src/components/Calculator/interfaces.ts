@@ -10,10 +10,11 @@ interface CalculationResultSectionData {
     [key: string]: RowData[] | Currency;
 }
 
+type ClalculationResult = number[][];
 
 export type {
     RowData,
     CalculationResultSectionData,
-    TotalRow,
-    Currency
+    Currency,
+    ClalculationResult
 }

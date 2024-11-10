@@ -5,9 +5,14 @@ import './CalculationResultSection.css';
 interface SubSectionProps {
   title: string;
   rows: RowData[];
+  sectionResult: number[] | null;
 }
 
-function CalculationResultSection({ title, rows }: SubSectionProps) {
+function CalculationResultSection({
+  title,
+  rows,
+  sectionResult,
+}: SubSectionProps) {
   return (
     <div className="sub-section">
       <h3>{title}</h3>
@@ -18,10 +23,14 @@ function CalculationResultSection({ title, rows }: SubSectionProps) {
           last: index === rows.length - 1,
         });
 
+        const price: number = sectionResult?.[index] || 0;
+
         return (
           <div className={rowClass} key={index}>
             <p className="name">{rowName}</p>
-            <p className="price">0 {currency}</p>
+            <p className="price">
+              {price} {currency}
+            </p>
           </div>
         );
       })}

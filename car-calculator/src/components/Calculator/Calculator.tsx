@@ -13,6 +13,7 @@ import {
 import Loader from '../Loader/Loader';
 import {
   CalculationResultSectionData,
+  ClalculationResult,
   Currency,
   RowData,
 } from './interfaces';
@@ -38,10 +39,10 @@ import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
 
 // const thirdSubSection = ['Transport do domu', 'Inne płatności:'];
 
-const currencyPairs = [
-  { baseCode: 'USD', targetCode: 'PLN' },
-  { baseCode: 'USD', targetCode: 'EUR' },
-];
+// const currencyPairs = [
+//   { baseCode: 'USD', targetCode: 'PLN' },
+//   { baseCode: 'USD', targetCode: 'EUR' },
+// ];
 
 const calculationResultSectionData: CalculationResultSectionData = {
   auction_and_shipping: [],
@@ -52,6 +53,8 @@ const calculationResultSectionData: CalculationResultSectionData = {
 
 function Calculator() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [clalculationResult, setCalculationResult] =
+    useState<ClalculationResult>([]);
 
   useEffect(() => {
     const dataPromiseArr = [
@@ -106,26 +109,30 @@ function Calculator() {
               rows={
                 calculationResultSectionData.auction_and_shipping as RowData[]
               }
+              sectionResult={clalculationResult[0] || null}
             />
             <CalculationResultSection
               title="Odprawa celna"
               rows={calculationResultSectionData.customs_clearance as RowData[]}
+              sectionResult={clalculationResult[1] || null}
             />
             <CalculationResultSection
               title="Inne płatności"
               rows={calculationResultSectionData.other_payments as RowData[]}
+              sectionResult={clalculationResult[2] || null}
             />
           </div>
           <TotalSum
             title="Całkowity koszt samochodu:"
             currency={calculationResultSectionData.total_car_cost as Currency}
+            totalResult={clalculationResult[3] || null}
           />
         </section>
         <Exchange />
       </div>
       <div className="colum-wrapper">
         <AutoCalculation />
-        <ManualCalculation />
+        <ManualCalculation setCalculationResult={setCalculationResult} />
         <AdditionalServices />
       </div>
     </div>
