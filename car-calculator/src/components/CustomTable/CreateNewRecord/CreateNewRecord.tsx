@@ -4,7 +4,7 @@ import { SVG_Add } from '../../../assets';
 
 import './CreateNewRecord.css';
 import { CustomInput, CustomSelect } from '../../index';
-import { InputFieldInfo, SelectedFieldInfo } from '../interfaces';
+import { InputFieldInfo, ResponseData, SelectedFieldInfo } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
@@ -13,7 +13,7 @@ import { useCustomTableContext } from '../tableContext';
 
 function CreateNewRecord() {
   const { fields, addNewRecordFunc } = useCustomTableContext();
-  
+
   const [newRecordDataConfig] = useState(() => createConfig(fields));
 
   const [newRecordData, setNewRecordData] =
@@ -59,10 +59,10 @@ function CreateNewRecord() {
 
     const toastId: Id = toast.loading('Please wait...');
 
-    addNewRecordFunc(newRecordData).then(({ data }) => {
+    addNewRecordFunc(newRecordData).then(({ data }: { data: ResponseData }) => {
       const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unkown error';
 
       showUpdateToast(toastId, message, status);
 

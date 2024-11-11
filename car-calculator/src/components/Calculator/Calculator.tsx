@@ -20,30 +20,6 @@ import {
 import { toast } from 'react-toastify';
 import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
 
-// const firstSubSection = [
-//   'Cena samochodu na aukcji',
-//   'Prowizja aukcyjna',
-//   'Koszt wysyłki do portu w USA',
-//   'Koszt transportu morskiego do portu w Bremerhaven',
-//   'Prowizja naszej firmy',
-//   'Suma aukcyjna i wysyłka:',
-// ];
-
-// const secondSubSection = [
-//   'Cło',
-//   'VAT',
-//   'Akcyza',
-//   'Agencja celna i rozładunek',
-//   'Suma opłat celnych:',
-// ];
-
-// const thirdSubSection = ['Transport do domu', 'Inne płatności:'];
-
-// const currencyPairs = [
-//   { baseCode: 'USD', targetCode: 'PLN' },
-//   { baseCode: 'USD', targetCode: 'EUR' },
-// ];
-
 const calculationResultSectionData: CalculationResultSectionData = {
   auction_and_shipping: [],
   customs_clearance: [],
@@ -75,11 +51,23 @@ function Calculator() {
       console.log('sectionsData: ', sectionsData);
       try {
         sectionsData.forEach(({ data }, index) => {
-          if ('error' in data) throw Error(data.error);
+          if (data && typeof data === 'object' && 'error' in data) {
+            throw new Error(data.error as string); 
+          }
 
           console.log('data: ', data);
-          calculationResultSectionData[tableNames[index]] =
-            (data.tableRows as RowData) || (data.currency as Currency);
+
+          const sectionData = data as
+            | { tableRows: RowData[] }
+            | { currency: Currency };
+
+          if ('tableRows' in sectionData) {
+            calculationResultSectionData[tableNames[index]] =
+              sectionData.tableRows;
+          } else if ('currency' in sectionData) {
+            calculationResultSectionData[tableNames[index]] =
+              sectionData.currency;
+          }
         });
 
         setIsLoading(false);

@@ -12,7 +12,7 @@ import {
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
-import { FieldInfo, FieldName } from '../types';
+import { FieldInfo, FieldName, FunctionResult } from '../types';
 
 interface CreateNewRecordProps {
   fields: FieldInfo[];
@@ -67,10 +67,9 @@ function CreateNewRecord({ fields, addNewUserFunc }: CreateNewRecordProps) {
 
     console.log('create user');
 
-    addNewUserFunc(newUserData).then(({ data }) => {
+    addNewUserFunc(newUserData).then(({ data }: { data: FunctionResult }) => {
       const status = 'message' in data ? 'success' : 'error';
-
-      const message: string = data.message || data.error;
+      const message = 'message' in data ? data.message : data.error;
 
       showUpdateToast(toastId, message, status);
 
@@ -137,5 +136,5 @@ function createConfig(fields: FieldInfo[]) {
     {} as { [key: string]: string },
   );
 
-  return result as NewUserData;
+  return result as unknown as NewUserData;
 }

@@ -1,7 +1,7 @@
 import './UserTable.css'
 import { useEffect, useState } from 'react';
 import { CreateNewRecord } from '.';
-import { AddFunc, DeleteFunc, EditFunc, TableRecord } from './interfaces';
+import { AddFunc, DeleteFunc, EditFunc, UserRecord } from './interfaces';
 import RenderRows from './RenderRows/RenderRows';
 import { FieldInfo } from './types';
 
@@ -10,7 +10,7 @@ interface UserTableProps {
   tableName: string;
   tableColumnNames: string[];
   tableFields: FieldInfo[];
-  records: TableRecord[];
+  records: UserRecord[];
   searchBy: string;
   searchInputText: string;
   addNewUserFunc: AddFunc;
@@ -32,14 +32,14 @@ function UserTable({
 }: UserTableProps) {
   const [showAddNewRecordFields, setShowAddNewRecordFields] =
     useState<boolean>(false);
-  const [filterRecords, setFilterRecords] = useState<TableRecord[]>(records);
+  const [filterRecords, setFilterRecords] = useState<UserRecord[]>(records);
 
   useEffect(() => {
     setFilterRecords(records);
   }, [records]);
 
   const handleInputSearch = (newValue: string = '') => {
-    const filteredResult: TableRecord[] = filterBy(
+    const filteredResult: UserRecord[] = filterBy(
       searchBy,
       tableFields,
       records,
@@ -102,7 +102,7 @@ function UserTable({
 function filterBy(
   colName: string,
   tableFields: FieldInfo[],
-  records: TableRecord[],
+  records: UserRecord[],
   searchTerm: string,
 ) {
   const searchIndex = tableFields.findIndex((field: FieldInfo) => {
@@ -113,8 +113,8 @@ function filterBy(
 
   if (searchIndex === -1 || searchTerm === '') return records;
 
-  const filteredRecord: TableRecord[] = records.filter(
-    (record: TableRecord) => {
+  const filteredRecord: UserRecord[] = records.filter(
+    (record: UserRecord) => {
       const rowData: string[] = record.userData;
 
       return rowData[searchIndex]

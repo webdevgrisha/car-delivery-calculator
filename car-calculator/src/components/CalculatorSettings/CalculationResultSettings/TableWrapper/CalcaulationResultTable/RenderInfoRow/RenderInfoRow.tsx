@@ -111,9 +111,12 @@ function RenderInfoRow({
         />
       </td>
       <td>
-        <FormulaInput formula={formula} setFormula={(value: string) =>
+        <FormulaInput
+          formula={formula}
+          setFormula={(value: string) =>
             editRecordFunc(rowId, 'formula', value, 'info')
-          } />
+          }
+        />
       </td>
       <td>
         <div className="buttons">

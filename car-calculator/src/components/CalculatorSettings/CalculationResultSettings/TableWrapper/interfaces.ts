@@ -59,12 +59,12 @@ interface InitActionData {
     initRows: CalculatorSettingsTable;
 }
 
-interface EidtActionData {
+interface EditActionData<T extends ResultRow | InfoRow> {
     type: 'edit';
     rowId: string;
-    rowName: keyof InfoRow | keyof ResultRow;
-    rowType: 'info' | 'result';
-    newValue: InfoRow[keyof InfoRow] | ResultRow[keyof ResultRow];
+    rowName: keyof T;
+    rowType: T['rowType'];
+    newValue: T[keyof T];
     servicesAction: TableAction;
 }
 
@@ -95,8 +95,8 @@ interface MoveActionData {
 interface HandleFieldChange {
     <T extends InfoRow | ResultRow>(
         id: string,
-        name: keyof T,
-        value: T[keyof T],
+        name: keyof T | 'isShown' | 'formula',
+        value: T[keyof T] | boolean,
         rowType: T['rowType']
     ): void;
 }
@@ -123,7 +123,7 @@ export type {
     CreateEditActionConfig,
     OrderActionConfig,
     InitActionData,
-    EidtActionData,
+    EditActionData,
     DeleteActionData,
     AddActionData,
     SaveActionData,

@@ -12,17 +12,17 @@ import { UserTable } from './UserTable/index';
 import { FieldInfo } from './UserTable/types';
 import { UserRecord } from './UserTable/interfaces';
 
-interface UserProfile {
-  uid: string;
-  userData: {
-    displayName: string;
-    email: string;
-    role: 'user' | 'admin';
-    customClaims?: {
-      role?: 'user' | 'admin';
-    };
-  };
-}
+// interface UserProfile {
+//   uid: string;
+//   userData: {
+//     displayName: string;
+//     email: string;
+//     role: 'user' | 'admin';
+//     customClaims?: {
+//       role?: 'user' | 'admin';
+//     };
+//   };
+// }
 
 const fields: FieldInfo[] = [
   {
@@ -49,7 +49,7 @@ const fields: FieldInfo[] = [
       name: 'role',
       defaultValue: 'user',
       selectionOptions: ['Select user role', 'user', 'admin'],
-      validate: (value: string) => true,
+      validate: (value) => value === 'user' || value === 'admin',
     },
   },
 ];

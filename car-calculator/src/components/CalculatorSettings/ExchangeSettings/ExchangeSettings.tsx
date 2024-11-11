@@ -8,6 +8,7 @@ import { updateCalculatorSettingsData } from '../../../services/firebase/functio
 import { Id, toast } from 'react-toastify';
 import { showUpdateToast } from '../../CustomTable/tableToast';
 import classNames from 'classnames';
+import { ResponseData } from '../CalculationResultSettings/interfaces';
 
 type ExchangeRate = 'Manual' | 'Automatically';
 type IsShown = 'Yes' | 'No';
@@ -69,10 +70,12 @@ function ExchangeSettings() {
     updateCalculatorSettingsData({
       tableName: 'exchange',
       tableAction: [{ id: exchangeData.id, config: exchangeData.rowData }],
-    }).then(({ data }) => {
+    }).then((result) => {
+      const data = result.data as ResponseData;
+
       const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unkown error!';
 
       showUpdateToast(toastId, message, status);
     });
@@ -140,7 +143,7 @@ function ExchangeSettings() {
             <p>Show exchange rate under the calculator</p>
             <CustomSelect
               name="isShown"
-              selectionOptions={['select display mode','Yes', 'No']}
+              selectionOptions={['select display mode', 'Yes', 'No']}
               value={exchangeData.rowData.isShown}
               changeEventFunc={(value) =>
                 setExchangeData((draft) => {

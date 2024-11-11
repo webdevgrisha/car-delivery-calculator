@@ -3,8 +3,11 @@ import { TableWrapperContext } from './tableWrapperContext';
 import CalcaulationResultTable from './CalcaulationResultTable/CalcaulationResultTable';
 import {
   CalculatorSettingsTable,
+  EditActionData,
   HandleFieldChange,
+  InfoRow,
   InitActionData,
+  ResultRow,
   TableContext,
 } from './interfaces';
 
@@ -34,11 +37,15 @@ const tableRowsInitConfig: CalculatorSettingsTable = {
     id: '',
     rowData: {
       rowName: '',
+      rowType: 'result',
+      currency: 'USD',
     },
   },
   order: {
+    id: '',
     rowData: {
       rowsOrder: [],
+      rowType: 'order',
     },
   },
 };
@@ -71,7 +78,7 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
       rowType: rowType,
       newValue: value,
       servicesAction: tableAction.current,
-    });
+    } as EdićtActionData<InfoRow | ResultRow>);
   };
 
   const handleServiceDelete = (id: string): void => {
@@ -112,10 +119,11 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
     updateCalculatorSettingsData({
       tableName: tablePath,
       tableAction: Object.values(tableAction.current),
-    }).then(({ data }) => {
-      const status = 'message' in data ? 'success' : 'error';
+    }).then((response) => {
+      const data = response.data as { message?: string; error?: string };
+      const status = data.message ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unknown error';
 
       showUpdateToast(toastId, message, status);
 

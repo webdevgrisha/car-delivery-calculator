@@ -2,6 +2,20 @@ import { collection, getDocs, onSnapshot, doc, where, query, orderBy, DocumentDa
 import { firestoreDb } from './firebaseConfig';
 
 
+interface RowData {
+    rowName?: string;
+    rowsOrder?: string[];
+    rowType: string;
+    [key: string]: unknown; // Для других полей
+}
+
+interface RowsConfig {
+    info: { [id: string]: RowData };
+    result: { id: string; rowData: RowData };
+    order: { id: string; rowData: RowData };
+}
+
+
 function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Function) {
     const tableRef = collection(firestoreDb, tableName);
 
@@ -16,46 +30,50 @@ function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Func
     return unsubscribe;
 }
 
-function subscribeOnTableSettingsUpdate(tableName: string, setData: Function) {
+function subscribeOnTableSettingsUpdate(
+    tableName: string,
+    setData: Function
+) {
     const tableRef = collection(firestoreDb, tableName);
 
     const unsubscribe = onSnapshot(tableRef, (querySnapshot) => {
-        const initRowsConfig = {
+        const initRowsConfig: RowsConfig = {
             info: {},
             result: {
                 id: '',
                 rowData: {
                     rowName: '',
+                    rowType: ''
                 },
             },
             order: {
+                id: '',
                 rowData: {
                     rowsOrder: [],
+                    rowType: ''
                 },
             },
         };
 
-        querySnapshot.docs.map(doc => {
-            const row = { id: doc.id, rowData: doc.data() };
-
+        querySnapshot.docs.forEach((doc) => {
+            const row = { id: doc.id, rowData: doc.data() as RowData };
             const { rowType } = row.rowData;
 
             switch (rowType) {
                 case 'info':
-                    {
-                        initRowsConfig.info[row.id] = row.rowData;
-                    }
+                    initRowsConfig.info[row.id] = row.rowData;
                     break;
                 case 'result':
                     initRowsConfig.result = row;
                     break;
                 case 'order':
                     initRowsConfig.order = row;
+                    break;
             }
         });
 
         setData(initRowsConfig);
-    })
+    });
 
     return unsubscribe;
 }

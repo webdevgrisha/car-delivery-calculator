@@ -43,6 +43,12 @@ interface TableContext {
     editRecordFunc: Function;
 }
 
+interface ResponseData {
+    message?: string;
+    error?: string;
+}
+
+
 export type {
     InputField,
     SelectField,
@@ -50,5 +56,6 @@ export type {
     SelectedFieldInfo,
     TableRecord,
     FieldData,
-    TableContext
+    TableContext,
+    ResponseData
 }

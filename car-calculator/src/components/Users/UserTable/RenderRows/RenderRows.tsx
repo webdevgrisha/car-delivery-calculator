@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import CreateTableRow from '../RenderTableRow/RenderTableRow';
-import { DeleteFunc, EditFunc, TableRecord } from '../interfaces';
+import { DeleteFunc, EditFunc, UserRecord } from '../interfaces';
 import { FieldInfo } from '../types';
 
 interface RenderRowsProps {
-  records: TableRecord[];
+  records: UserRecord[];
   fields: FieldInfo[];
   deleteUserFunc: DeleteFunc;
   editUserFunc: EditFunc;
@@ -18,7 +18,7 @@ function RenderRows({
 }: RenderRowsProps) {
   const [editRowId, setEditRowId] = useState<string>('');
 
-  const rows = records.map((record: TableRecord) => {
+  const rows = records.map((record: UserRecord) => {
     const isEdit = record.uid === editRowId;
 
     return (

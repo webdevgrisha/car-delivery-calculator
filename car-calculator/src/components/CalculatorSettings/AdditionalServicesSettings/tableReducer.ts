@@ -1,5 +1,5 @@
 import { RowData, ServiceData } from "./interfaces";
-import { Draft } from "immer";
+import { Draft, WritableDraft } from "immer";
 import { createServiceAction, deleteServiceAction, editServiceAction } from "./tableActionFunctions";
 import { Action } from "./types";
 
@@ -23,9 +23,14 @@ export default function tableReducer(draft: Draft<ServiceData[]>, action: Action
 
                 if (serviceIndex === -1) return;
 
-                const service = draft[serviceIndex];
+                const service = draft[serviceIndex] as WritableDraft<ServiceData>;
 
-                service.rowData[rowName] = newValue;
+                if (newValue === undefined) {
+                    service.rowData.error = true;
+                    break;
+                }
+
+                service.rowData[rowName] = newValue as never;
 
                 if ('error' in service.rowData && service.rowData.error) service.rowData.error = false;
 

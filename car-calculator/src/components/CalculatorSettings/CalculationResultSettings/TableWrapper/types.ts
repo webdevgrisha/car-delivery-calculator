@@ -1,4 +1,4 @@
-import { AddActionData, CreateEditActionConfig, DeleteActionConfig, DeleteActionData, EidtActionData, InfoRow, InitActionData, MoveActionData, OrderActionConfig, OrderRow, ResultRow, SaveActionData, TableRow } from "./interfaces";
+import { AddActionData, CreateEditActionConfig, DeleteActionConfig, DeleteActionData, EditActionData, InfoRow, InitActionData, MoveActionData, OrderActionConfig, OrderRow, ResultRow, SaveActionData } from "./interfaces";
 
 type Currency = 'USD' | 'EUR' | 'PLN';
 
@@ -6,7 +6,7 @@ interface TableAction {
     [key: string]: DeleteActionConfig | CreateEditActionConfig | OrderActionConfig
 }
 
-type Action = InitActionData | EidtActionData | DeleteActionData | AddActionData | SaveActionData | MoveActionData;
+type Action = InitActionData | EditActionData<InfoRow | ResultRow> | DeleteActionData | AddActionData | SaveActionData | MoveActionData;
 
 type RowData = ResultRow | InfoRow | OrderRow;
 

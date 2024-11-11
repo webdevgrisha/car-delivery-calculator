@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import './CustomTable.css';
 import { CreateNewRecord } from '.';
-import { FieldData, TableContext, TableRecord } from './interfaces';
+import {
+  FieldData,
+  ResponseData,
+  TableContext,
+  TableRecord,
+} from './interfaces';
 import RenderRows from './RenderRows/RenderRows';
 import { Id, toast } from 'react-toastify';
 import { showErrorToastMessage, showUpdateToast } from './tableToast';
@@ -93,12 +98,15 @@ function CustomTable({
         console.log(result.data);
         console.log('JSON: ', JSON.stringify(result.data));
 
-        createTableFormCSV(JSON.stringify(result.data)).then(({ data }) => {
-          const status = 'message' in data ? 'success' : 'error';
-          const message: string = data.message || data.error;
+        createTableFormCSV(JSON.stringify(result.data)).then(
+          ({ data }: { data: ResponseData }) => {
+            const status = 'message' in data ? 'success' : 'error';
+            const message: string =
+              data.message || data.error || 'Unkown Error';
 
-          showUpdateToast(toastId, message, status);
-        });
+            showUpdateToast(toastId, message, status);
+          },
+        );
       },
     });
   };
@@ -119,7 +127,10 @@ function CustomTable({
         <input
           ref={addFileInputRef}
           onChange={(e) => {
-            handleFileAdd(e.target.files?.[0]);
+            const file = e.target.files?.[0];
+
+            if (file !== undefined) handleFileAdd(file);
+
             e.target.value = '';
           }}
           type="file"
@@ -156,10 +167,11 @@ async function isCSVValid(columnNames: string[], file: File) {
       preview: 1,
       header: false,
       complete: (result) => {
-        resolve(result.data[0]);
+        resolve(result.data[0] as string[]);
         console.log('headers: ', result.data);
       },
       error: (error) => {
+        console.log(error);
         reject(false);
       },
     }),

@@ -1,4 +1,4 @@
-import { AddActionData, CreateEditActionConfig, DeleteActionConfig, DeleteActionData, EidtActionData, InitActionData, SaveActionData } from "./interfaces";
+import { AddActionData, DeleteActionData, EidtActionData, InitActionData, SaveActionData } from "./interfaces";
 
 type Currency = 'USD' | 'EUR' | 'PLN';
 

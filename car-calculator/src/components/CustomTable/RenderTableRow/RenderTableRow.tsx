@@ -1,7 +1,7 @@
 import './RenderTableRow.css';
 
 import { SVG_Edit, SVG_Delete, SVG_Cancel, SVG_Save } from '../../../assets';
-import { FieldData } from '../interfaces';
+import { FieldData, ResponseData } from '../interfaces';
 
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
@@ -49,10 +49,10 @@ function RenderTableRow({
 
     const toastId: Id = toast.loading('Please wait...');
 
-    deleteRecordFunc({ id }).then(({ data }) => {
+    deleteRecordFunc({ id }).then(({ data }: { data: ResponseData }) => {
       const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unkown error!';
 
       showUpdateToast(toastId, message, status);
     });
@@ -98,19 +98,21 @@ function RenderTableRow({
 
     setEditRowId('');
 
-    editRecordFunc({ id, editRecordData }).then(({ data }) => {
-      const status = 'message' in data ? 'success' : 'error';
+    editRecordFunc({ id, editRecordData }).then(
+      ({ data }: { data: ResponseData }) => {
+        const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+        const message: string = data.message || data.error || 'Unkown error';
 
-      showUpdateToast(toastId, message, status);
+        showUpdateToast(toastId, message, status);
 
-      if (status !== 'error') {
-        setEditRecordData({});
-      }
+        if (status !== 'error') {
+          setEditRecordData({});
+        }
 
-      // setEditRecordData({});
-    });
+        // setEditRecordData({});
+      },
+    );
   };
 
   const ActionBtns = () => {

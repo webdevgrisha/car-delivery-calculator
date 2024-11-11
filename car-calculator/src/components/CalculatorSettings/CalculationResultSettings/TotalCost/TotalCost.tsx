@@ -7,6 +7,7 @@ import { Id, toast } from 'react-toastify';
 import { updateCalculatorSettingsData } from '../../../../services/firebase/functions';
 import Loader from '../../../Loader/Loader';
 import { showUpdateToast } from '../../../CustomTable/tableToast';
+import { ResponseData } from '../interfaces';
 
 interface TotalCostProps {
   tablePath: string;
@@ -56,10 +57,12 @@ function TotalCost({ tablePath }: TotalCostProps) {
     updateCalculatorSettingsData({
       tableName: tablePath,
       tableAction: [{ id: totalCostData!.id, config: totalCostData!.rowData }],
-    }).then(({ data }) => {
+    }).then((result) => {
+      const data = result.data as ResponseData;
+
       const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unkown error!';
 
       showUpdateToast(toastId, message, status);
     });

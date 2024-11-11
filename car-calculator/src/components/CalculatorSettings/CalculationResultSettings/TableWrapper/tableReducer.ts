@@ -23,13 +23,15 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
 
                 if (rowType === 'info') {
                     const infoRow = draft.info[rowId];
-                    if (rowName in infoRow) infoRow[rowName] = newValue;
+                    if (rowName in infoRow) infoRow[rowName] = newValue as never;
                 } else {
                     const resultRow = draft.result;
 
-                    if (rowName in resultRow.rowData) resultRow.rowData[rowName] = newValue;
+                    if (rowName in resultRow.rowData) resultRow.rowData[rowName] = newValue as never;
                 }
 
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 editRowAction(servicesAction, rowId, rowName, newValue);
             }
             break;

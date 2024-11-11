@@ -49,8 +49,7 @@ function RenderTableRow({
 
     deleteUserFunc({ uid }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
-
-      const message: string = data.message || data.error;
+      const message: string = 'message' in data ? data.message : data.error;
 
       showUpdateToast(toastId, message, status);
     });
@@ -95,11 +94,10 @@ function RenderTableRow({
       showUpdateToast(toastId, 'there is nothing to update', 'warning');
       return;
     }
-
+    
     editUserFunc({ uid, editUserData }).then(({ data }) => {
       const status = 'message' in data ? 'success' : 'error';
-
-      const message: string = data.message || data.error;
+      const message: string = 'message' in data ? data.message : data.error;
 
       showUpdateToast(toastId, message, status);
 

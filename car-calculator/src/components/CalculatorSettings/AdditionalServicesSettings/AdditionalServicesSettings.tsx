@@ -3,11 +3,13 @@ import SettingsTable from './SettingsTable/SettingsTable';
 import {
   HandleFieldChange,
   InitActionData,
+  ResponseData,
+  ServiceAction,
   ServiceData,
   TableContext,
 } from './interfaces';
 import { useRef } from 'react';
-import { Action, ServiceAction } from './types';
+import { Action } from './types';
 import { useTableSubscriptiontsts } from '../../../hooks';
 import { showUpdateToast } from '../../CustomTable/tableToast';
 import { Id, toast } from 'react-toastify';
@@ -85,14 +87,16 @@ function AdditionalServicesSettings() {
     updateCalculatorSettingsData({
       tableName: 'additional_services',
       tableAction: actionToUpdate,
-    }).then(({ data }) => {
+    }).then((result) => {
+      const data = result.data as ResponseData;
+
       const status = 'message' in data ? 'success' : 'error';
 
-      const message: string = data.message || data.error;
+      const message: string = data.message || data.error || 'Unkown error!';
 
       showUpdateToast(toastId, message, status);
 
-      servicesAction.current = [];
+      servicesAction.current = {};
     });
   };
 

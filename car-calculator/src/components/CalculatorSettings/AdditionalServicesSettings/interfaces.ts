@@ -26,12 +26,12 @@ interface ServiceData {
 
 interface InitActionData {
     type: 'init';
-    initServices: ServiceData;
+    initServices: ServiceData[];
 }
 
 interface EidtActionData {
     type: 'edit';
-    rowId: string;
+    rowId: string; 
     rowName: keyof RowData;
     newValue: RowData[keyof RowData];
     servicesAction: ServiceAction;
@@ -71,6 +71,11 @@ interface ServiceAction {
     [key: string]: DeleteActionConfig | CreateEditActionConfig;
 }
 
+interface ResponseData {
+    message?: string;
+    error?: string;
+}
+
 export type {
     RowData,
     DeleteActionConfig,
@@ -84,4 +89,5 @@ export type {
     HandleFieldChange,
     TableContext,
     ServiceAction,
+    ResponseData
 }

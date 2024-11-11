@@ -13,7 +13,7 @@ interface SelectedFieldInfo {
     name: FieldName;
     selectionOptions: string[];
     validate: (value: string) => boolean;
-    defaultValue?: string;
+    defaultValue?: Role;
 }
 
 interface InputField {
@@ -43,14 +43,20 @@ interface DeleteFunc {
     (params: { uid: string }): Promise<HttpsCallableResult<FunctionResult>>
 }
 
+interface UserUpdateData {
+    name?: string;
+    email?: string;
+    role?: Role;
+  }
+
 interface EditFunc {
-    (params: { uid: string, name?: string, email?: string, role?: Role }): Promise<HttpsCallableResult<FunctionResult>>
+    (params: { uid: string, editUserData: UserUpdateData }): Promise<HttpsCallableResult<FunctionResult>>
 }
 
 interface NewUserData {
     displayName: string,
     email: string,
-    role: Role
+    role: Role | string
 }
 
 interface AddFunc {

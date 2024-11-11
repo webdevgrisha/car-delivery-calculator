@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { Loader } from '../../index';
 
 import './Exchange.css';
 
 import { subscribeOnFirstTableRecord } from '../../../services/firebase/firestoreDb';
+
+type ExchangeRate = 'Manual' | 'Automatically';
+type IsShown = 'Yes' | 'No';
 
 interface ExchangeData {
   exchangeRate: ExchangeRate;
@@ -13,21 +16,28 @@ interface ExchangeData {
 }
 
 function Exchange() {
-  const [exchangeData, setExchangeData] = useState<ExchangeData>({});
-  const [loading, setLoading] = useState(true);
+  const [exchangeData, setExchangeData] = useState<ExchangeData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const unsubscibe = subscribeOnFirstTableRecord('exchange', (row) => {
-      setExchangeData(row.rowData);
-      setLoading(false);
-    });
+    const unsubscibe = subscribeOnFirstTableRecord(
+      'exchange',
+      (row: { rowData: SetStateAction<ExchangeData | null> }) => {
+        setExchangeData(row.rowData);
+        setLoading(false);
+      },
+    );
 
     return unsubscibe;
   }, []);
 
   if (loading) return <Loader />;
 
-  if(exchangeData.isShown === 'No') return null;
+  if (exchangeData === null) {
+    return <p>An error occurred while receiving data </p>;
+  }
+
+  if (exchangeData.isShown === 'No') return null;
 
   return (
     <div className="currency-block">
