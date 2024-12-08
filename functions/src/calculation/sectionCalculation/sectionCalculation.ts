@@ -18,7 +18,9 @@ async function sectionCalculation(
       return;
     }
 
-    const result = parseFormula(variables, sectionRow.formula);
+    const result = parseFormula(
+      variables, sectionRow.formula || sectionRow?.price
+    );
 
     parsePromiseArr.push(result);
   });
@@ -28,21 +30,32 @@ async function sectionCalculation(
   const calculatedRows = rowsFormula.map((formula, index) => {
     console.log("Parsie formula: ", formula);
 
-    const result = rowCalculator(formula as (string | number)[]);
+    const result = rowCalculator(formula as (string | number)[]) || 0;
     const currency = sectionRows[index].currency;
+    const baseCurrency = sectionRows[index].baseCurrency || currency;
+    const pow = baseCurrency === "USD" ? 1 : -1;
 
-    totalUSDSum += result || 0;
+    const usdResult = convertor[baseCurrency](result, pow);
 
-    const convertorResult = convertor[currency](result || 0);
+    totalUSDSum += usdResult;
+
+    const convertorResult = baseCurrency === currency ?
+      result :
+      convertor[currency](result, pow);
+
 
     return Number(convertorResult.toFixed(2));
   });
 
   const totalResultConverted = convertor[totalSumCurrency](totalUSDSum);
 
-  calculatedRows.push(Number(totalResultConverted.toFixed(2)));
+  const shownRows: number[] = calculatedRows.filter((calResult, index) => {
+    return sectionRows[index].isShown;
+  });
 
-  return calculatedRows;
+  shownRows.push(Number(totalResultConverted.toFixed(2)));
+
+  return shownRows;
 }
 
 export default sectionCalculation;

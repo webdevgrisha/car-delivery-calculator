@@ -68,9 +68,8 @@ async function getConversionRate(
     throw new Error(resultObj["error-type"]);
   }
 
-  return String(resultObj.conversion_rate.toFixed(2));
+  return String(resultObj.conversion_rate.toFixed(3));
 }
-
 
 /**
  * Common logic for updating the exchange rate.
@@ -127,7 +126,7 @@ const updateExchangeRateHttp = onRequest(async (request, response) => {
     if (resultObj.result === "error") {
       response.status(500).send(resultObj["error-type"]);
     } else {
-      response.send(String(resultObj.conversion_rate.toFixed(2)));
+      response.send(String(resultObj.conversion_rate.toFixed(3)));
     }
   } catch (error) {
     console.error(`Error fetching exchange rate: ${error}`, error);

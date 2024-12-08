@@ -6,27 +6,28 @@ type Currency = "PLN" | "USD" | "EUR";
 type RowType = "info" | "order" | "result";
 
 interface InfoData {
-    rowType: "info";
-    rowName: string;
-    formula: string;
-    currency: Currency;
-    isShown: boolean;
+  rowType: "info";
+  rowName: string;
+  formula: string;
+  currency: Currency;
+  baseCurrency: Currency;
+  isShown: boolean;
 }
 
 interface ResultData {
-    rowType: "result";
-    rowName: string;
-    currency: Currency;
+  rowType: "result";
+  rowName: string;
+  currency: Currency;
 }
 
 interface InfoRows {
-    [key: string]: InfoData;
+  [key: string]: InfoData;
 }
 
 interface InitRowsConfig {
-    info: InfoRows;
-    order: string[];
-    result: ResultData;
+  info: InfoRows;
+  order: string[];
+  result: ResultData;
 }
 
 async function getCalculatorSectionData(tableName: string) {
@@ -54,7 +55,7 @@ async function getCalculatorSectionData(tableName: string) {
     case "info":
       {
         const infoData = docData as InfoData;
-        if (infoData.isShown && infoData.rowName.trim() !== "") {
+        if (infoData.rowName.trim() !== "") {
           initRowsConfig.info[doc.id] = infoData;
         }
       }
@@ -74,9 +75,11 @@ async function getCalculatorSectionData(tableName: string) {
 
     if (!rowData) return;
 
-    const {formula, currency} = rowData;
+    const {formula, currency, baseCurrency, isShown} = rowData;
 
-    resultRows.push({formula, currency});
+    resultRows.push({
+      formula, currency, isShown, baseCurrency: baseCurrency || currency,
+    });
   });
 
   const resultRow = initRowsConfig.result;

@@ -10,10 +10,15 @@ import {Convertor, Currency} from "./types";
 
 export const calculateRowsData = onCall(
   async (
-    request: CallableRequest<{ variables: Variables }>
+    request: CallableRequest<{
+      variables: Variables,
+      selectedAdditionalServices: SectionRow[]
+    }>
   ) => {
     try {
-      const {variables} = request.data;
+      const {variables, selectedAdditionalServices} = request.data;
+
+      variables.auction = variables.location.split("-").at(-1)?.trim() || "";
 
       const {usd_eur: usdEur, usd_pln: usdPln} = await getExchangeRate();
 
@@ -23,10 +28,6 @@ export const calculateRowsData = onCall(
         "USD": (num: number) => num,
       };
 
-      // eslint-disable-next-line new-cap
-      variables.repairCosts = convertor["PLN"](+variables.repairCosts, -1)
-        .toString();
-
       let totalSectionsSumCurrency: Currency = "PLN";
 
       const sectionData = await Promise.all([
@@ -35,6 +36,11 @@ export const calculateRowsData = onCall(
         getCalculatorSectionData("other_payments"),
         getTotalCarCost(),
       ]);
+
+      console.log("sectionData: ", sectionData);
+
+
+      sectionData[2].splice(-1, 0, ...selectedAdditionalServices);
 
       const sectionsCalculation: Promise<number[]>[] = [];
 

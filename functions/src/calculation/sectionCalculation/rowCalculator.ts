@@ -9,8 +9,8 @@ function rowCalculator(
   const funcs = {
     "+": (num: number) => stack.push(num),
     "-": (num: number) => stack.push(-num),
-    "/": (num: number) => stack.push(+(stack.pop() || NaN / num)),
-    "*": (num: number) => stack.push(+(stack.pop() || NaN * num)),
+    "/": (num: number) => stack.push(+(stack.pop() || NaN) / num),
+    "*": (num: number) => stack.push(+(stack.pop() || NaN) * num),
   };
 
   for (let i = 0; i < formula.length; i++) {
@@ -33,7 +33,6 @@ function rowCalculator(
       const num = rowCalculator(formula.slice(startIndex, i));
       if (num === null) return null;
 
-      i--;
       funcs[sign](num);
 
       continue;

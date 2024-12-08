@@ -56,7 +56,7 @@ async function parseFormula(
  * @return {boolean}
  */
 function isDigit(s: string): boolean {
-  return !isNaN(Number(s)) && s.trim() !== "";
+  return (!isNaN(Number(s)) || s === ".") && s.trim() !== "";
 }
 
 /**
