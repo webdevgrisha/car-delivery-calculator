@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getCalculatorSettingsData } from '../../services/firebase/functions';
 import './Calculator.css';
 
@@ -21,6 +21,7 @@ import {
 import { toast } from 'react-toastify';
 import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
 import { useImmer } from 'use-immer';
+import createJPG from './createJPG';
 
 const calculationResultSectionData: CalculationResultSectionData = {
   auction_and_shipping: [],
@@ -31,6 +32,8 @@ const calculationResultSectionData: CalculationResultSectionData = {
 
 function Calculator() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const jpgBlock = useRef<HTMLDivElement>(null);
+
   const [calculationResult, setCalculationResult] =
     useState<ClalculationResult>([]);
 
@@ -84,13 +87,14 @@ function Calculator() {
     });
   }, []);
 
+
   if (isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="calculator">
-      <div className="colum-wrapper">
+      <div ref={jpgBlock} className="colum-wrapper">
         <section className="calculation-result">
           <div className="container">
             <header>
@@ -127,8 +131,7 @@ function Calculator() {
         <AutoCalculation />
         <ManualCalculation
           setCalculationResult={setCalculationResult}
-          selectedAdditionalServices={selectedAdditionalServices}
-        />
+          selectedAdditionalServices={selectedAdditionalServices} createJPG={() => createJPG(jpgBlock.current)} />
         <AdditionalServices
           setSelectedAdditionalServices={setSelectedAdditionalServices}
         />

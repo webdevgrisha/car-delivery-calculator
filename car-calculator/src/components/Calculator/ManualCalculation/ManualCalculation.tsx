@@ -12,11 +12,13 @@ import { ClalculationResult, SelectedAdditionalServices } from '../interfaces';
 interface ManualCalculationProps {
   setCalculationResult: (value: ClalculationResult) => void;
   selectedAdditionalServices: SelectedAdditionalServices;
+  createJPG: () => void;
 }
 
 function ManualCalculation({
   setCalculationResult,
   selectedAdditionalServices,
+  createJPG,
 }: ManualCalculationProps) {
   const [formData, setFormData] = useImmer<FormData>({
     // auction: '',
@@ -119,7 +121,7 @@ function ManualCalculation({
             );
           })}
           <div className="btn-wrapper">
-            <button className="save-jpg">Save JPG</button>
+            <button className="save-jpg" onClick={createJPG}>Save JPG</button>
             <button type="submit" className="calculate">
               OK
             </button>
