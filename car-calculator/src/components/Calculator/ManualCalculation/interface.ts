@@ -1,7 +1,7 @@
 import { FieldConfig, RowNames } from "./types";
 
 interface InputRow {
-    currency: 'USD' | 'EUR' | 'PLN';
+    measure: 'USD' | 'EUR' | 'PLN' | '%';
 }
 
 interface SelectRow {
@@ -17,9 +17,11 @@ interface FormRows {
 }
 
 interface FormData {
-    auction: string;
+    // auction: string;
     carPrice: string;
     engineSize: string;
+    degreeOfDamage: string,
+    costInPL: string,
     location: string;
     customsCosts: string;
     repairCosts: string;

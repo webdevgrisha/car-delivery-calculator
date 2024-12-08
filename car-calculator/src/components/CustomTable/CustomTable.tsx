@@ -20,8 +20,8 @@ interface CustomTableProps {
   columnNames: string[];
   fields: FieldInfo[];
   records: TableRecord[];
-  searchBy: string;
-  searchInputText: string;
+  searchBy?: string;
+  searchInputText?: string;
   addNewRecordFunc: Function;
   deleteRecordFunc: Function;
   editRecordFunc: Function;
@@ -34,7 +34,7 @@ function CustomTable({
   columnNames,
   fields,
   records,
-  searchBy,
+  searchBy = '',
   searchInputText,
   addNewRecordFunc,
   deleteRecordFunc,
@@ -116,13 +116,15 @@ function CustomTable({
       <header>
         <div className="icon">{tableIcon}</div>
         <h2>{tableName}</h2>
-        <input
-          type="search"
-          placeholder={`Search by ${searchInputText}`}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleInputSearch(e.target.value)
-          }
-        />
+        {searchBy && (
+          <input
+            type="search"
+            placeholder={`Search by ${searchInputText}`}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputSearch(e.target.value)
+            }
+          />
+        )}
 
         <input
           ref={addFileInputRef}

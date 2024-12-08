@@ -2,7 +2,7 @@ import { InputRow, SelectRow } from "./interface";
 
 type FieldConfig = InputRow | SelectRow;
 
-type RowNames = 'auction' | 'carPrice' | 'engineSize' | 'location' | 'customsCosts' | 'repairCosts' | 'carSize';
+type RowNames = 'carPrice' | 'engineSize' | 'degreeOfDamage' | 'costInPL' | 'location' | 'customsCosts' | 'repairCosts' | 'carSize';
 
 
 export type {

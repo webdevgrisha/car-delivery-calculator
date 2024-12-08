@@ -7,17 +7,23 @@ import { RowNames } from './types';
 import { FormEvent, useState } from 'react';
 import { showWarningToastMessage } from '../../CustomTable/tableToast';
 import { calculateRowsData } from '../../../services/firebase/functions';
-import { ClalculationResult } from '../interfaces';
+import { ClalculationResult, SelectedAdditionalServices } from '../interfaces';
 
 interface ManualCalculationProps {
   setCalculationResult: (value: ClalculationResult) => void;
+  selectedAdditionalServices: SelectedAdditionalServices;
 }
 
-function ManualCalculation({ setCalculationResult }: ManualCalculationProps) {
+function ManualCalculation({
+  setCalculationResult,
+  selectedAdditionalServices,
+}: ManualCalculationProps) {
   const [formData, setFormData] = useImmer<FormData>({
-    auction: '',
+    // auction: '',
     carPrice: '',
     engineSize: '',
+    degreeOfDamage: '',
+    costInPL: '',
     location: '',
     customsCosts: '',
     repairCosts: '',
@@ -68,9 +74,26 @@ function ManualCalculation({ setCalculationResult }: ManualCalculationProps) {
 
     console.log({ variables: formData });
 
-    calculateRowsData({ variables: formData }).then(({ data }) => {
-      console.log(data);
-      setCalculationResult(data as ClalculationResult);
+    calculateRowsData({
+      variables: formData,
+      selectedAdditionalServices: Object.values(selectedAdditionalServices),
+    }).then(({ data }) => {
+      console.log('result: ', data);
+
+      const additionalServiceCount = Object.keys(
+        selectedAdditionalServices,
+      ).length;
+
+      const resData = data as ClalculationResult;
+
+      resData[2].splice(
+        resData[2].length - 1 - additionalServiceCount,
+        additionalServiceCount,
+      );
+
+      console.log('resData: ', resData);
+
+      setCalculationResult(resData);
     });
   };
 

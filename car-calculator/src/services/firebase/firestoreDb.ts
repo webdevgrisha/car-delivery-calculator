@@ -1,4 +1,4 @@
-import { collection, getDocs, onSnapshot, doc, where, query, orderBy, DocumentData } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc, where, query, orderBy, DocumentData, getDoc } from 'firebase/firestore';
 import { firestoreDb } from './firebaseConfig';
 
 
@@ -23,6 +23,30 @@ function subscribeOnTableUpdate(tableName: string, sortBy: string, setData: Func
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const tableData = querySnapshot.docs.map(doc => ({ id: doc.id, rowData: doc.data() }));
+
+        setData(tableData);
+    })
+
+    return unsubscribe;
+}
+
+function subscribeOnTableUpdateFrontEndSort(tableName: string, sortBy: string, setData: Function) {
+    const tableRef = collection(firestoreDb, tableName);
+
+    const q = query(tableRef);
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const tableData = querySnapshot.docs.map(doc => ({ id: doc.id, rowData: doc.data() }));
+
+        tableData.sort((a, b) => {
+            const valA = parseFloat(a.rowData[sortBy]);
+            const valB = parseFloat(b.rowData[sortBy]);
+
+            if (typeof valA === "number" && typeof valB === "number") {
+                return valA - valB;
+            }
+            return 0;
+        });
 
         setData(tableData);
     })
@@ -144,42 +168,67 @@ async function getTableData(tableName: string, sortByColName: string) {
     return tableRows;
 }
 
+async function calcClientFee(auction: string, carPrice: string): Promise<number> {
+    try {
+        // Получение коллекции из Firestore
+        const querySnapshot = await getDocs(
+            collection(firestoreDb, `${auction.toLowerCase()}_auction_client_fee`)
+        );
 
-// async function fetchShippingCost() {
-//     const q = query(
-//         collection(firestoreDb, "delivery_by_ship"),
-//         where("From", "==", 'California, CA'),
-//         where("Destination", "==", 'Rotterdam'),
-//         // where("Sedan", "!=", ""),
-//         // limit(1)
-//     );
+        if (querySnapshot.empty) {
+            return NaN;
+        }
 
-//     try {
-//         const querySnapshot = await getDocs(q);
+        // Поиск подходящего документа
+        const rowData = querySnapshot.docs.find((row) => {
+            const salePriceRange = row.data()["Cena sprzedaży"];
+            if (!salePriceRange) return false;
 
-//         querySnapshot.forEach((doc) => console.log('doc data: ', doc.data()));
+            const [a, b] = salePriceRange.split("-");
+            const [numA, numB] = [parseFloat(a), parseFloat(b)];
 
-//         if (querySnapshot.empty) {
-//             console.log("No data found");
-//             return null;
-//         }
+            // console.log({ numA, numB });
 
-//         // Получение значения поля `colName` из первого найденного документа
-//         const result = querySnapshot.docs[0].data();
+            if (isNaN(numB)) {
+                console.log('we here');
+                return +carPrice >= numA;
+            }
 
-//         console.log('fetchShippingCost: ', result);
-//         return result;
-//     } catch (error) {
-//         console.error("Error fetching data:", error);
-//         return null;
-//     }
-// }
+            return +carPrice >= numA && +carPrice <= numB;
+        });
 
-// fetchShippingCost()
+        if (!rowData) {
+            return NaN;
+        }
 
+        console.log("rowData: ", rowData.data());
+        console.log("value: ", Object.values(rowData.data()));
+        // Расчет итоговой суммы
+        const sum = Object.entries(rowData.data())
+            .reduce((sum: number, [rowName, value]) => {
+                if (rowName === 'Cena sprzedaży') return sum;
+
+                if (value.endsWith("%")) {
+                    const parsePreset = parseFloat(value);
+                    return sum + (+carPrice * parsePreset) / 100;
+                }
+                return sum + parseFloat(value);
+            }, 0);
+
+        console.log('sum: ', sum);
+
+        return sum;
+    } catch (error) {
+        console.error("Ошибка при расчете клиентской комиссии:", error);
+        return NaN;
+    }
+}
+
+console.log('sum: ', calcClientFee('iaai', '100000'));
 
 export {
     subscribeOnTableUpdate,
+    subscribeOnTableUpdateFrontEndSort,
     subscribeOnTableSettingsUpdate,
     subscribeOnFirstTableRecord,
     getColumnData,

@@ -1,25 +1,25 @@
 
 import { getColumnData } from "../../../services/firebase/firestoreDb";
 import { FormRows } from "./interface";
-import { validateInput, validateSelect } from "./validateFunc";
+import { validateDamegeDegree, validateInput, validateOptionalInput, validateSelect } from "./validateFunc";
 
 const getFormFields = () => {
     const formRows: FormRows[] = [
-        {
-            label: 'Aukcja',
-            tagName: 'select',
-            name: 'auction',
-            fieldConfig: {
-                selectionOptions: ['Select auction', 'IAAI', 'Copart']
-            },
-            validate: validateSelect,
-        },
+        // {
+        //     label: 'Aukcja',
+        //     tagName: 'select',
+        //     name: 'auction',
+        //     fieldConfig: {
+        //         selectionOptions: ['Select auction', 'IAAI', 'Copart']
+        //     },
+        //     validate: validateSelect,
+        // },
         {
             label: 'Cena pojazdu',
             tagName: 'input',
             name: 'carPrice',
             fieldConfig: {
-                currency: 'USD',
+                measure: 'USD',
             },
             validate: validateInput,
         },
@@ -30,15 +30,32 @@ const getFormFields = () => {
             fieldConfig: {
                 selectionOptions: ['Select engine', 'Less 2L', 'More 2L']
             },
-            validate: validateSelect,
+            validate: () => true,
+        },
+        {
+            label: 'Degree Of Damage',
+            tagName: 'input',
+            name: 'degreeOfDamage',
+            fieldConfig: {
+                measure: '%'
+            },
+            validate: validateDamegeDegree,
+        },
+        {
+            label: 'Wartość w PL',
+            tagName: 'input',
+            name: 'costInPL',
+            fieldConfig: {
+                measure: 'PLN',
+            },
+            validate: validateOptionalInput,
         },
         {
             label: 'Lokalizacja',
             tagName: 'select',
             name: 'location',
             fieldConfig: {
-                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location')
-                // selectionOptions: [],
+                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location'),
             },
             validate: validateSelect,
         },
@@ -47,7 +64,7 @@ const getFormFields = () => {
             tagName: 'input',
             name: 'customsCosts',
             fieldConfig: {
-                currency: 'USD',
+                measure: 'USD',
             },
             validate: validateInput,
         },
@@ -56,9 +73,9 @@ const getFormFields = () => {
             tagName: 'input',
             name: 'repairCosts',
             fieldConfig: {
-                currency: 'PLN',
+                measure: 'PLN',
             },
-            validate: validateInput,
+            validate: validateOptionalInput,
         },
         {
             label: 'Rozmiar Auta',

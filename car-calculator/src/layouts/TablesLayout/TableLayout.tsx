@@ -16,6 +16,18 @@ export default function TablesLayout() {
           <NavLink className="nav-link" to="my_ports">
             <p>My ports</p>
           </NavLink>
+          <NavLink className="nav-link" to="iaai_fees">
+            <p>IAAI fees</p>
+          </NavLink>
+          <NavLink className="nav-link" to="copart_fees">
+            <p>Copart fees</p>
+          </NavLink>
+          <NavLink className="nav-link" to="excise">
+            <p>Akcyza</p>
+          </NavLink>
+          <NavLink className="nav-link" to="clo">
+            <p>Clo</p>
+          </NavLink>
         </nav>
       </header>
 

@@ -1,7 +1,14 @@
 .calculator-settings>.colum-wrapper:first-child {
-    flex: 1.6 1 0%;
+    flex: 3 2 0%;
 }
 
+/* .calculator-settings>.colum-wrapper:first-child {
+    max-width: 60%;
+}
+
+.calculator-settings>.colum-wrapper:last-child {
+    max-width: 40%;
+} */
 
 .calculator-settings table {
     width: 100%;

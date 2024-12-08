@@ -38,8 +38,8 @@ function MyPorts() {
         columnNames={['To Port']}
         fields={shippingPortsFields}
         records={shippingPortsTableData}
-        searchBy="To Port"
-        searchInputText="port name"
+        // searchBy="To Port"
+        // searchInputText="port name"
         {...createActionFunctions('shipping_ports_(from)')}
       />
 
@@ -49,8 +49,8 @@ function MyPorts() {
         columnNames={['Destination']}
         fields={destinationPortsFields}
         records={destinationPortsTableData}
-        searchBy="Destination"
-        searchInputText="Destination port"
+        // searchBy="Destination"
+        // searchInputText="Destination port"
         {...createActionFunctions('destination_ports_(to)')}
       />
     </>

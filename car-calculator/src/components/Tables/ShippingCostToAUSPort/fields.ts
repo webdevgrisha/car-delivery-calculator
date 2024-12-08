@@ -6,26 +6,10 @@ import { validateLocation, validateNumberInput, validateSelect } from "../valida
 const createFiledConfig = () => {
   const fieldsConfig: AsyncFieldInfo[] = [
     {
-      tagName: 'select',
-      fieldConfig: {
-        name: 'Auction',
-        selectionOptions: ['Select auction', 'IAAI', 'Copart'],
-        validate: validateSelect,
-      },
-    },
-    {
       tagName: 'input',
       fieldConfig: {
         name: 'Location',
         placeholder: 'Anchorage',
-        validate: validateLocation,
-      },
-    },
-    {
-      tagName: 'input',
-      fieldConfig: {
-        name: 'State',
-        placeholder: 'AK',
         validate: validateLocation,
       },
     },

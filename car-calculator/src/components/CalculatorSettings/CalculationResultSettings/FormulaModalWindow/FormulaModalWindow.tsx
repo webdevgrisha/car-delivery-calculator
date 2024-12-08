@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 interface FormulaModalWindowProps {
   isShown: boolean;
   rowFormula: string;
+  rowName: string;
   setRowFormula: (value: string) => void;
   closeFunc: () => void;
 }
@@ -18,6 +19,7 @@ interface FormulaModalWindowProps {
 function FormulaModalWindow({
   isShown = false,
   rowFormula = '',
+  rowName = '',
   setRowFormula,
   closeFunc,
 }: FormulaModalWindowProps) {
@@ -57,7 +59,9 @@ function FormulaModalWindow({
     );
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     const allowedKeys = [
       'Backspace',
       'Tab',
@@ -69,10 +73,14 @@ function FormulaModalWindow({
       'ArrowDown',
     ];
 
-    const isKeyEnable =
-      allowedKeys.includes(event.key) || /[\d\s#$%*+/\-)(]/.test(event.key);
+    const isCtrlCombination =
+      (event.ctrlKey || event.metaKey) &&
+      ['c', 'v', 'a', 'x', 'z'].includes(event.key.toLowerCase());
 
-    if (!isKeyEnable) {
+    const isKeyEnable =
+      allowedKeys.includes(event.key) || /[\d\s#$%*+/\-.)(]/.test(event.key);
+
+    if (!isKeyEnable && !isCtrlCombination) {
       event.preventDefault();
     }
   };
@@ -83,6 +91,7 @@ function FormulaModalWindow({
         <div className="container">
           <header>
             <h3>Formula</h3>
+            <p>({rowName})</p>
             <button className="close-btn" onClick={closeFunc}></button>
           </header>
           <div className="content">

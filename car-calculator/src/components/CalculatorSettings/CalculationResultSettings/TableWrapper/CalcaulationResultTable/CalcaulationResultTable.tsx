@@ -27,6 +27,9 @@ function SettingsTable() {
             <p>Currency</p>
           </th>
           <th>
+            <p>Base Currency</p>
+          </th>
+          <th>
             <p>Cost price</p>
           </th>
         </tr>

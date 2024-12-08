@@ -23,7 +23,9 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
 
                 if (rowType === 'info') {
                     const infoRow = draft.info[rowId];
+
                     if (rowName in infoRow) infoRow[rowName] = newValue as never;
+                    // infoRow[rowName] = newValue as never;
                 } else {
                     const resultRow = draft.result;
 
@@ -43,6 +45,7 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
                     rowType: 'info',
                     rowName: '',
                     currency: 'PLN',
+                    baseCurrency: 'USD',
                     formula: '0',
                     isShown: true,
                 };

@@ -1,10 +1,19 @@
 import { useEffect } from "react";
-import { subscribeOnTableUpdate } from "../services/firebase/firestoreDb";
+import { subscribeOnTableUpdate, subscribeOnTableUpdateFrontEndSort } from "../services/firebase/firestoreDb";
 
 
-function useTableSubscriptiontsts <T>(tableName: string, sortByColName: string, updateDataFunc: React.Dispatch<React.SetStateAction<T>>) {
+type SortType = 'front' | 'back';
+
+function useTableSubscriptiontsts<T>(
+    tableName: string,
+    sortByColName: string,
+    updateDataFunc: React.Dispatch<React.SetStateAction<T>>,
+    sortType: SortType = 'back') {
+
+    const subscribeFunc = sortType === 'front' ? subscribeOnTableUpdateFrontEndSort : subscribeOnTableUpdate;
+
     useEffect(() => {
-        const unsubscribeFunc = subscribeOnTableUpdate(
+        const unsubscribeFunc = subscribeFunc(
             tableName,
             sortByColName,
             updateDataFunc,

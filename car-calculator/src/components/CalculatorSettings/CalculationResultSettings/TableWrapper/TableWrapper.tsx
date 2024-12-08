@@ -78,7 +78,7 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
       rowType: rowType,
       newValue: value,
       servicesAction: tableAction.current,
-    } as EdićtActionData<InfoRow | ResultRow>);
+    } as EditActionData<InfoRow | ResultRow>);
   };
 
   const handleServiceDelete = (id: string): void => {

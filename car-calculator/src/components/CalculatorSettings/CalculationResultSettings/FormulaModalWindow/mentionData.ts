@@ -1,11 +1,23 @@
 const tableMention = [
     {
         id: 'shipping_cost_to_a_US_port',
-        display: '$shipping_cost_to_a_US_port(#auction, #location, #carSize)',
+        display: '$shipping_cost_to_a_US_port(#location, #carSize)',
     },
     {
         id: 'delivery_by_ship',
-        display: '$delivery_by_ship($get_port_name(#auction, #location, #carSize), Rotterdam, #carSize)',
+        display: '$delivery_by_ship($get_port_name(#location, #carSize), Rotterdam, #carSize)',
+    },
+    {
+        id: 'calc_auction_fee',
+        display: '$calc_auction_fee(#auction, #carPrice)',
+    },
+    {
+        id: 'excise_taxes',
+        display: '$excise_taxes(#engineSize)',
+    },
+    {
+        id: 'clo_taxes',
+        display: '$clo_taxes(#carSize)',
     },
 ];
 
@@ -19,8 +31,16 @@ const variableMention = [
         display: '#carPrice',
     },
     {
-        id: '#engine_size',
-        display: '#engine_size',
+        id: '#engineSize',
+        display: '#engineSize',
+    },
+    {
+        id: '#degreeOfDamage',
+        display: '#degreeOfDamage',
+    },
+    {
+        id: '#costInPL',
+        display: '#costInPL',
     },
     {
         id: '#location',
@@ -33,6 +53,10 @@ const variableMention = [
     {
         id: '#repairCosts',
         display: '#repairCosts',
+    },
+    {
+        id: '#carSize',
+        display: '#carSize',
     },
 ];
 

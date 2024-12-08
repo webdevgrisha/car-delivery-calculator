@@ -20,7 +20,7 @@ export default function RootLayout() {
 
   const email = currentUser.email;
   const role = currentUser.role;
-  console.log('Auth: ', currentUser.email);
+  // console.log('Auth: ', currentUser.email);
 
   const mainNavClass = classNames({ 'remove-p': match });
   return (

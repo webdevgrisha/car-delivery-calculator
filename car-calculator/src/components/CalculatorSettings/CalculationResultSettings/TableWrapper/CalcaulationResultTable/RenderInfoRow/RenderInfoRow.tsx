@@ -18,6 +18,7 @@ interface RenderRowProps {
   rowId: string;
   rowName: string;
   currency: Currency;
+  baseCurrency: Currency;
   formula: string;
   isShown: boolean;
 }
@@ -47,6 +48,7 @@ function RenderInfoRow({
   rowId,
   rowName,
   currency,
+  baseCurrency = 'USD',
   isShown,
   formula,
 }: RenderRowProps) {
@@ -111,8 +113,19 @@ function RenderInfoRow({
         />
       </td>
       <td>
+        <CustomSelect
+          name="baseCurrency"
+          selectionOptions={selectionOptions}
+          value={baseCurrency}
+          changeEventFunc={(value: string) =>
+            editRecordFunc(rowId, 'baseCurrency', value as Currency, 'info')
+          }
+        />
+      </td>
+      <td>
         <FormulaInput
           formula={formula}
+          rowName={rowName}
           setFormula={(value: string) =>
             editRecordFunc(rowId, 'formula', value, 'info')
           }

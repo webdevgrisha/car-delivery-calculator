@@ -16,9 +16,11 @@ import {
   ClalculationResult,
   Currency,
   RowData,
+  SelectedAdditionalServices,
 } from './interfaces';
 import { toast } from 'react-toastify';
 import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
+import { useImmer } from 'use-immer';
 
 const calculationResultSectionData: CalculationResultSectionData = {
   auction_and_shipping: [],
@@ -29,8 +31,11 @@ const calculationResultSectionData: CalculationResultSectionData = {
 
 function Calculator() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [clalculationResult, setCalculationResult] =
+  const [calculationResult, setCalculationResult] =
     useState<ClalculationResult>([]);
+
+  const [selectedAdditionalServices, setSelectedAdditionalServices] =
+    useImmer<SelectedAdditionalServices>({});
 
   useEffect(() => {
     const dataPromiseArr = [
@@ -48,11 +53,11 @@ function Calculator() {
 
     Promise.all(dataPromiseArr).then((sectionsData) => {
       const tableNames: string[] = Object.keys(calculationResultSectionData);
-      console.log('sectionsData: ', sectionsData);
+
       try {
         sectionsData.forEach(({ data }, index) => {
           if (data && typeof data === 'object' && 'error' in data) {
-            throw new Error(data.error as string); 
+            throw new Error(data.error as string);
           }
 
           console.log('data: ', data);
@@ -83,7 +88,6 @@ function Calculator() {
     return <Loader />;
   }
 
-  console.log('calculationResultSectionData: ', calculationResultSectionData);
   return (
     <div className="calculator">
       <div className="colum-wrapper">
@@ -97,31 +101,37 @@ function Calculator() {
               rows={
                 calculationResultSectionData.auction_and_shipping as RowData[]
               }
-              sectionResult={clalculationResult[0] || null}
+              sectionResult={calculationResult[0] || null}
             />
             <CalculationResultSection
               title="Odprawa celna"
               rows={calculationResultSectionData.customs_clearance as RowData[]}
-              sectionResult={clalculationResult[1] || null}
+              sectionResult={calculationResult[1] || null}
             />
             <CalculationResultSection
               title="Inne płatności"
               rows={calculationResultSectionData.other_payments as RowData[]}
-              sectionResult={clalculationResult[2] || null}
+              sectionResult={calculationResult[2] || null}
+              selectedAdditionalServices={selectedAdditionalServices}
             />
           </div>
           <TotalSum
             title="Całkowity koszt samochodu:"
             currency={calculationResultSectionData.total_car_cost as Currency}
-            totalResult={clalculationResult[3] || null}
+            totalResult={calculationResult[3] || null}
           />
         </section>
         <Exchange />
       </div>
       <div className="colum-wrapper">
         <AutoCalculation />
-        <ManualCalculation setCalculationResult={setCalculationResult} />
-        <AdditionalServices />
+        <ManualCalculation
+          setCalculationResult={setCalculationResult}
+          selectedAdditionalServices={selectedAdditionalServices}
+        />
+        <AdditionalServices
+          setSelectedAdditionalServices={setSelectedAdditionalServices}
+        />
       </div>
     </div>
   );

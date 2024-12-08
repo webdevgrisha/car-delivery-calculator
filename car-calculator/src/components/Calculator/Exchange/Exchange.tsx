@@ -1,8 +1,6 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader } from '../../index';
-
 import './Exchange.css';
-
 import { subscribeOnFirstTableRecord } from '../../../services/firebase/firestoreDb';
 
 type ExchangeRate = 'Manual' | 'Automatically';
@@ -22,8 +20,11 @@ function Exchange() {
   useEffect(() => {
     const unsubscibe = subscribeOnFirstTableRecord(
       'exchange',
-      (row: { rowData: SetStateAction<ExchangeData | null> }) => {
-        setExchangeData(row.rowData);
+      (row: { rowData: ExchangeData }) => {
+        const data = row.rowData;
+
+        setExchangeData(data);
+
         setLoading(false);
       },
     );
@@ -34,7 +35,7 @@ function Exchange() {
   if (loading) return <Loader />;
 
   if (exchangeData === null) {
-    return <p>An error occurred while receiving data </p>;
+    return <p>An error occurred while receiving data</p>;
   }
 
   if (exchangeData.isShown === 'No') return null;

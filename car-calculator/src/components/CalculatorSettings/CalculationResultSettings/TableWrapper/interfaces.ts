@@ -11,6 +11,7 @@ interface InfoRow {
     rowType: 'info';
     rowName: string;
     currency: Currency;
+    baseCurrency: Currency;
     isShown: boolean;
     formula: string;
 }

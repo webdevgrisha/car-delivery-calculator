@@ -10,13 +10,15 @@ function CalculationResultSettings() {
     useImmer<FormulaModalWindowData>({
       isShown: false,
       rowFormula: '',
+      rowName: '',
       setRowFormula: (formula) => formula,
     });
 
-  const showModal: ShowModalFunc = (formula, setFormula) => {
+  const showModal: ShowModalFunc = (formula, rowName, setFormula) => {
     setModalWindowData((draft) => {
       draft.isShown = true;
       draft.rowFormula = formula;
+      draft.rowName = rowName;
       draft.setRowFormula = setFormula;
     });
   };

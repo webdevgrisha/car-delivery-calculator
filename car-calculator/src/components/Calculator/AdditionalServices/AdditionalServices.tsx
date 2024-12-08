@@ -5,29 +5,27 @@ import classNames from 'classnames';
 import { useImmer } from 'use-immer';
 import ServiceComp from './ServiceComp/ServiceComp';
 import { getTableData } from '../../../services/firebase/firestoreDb';
-import { Currency } from '../interfaces';
+import { AdditionalService, SelectedAdditionalServices } from '../interfaces';
 
 interface AdditionalServices {
   [key: string]: AdditionalService;
 }
 
-interface AdditionalService {
-  rowName: string;
-  isShow: boolean;
-  price: string;
-  currency: Currency;
-  isSelected: boolean;
+interface AdditionalServicesProps {
+  setSelectedAdditionalServices: (
+    updater: (draft: SelectedAdditionalServices) => void,
+  ) => void;
 }
 
-function AdditionalServices() {
+function AdditionalServices({
+  setSelectedAdditionalServices,
+}: AdditionalServicesProps) {
   const [additionalServices, setAdditionalServices] =
     useImmer<AdditionalServices | null>(null);
   const [showServices, setShowServices] = useState<boolean>(false);
 
   useEffect(() => {
     getTableData('additional_services', 'rowName').then((data) => {
-      console.log('additional_services data: ', data);
-
       setAdditionalServices(data as AdditionalServices);
     });
   }, []);
@@ -41,6 +39,14 @@ function AdditionalServices() {
       if (draft === null) return;
 
       draft[id].isSelected = !draft[id].isSelected;
+
+      setSelectedAdditionalServices((draft) => {
+        if (additionalServices && !additionalServices[id].isSelected) {
+          draft[id] = additionalServices[id];
+        } else {
+          delete draft[id];
+        }
+      });
     });
   };
 

@@ -1,11 +1,12 @@
 interface FormulaModalWindowData {
     isShown: boolean;
     rowFormula: string;
+    rowName: string;
     setRowFormula: (formula: string) => void;
 }
 
 interface ShowModalFunc {
-    (formula: string, setFormula: (formula: string) => void): void;
+    (formula: string, rowName: string, setFormula: (formula: string) => void): void;
 }
 
 interface ResponseData {

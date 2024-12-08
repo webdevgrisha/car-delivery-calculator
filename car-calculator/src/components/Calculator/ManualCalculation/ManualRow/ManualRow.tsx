@@ -5,7 +5,7 @@ import './ManualRow.css';
 import { CustomInput, CustomSelect } from '../../..';
 
 interface InputConfig {
-  currency: 'PLN' | 'USD' | 'EUR';
+  measure: 'PLN' | 'USD' | 'EUR' | '%';
 }
 
 interface SelectConfig {
@@ -57,7 +57,7 @@ function ManualRow({
             />
 
             <span className="currency">
-              {(fieldConfig as InputConfig).currency}
+              {(fieldConfig as InputConfig).measure}
             </span>
           </div>
         ) : (

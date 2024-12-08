@@ -16,7 +16,11 @@ import AuthProvider from './utils/AuthProvider.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
+  Clo,
+  CopartFees,
   DeliveryByShip,
+  Excise,
+  IAAIFees,
   MyPorts,
   ShippingCostToAUSPort,
 } from './components/Tables/index.ts';
@@ -83,6 +87,22 @@ const router = createBrowserRouter([
               {
                 path: 'my_ports',
                 element: <MyPorts />,
+              },
+              {
+                path: 'iaai_fees',
+                element: <IAAIFees />,
+              },
+              {
+                path: 'copart_fees',
+                element: <CopartFees />,
+              },
+              {
+                path: 'excise',
+                element: <Excise />,
+              },
+              {
+                path: 'clo',
+                element: <Clo />,
               },
             ],
           },

@@ -16,6 +16,9 @@ import SVG_Reload from "./SVG_Reload";
 import SVG_Search from "./SVG_Search";
 import SVG_Show from "./SVG_Show";
 import SVG_UnShow from "./SVG_UnShow";
+import SVG_Auction from "./SVG_Auction";
+import SVG_Fees from "./SVG_Fees";
+import SVG_Tax from "./SVG_Tax";
 
 export {
     SVG_Add,
@@ -35,5 +38,8 @@ export {
     SVG_Reload,
     SVG_Search,
     SVG_Show,
-    SVG_UnShow
+    SVG_UnShow,
+    SVG_Auction,
+    SVG_Fees,
+    SVG_Tax,
 }
