@@ -1,5 +1,5 @@
 import './firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User, sendPasswordResetEmail } from "firebase/auth";
 
 
 const auth = getAuth();
@@ -79,6 +79,13 @@ async function updateUserName(name: string) {
 }
 
 
+async function resetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Письмо для сброса пароля отправлено.");
+}
+
+// resetPassword('pojala9789@lofiey.com');
+
 // createUser('test1@gmail.com', '12345678');
 
 export {
@@ -87,5 +94,6 @@ export {
     userSignOut,
     subscribeOnAuthStateChanged,
     checkAdminRole,
-    updateUserName
+    updateUserName,
+    resetPassword
 }

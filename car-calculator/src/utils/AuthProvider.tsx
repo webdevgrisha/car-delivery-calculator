@@ -43,7 +43,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         return;
       }
 
-      const userRole = (await checkAdminRole()) ? 'admin' : 'user';
+      const userRole: 'admin' | 'user' = (await checkAdminRole()) as
+        | 'admin'
+        | 'user';
+
       setCurrentUser({
         uid: user.uid,
         email: user.email || '',

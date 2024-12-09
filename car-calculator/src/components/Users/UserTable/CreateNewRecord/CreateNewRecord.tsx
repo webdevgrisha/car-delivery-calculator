@@ -13,6 +13,7 @@ import {
 import { showWarningToastMessage, showUpdateToast } from '../tableToast';
 import { Id, toast } from 'react-toastify';
 import { FieldInfo, FieldName, FunctionResult } from '../types';
+import { resetPassword } from '../../../../services/firebase/auth';
 
 interface CreateNewRecordProps {
   fields: FieldInfo[];
@@ -65,13 +66,13 @@ function CreateNewRecord({ fields, addNewUserFunc }: CreateNewRecordProps) {
 
     const toastId: Id = toast.loading('Please wait...');
 
-    console.log('create user');
-
     addNewUserFunc(newUserData).then(({ data }: { data: FunctionResult }) => {
       const status = 'message' in data ? 'success' : 'error';
       const message = 'message' in data ? data.message : data.error;
 
       showUpdateToast(toastId, message, status);
+
+      resetPassword(newUserData.email);
 
       if (status !== 'error') setNewUserData(newUserDataConfig);
     });

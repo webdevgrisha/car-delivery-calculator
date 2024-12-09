@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import './TableLayout.css'
 
 export default function TablesLayout() {
+
   return (
     <div className='tables-container'>
       <header>

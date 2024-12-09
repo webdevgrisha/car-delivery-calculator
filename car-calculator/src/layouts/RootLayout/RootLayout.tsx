@@ -16,11 +16,11 @@ import { useUserLogIn } from '../../hooks';
 
 export default function RootLayout() {
   const match = useMatch('/settings/*');
-  const currentUser = useUserLogIn()
+  const currentUser = useUserLogIn();
 
   const email = currentUser.email;
   const role = currentUser.role;
-  // console.log('Auth: ', currentUser.email);
+  console.log('Auth: ', currentUser);
 
   const mainNavClass = classNames({ 'remove-p': match });
   return (
@@ -75,15 +75,19 @@ export default function RootLayout() {
             <NavLink className="nav-link" to="settings/profile">
               Profile
             </NavLink>
-            <NavLink className="nav-link" to="settings/users">
-              Users
-            </NavLink>
-            <NavLink className="nav-link" to="settings/calculator">
-              Calculator
-            </NavLink>
-            <NavLink className="nav-link" to="settings/tables">
-              Tables
-            </NavLink>
+            {role === 'admin' && (
+              <>
+                <NavLink className="nav-link" to="settings/users">
+                  Users
+                </NavLink>
+                <NavLink className="nav-link" to="settings/calculator">
+                  Calculator
+                </NavLink>
+                <NavLink className="nav-link" to="settings/tables">
+                  Tables
+                </NavLink>
+              </>
+            )}
           </nav>
         )}
 
