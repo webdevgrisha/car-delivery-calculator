@@ -16,9 +16,12 @@ function SettingsTable() {
       </colgroup>
       <thead>
         <tr>
-          <th></th>
+          <th>{/* <p>{tableName}</p> */}</th>
           <th>
             <p>Currency</p>
+          </th>
+          <th>
+            <p>Base Currency</p>
           </th>
           <th>
             <p>Cost price</p>

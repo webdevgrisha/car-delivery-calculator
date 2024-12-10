@@ -6,7 +6,6 @@ import { Currency } from '../../interfaces';
 interface ServiceCompProps {
   rowName: string;
   currency: Currency;
-  price: string;
   isSelected: boolean;
   changeEventFunc: () => void;
 }
@@ -14,7 +13,6 @@ interface ServiceCompProps {
 function ServiceComp({
   rowName,
   currency,
-  price,
   isSelected = false,
   changeEventFunc,
 }: ServiceCompProps) {
@@ -33,7 +31,7 @@ function ServiceComp({
       />
       <p>{rowName}</p>
       <p className="price">
-        {price} {currency}
+        {currency}
       </p>
     </div>
   );

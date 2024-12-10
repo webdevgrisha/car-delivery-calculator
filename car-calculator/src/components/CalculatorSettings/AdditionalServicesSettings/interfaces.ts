@@ -3,7 +3,8 @@ import { Currency } from "./types";
 interface RowData {
     rowName: string;
     currency: Currency;
-    price: string;
+    baseCurrency: Currency;
+    formula: string;
     isShown: boolean;
     error?: boolean;
 }
@@ -65,10 +66,22 @@ interface TableContext {
     tableRows: ServiceData[];
     deleteRecordFunc: (id: string) => void;
     editRecordFunc: HandleFieldChange;
+    showModal: ShowModalFunc;
 }
 
 interface ServiceAction {
     [key: string]: DeleteActionConfig | CreateEditActionConfig;
+}
+
+interface FormulaModalWindowData {
+    isShown: boolean;
+    rowFormula: string;
+    rowName: string;
+    setRowFormula: (formula: string) => void;
+}
+
+interface ShowModalFunc {
+    (formula: string, rowName: string, setFormula: (formula: string) => void): void;
 }
 
 interface ResponseData {
@@ -89,5 +102,7 @@ export type {
     HandleFieldChange,
     TableContext,
     ServiceAction,
+    FormulaModalWindowData,
+    ShowModalFunc,
     ResponseData
 }

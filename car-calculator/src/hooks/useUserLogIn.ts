@@ -17,12 +17,12 @@ function useUserLogIn() {
     if (currentUser === null) {
 
         navigate('/login', { replace: true });
-        // throw Error('User not logIn');
+        throw Error('User not logIn');
     }
 
     if (!isPathAllowed && currentUser !== null && currentUser.role === 'user') {
         navigate('/calculator', { replace: true });
-        // throw Error('User does not have access');
+        throw Error('User does not have access');
     }
 
     return currentUser;

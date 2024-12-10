@@ -11,13 +11,15 @@ import { useState } from 'react';
 import { CustomInput, CustomSelect } from '../../../..';
 import { Currency } from '../../types';
 import { useAdditionaServiceTableContext } from '../../AdditionaServiceTableContext';
+import FormulaInput from '../FormulaInput/FormulaInput';
 
 interface RenderRowProps {
   isError: boolean;
   serviceId: string;
   rowName: string;
   currency: Currency;
-  price: string;
+  baseCurrency: Currency;
+  formula: string;
   isShown: boolean;
 }
 
@@ -32,7 +34,8 @@ function RenderRow({
   serviceId,
   rowName,
   currency,
-  price,
+  baseCurrency,
+  formula,
   isShown,
 }: RenderRowProps) {
   const {
@@ -91,13 +94,21 @@ function RenderRow({
         />
       </td>
       <td>
-        <CustomInput
-          name="price"
-          value={price}
-          type="number"
-          placeholder="0"
+        <CustomSelect
+          name="baseCurrency"
+          selectionOptions={selectionOptions}
+          value={baseCurrency}
           changeEventFunc={(value: string) =>
-            handleFieldChange(serviceId, 'price', value)
+            handleFieldChange(serviceId, 'baseCurrency', value as Currency)
+          }
+        />
+      </td>
+      <td>
+        <FormulaInput
+          formula={formula}
+          rowName={rowName}
+          setFormula={(value: string) =>
+            handleFieldChange(serviceId, 'formula', value as Currency)
           }
         />
       </td>

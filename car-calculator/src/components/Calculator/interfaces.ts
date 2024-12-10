@@ -2,7 +2,6 @@ type Currency = 'USD' | 'PLN' | 'EUR';
 
 interface RowData {
     rowName: string;
-    rowType: 'info' | 'result';
     currency: Currency;
 }
 
@@ -19,25 +18,13 @@ interface SelectedAdditionalServices {
 interface AdditionalService {
     isSelected: boolean;
     rowName: string;
-    price: string;
+    formula: string;
     currency: Currency;
 }
-
-type Convertor = {
-    [key in Currency]: (num: number, pow?: number) => number;
-};
 
 interface CurrencyPrice {
     usd_pln: string;
     usd_eur: string;
-}
-
-interface CalcultorData {
-    // exchange: {
-    //     usd_pln: string;
-    //     usd_eur: string;
-    //     convertor: Convertor;
-    // }
 }
 
 
@@ -48,6 +35,5 @@ export type {
     SelectedAdditionalServices,
     AdditionalService,
     ClalculationResult,
-    CalcultorData,
     CurrencyPrice,
 }

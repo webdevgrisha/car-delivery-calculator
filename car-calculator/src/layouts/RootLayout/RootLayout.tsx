@@ -18,8 +18,8 @@ export default function RootLayout() {
   const match = useMatch('/settings/*');
   const currentUser = useUserLogIn();
 
-  const email = currentUser.email;
-  const role = currentUser.role;
+  const email = currentUser?.email;
+  const role = currentUser?.role;
   console.log('Auth: ', currentUser);
 
   const mainNavClass = classNames({ 'remove-p': match });

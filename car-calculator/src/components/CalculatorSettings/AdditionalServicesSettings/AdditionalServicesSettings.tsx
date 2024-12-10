@@ -1,11 +1,13 @@
-import { useImmerReducer } from 'use-immer';
+import { useImmer, useImmerReducer } from 'use-immer';
 import SettingsTable from './SettingsTable/SettingsTable';
 import {
+  FormulaModalWindowData,
   HandleFieldChange,
   InitActionData,
   ResponseData,
   ServiceAction,
   ServiceData,
+  ShowModalFunc,
   TableContext,
 } from './interfaces';
 import { useRef } from 'react';
@@ -19,6 +21,7 @@ import { AdditionaServiceTableContext } from './AdditionaServiceTableContext';
 
 import './AdditionalServicesSettings.css';
 import { generateRowId } from '../../../services/firebase/firestoreDb';
+import FormulaModalWindow from '../FormulaModalWindow/FormulaModalWindow';
 
 function AdditionalServicesSettings() {
   const [services, dispatch] = useImmerReducer<ServiceData[], Action>(
@@ -26,6 +29,23 @@ function AdditionalServicesSettings() {
     [],
   );
   const servicesAction = useRef<ServiceAction>({});
+
+  const [modalWindowData, setModalWindowData] =
+    useImmer<FormulaModalWindowData>({
+      isShown: false,
+      rowFormula: '',
+      rowName: '',
+      setRowFormula: (formula) => formula,
+    });
+
+  const showModal: ShowModalFunc = (formula, rowName, setFormula) => {
+    setModalWindowData((draft) => {
+      draft.isShown = true;
+      draft.rowFormula = formula;
+      draft.rowName = rowName;
+      draft.setRowFormula = setFormula;
+    });
+  };
 
   useTableSubscriptiontsts('additional_services', 'rowName', (initServices) => {
     console.log('effect services: ', initServices);
@@ -63,16 +83,18 @@ function AdditionalServicesSettings() {
   const handleSaveCahnge = () => {
     dispatch({ type: 'save' });
 
+    setTimeout(() => {
+      console.log('Updated services with error:', services);
+    }, 0);
+
     const toastId: Id = toast.loading('Please wait...');
 
     const invalidServices = services.filter((service) => service.rowData.error);
 
+    console.log('invalidServices: ', invalidServices);
+
     if (invalidServices.length) {
-      showUpdateToast(
-        toastId,
-        "The price can't be less than zero or empty",
-        'error',
-      );
+      showUpdateToast(toastId, "The row name can't be empty", 'error');
 
       return;
     }
@@ -104,6 +126,7 @@ function AdditionalServicesSettings() {
     tableRows: services,
     deleteRecordFunc: handleServiceDelete,
     editRecordFunc: handleFieldChange,
+    showModal: showModal,
   };
 
   return (
@@ -126,6 +149,14 @@ function AdditionalServicesSettings() {
           </button>
         </footer>
       </div>
+      <FormulaModalWindow
+        {...modalWindowData}
+        closeFunc={() =>
+          setModalWindowData((draft) => {
+            draft.isShown = false;
+          })
+        }
+      />
     </section>
   );
 }

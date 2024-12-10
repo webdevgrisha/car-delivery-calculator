@@ -96,7 +96,7 @@ interface MoveActionData {
 interface HandleFieldChange {
     <T extends InfoRow | ResultRow>(
         id: string,
-        name: keyof T | 'isShown' | 'formula',
+        name: keyof T | 'isShown' | 'formula' | 'baseCurrency',
         value: T[keyof T] | boolean,
         rowType: T['rowType']
     ): void;

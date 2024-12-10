@@ -84,8 +84,6 @@ async function resetPassword(email: string) {
     console.log("Письмо для сброса пароля отправлено.");
 }
 
-// resetPassword('pojala9789@lofiey.com');
-
 // createUser('test1@gmail.com', '12345678');
 
 export {

@@ -82,20 +82,20 @@ function ManualCalculation({
     }).then(({ data }) => {
       console.log('result: ', data);
 
-      const additionalServiceCount = Object.keys(
-        selectedAdditionalServices,
-      ).length;
+      // const additionalServiceCount = Object.keys(
+      //   selectedAdditionalServices,
+      // ).length;
 
-      const resData = data as ClalculationResult;
+      // const resData = data as ClalculationResult;
 
-      resData[2].splice(
-        resData[2].length - 1 - additionalServiceCount,
-        additionalServiceCount,
-      );
+      // resData[2].splice(
+      //   resData[2].length - 1 - additionalServiceCount,
+      //   additionalServiceCount,
+      // );
 
-      console.log('resData: ', resData);
+      // console.log('resData: ', resData);
 
-      setCalculationResult(resData);
+      setCalculationResult(data as ClalculationResult);
     });
   };
 

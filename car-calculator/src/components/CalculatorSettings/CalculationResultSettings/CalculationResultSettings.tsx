@@ -1,9 +1,9 @@
 import './CalculationResultSettings.css';
 import { useImmer } from 'use-immer';
 import { FormulaModalWindowData, ShowModalFunc } from './interfaces';
-import TableWrapper from './TableWrapper/TableWrapper';
-import FormulaModalWindow from './FormulaModalWindow/FormulaModalWindow';
+import FormulaModalWindow from '../FormulaModalWindow/FormulaModalWindow';
 import TotalCost from './TotalCost/TotalCost';
+import { TableWrapper } from './index';
 
 function CalculationResultSettings() {
   const [modalWindowData, setModalWindowData] =
@@ -54,7 +54,7 @@ function CalculationResultSettings() {
 
           <hr className="table-delimiter" />
 
-          <TotalCost tablePath='total_car_cost'/>
+          <TotalCost tablePath="total_car_cost" />
         </div>
       </div>
 

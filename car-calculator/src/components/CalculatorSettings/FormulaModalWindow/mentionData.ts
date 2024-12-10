@@ -1,11 +1,11 @@
 const tableMention = [
     {
-        id: 'shipping_cost_to_a_US_port',
-        display: '$shipping_cost_to_a_US_port(#location, #carSize)',
-    },
-    {
         id: 'delivery_by_ship',
         display: '$delivery_by_ship($get_port_name(#location, #carSize), Rotterdam, #carSize)',
+    },
+    {
+        id: 'shipping_cost_to_a_US_port',
+        display: '$shipping_cost_to_a_US_port(#location, #carSize)',
     },
     {
         id: 'calc_auction_fee',

@@ -5,15 +5,6 @@ import { validateDamegeDegree, validateInput, validateOptionalInput, validateSel
 
 const getFormFields = () => {
     const formRows: FormRows[] = [
-        // {
-        //     label: 'Aukcja',
-        //     tagName: 'select',
-        //     name: 'auction',
-        //     fieldConfig: {
-        //         selectionOptions: ['Select auction', 'IAAI', 'Copart']
-        //     },
-        //     validate: validateSelect,
-        // },
         {
             label: 'Cena pojazdu',
             tagName: 'input',
@@ -22,6 +13,42 @@ const getFormFields = () => {
                 measure: 'USD',
             },
             validate: validateInput,
+        },
+        {
+            label: 'Lokalizacja',
+            tagName: 'select',
+            name: 'location',
+            fieldConfig: {
+                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location'),
+            },
+            validate: validateSelect,
+        },
+        {
+            label: 'Rozmiar Auta',
+            tagName: 'select',
+            name: 'carSize',
+            fieldConfig: {
+                selectionOptions: ['Select car', 'Sedan', 'Suv', 'Duży Suv', 'Pickup', 'Van', 'Motor'],
+            },
+            validate: validateSelect,
+        },
+        {
+            label: 'Koszt celny',
+            tagName: 'input',
+            name: 'customsCosts',
+            fieldConfig: {
+                measure: 'USD',
+            },
+            validate: validateInput,
+        },
+        {
+            label: 'Koszty naprawy',
+            tagName: 'input',
+            name: 'repairCosts',
+            fieldConfig: {
+                measure: 'PLN',
+            },
+            validate: validateOptionalInput,
         },
         {
             label: 'Engine size',
@@ -49,42 +76,6 @@ const getFormFields = () => {
                 measure: 'PLN',
             },
             validate: validateOptionalInput,
-        },
-        {
-            label: 'Lokalizacja',
-            tagName: 'select',
-            name: 'location',
-            fieldConfig: {
-                selectionOptions: getColumnData('shipping_cost_to_a_US_port', 'Location', 'Select location'),
-            },
-            validate: validateSelect,
-        },
-        {
-            label: 'Koszt celny',
-            tagName: 'input',
-            name: 'customsCosts',
-            fieldConfig: {
-                measure: 'USD',
-            },
-            validate: validateInput,
-        },
-        {
-            label: 'Koszty naprawy',
-            tagName: 'input',
-            name: 'repairCosts',
-            fieldConfig: {
-                measure: 'PLN',
-            },
-            validate: validateOptionalInput,
-        },
-        {
-            label: 'Rozmiar Auta',
-            tagName: 'select',
-            name: 'carSize',
-            fieldConfig: {
-                selectionOptions: ['Select car', 'Sedan', 'Suv', 'Duży Suv', 'Pickup', 'Van', 'Motor'],
-            },
-            validate: validateSelect,
         },
     ];
 

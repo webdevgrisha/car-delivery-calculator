@@ -13,36 +13,35 @@ function CalculationResultSection({
   title,
   rows,
   sectionResult,
-  selectedAdditionalServices,
+  selectedAdditionalServices = {},
 }: SubSectionProps) {
-  const additonalRows = (
-    <RenderAdditionalServices
-      selectedAdditionalServices={selectedAdditionalServices}
-    />
+  console.log('rows: ', rows);
+  console.log(
+    'selectedAdditionalServices: ',
+    Object.values(selectedAdditionalServices),
+  );
+  const totalRows = [...rows];
+  totalRows.splice(-1, 0,
+    ...(Object.values(selectedAdditionalServices)),
   );
 
-  // const updatSectionResult = sectionResult?.splice(
-  //   rows.length - 2,
-  //   Object.keys(selectedAdditionalServices)?.length || 0,
-  //   -1,
-  // );
+  console.log('totalRows: ', totalRows);
 
   return (
     <div className="sub-section">
       <h3>{title}</h3>
 
-      {rows.map(({ rowName, currency }, index) => {
+      {totalRows.map(({ rowName, currency }, index) => {
         const rowClass = classNames({
           row: true,
-          last: index === rows.length - 1,
+          last: index === totalRows.length - 1,
         });
 
         const price: number = sectionResult?.[index] || 0;
 
         return (
           <>
-            {index === rows.length - 1 ? additonalRows : null}
-            <div className={rowClass} key={index}>
+            <div className={rowClass} key={rowName}>
               <p className="name">{rowName}</p>
               <p className="price">
                 {price} {currency}
@@ -52,33 +51,6 @@ function CalculationResultSection({
         );
       })}
     </div>
-  );
-}
-
-interface RenderAdditionalServicesProps {
-  selectedAdditionalServices: SelectedAdditionalServices | undefined;
-}
-
-function RenderAdditionalServices({
-  selectedAdditionalServices,
-}: RenderAdditionalServicesProps) {
-  if (selectedAdditionalServices === undefined) return null;
-
-  const rows = Object.entries(selectedAdditionalServices);
-
-  return (
-    <>
-      {rows.map(([id, { rowName, price, currency }]) => {
-        return (
-          <div className="row" key={id}>
-            <p className="name">{rowName}</p>
-            <p className="price">
-              {price} {currency}
-            </p>
-          </div>
-        );
-      })}
-    </>
   );
 }
 

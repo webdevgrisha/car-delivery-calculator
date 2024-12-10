@@ -44,7 +44,8 @@ export default function tableReducer(draft: Draft<ServiceData[]>, action: Action
                 const rowData: RowData = {
                     rowName: '',
                     currency: 'PLN',
-                    price: '0',
+                    baseCurrency: 'USD',
+                    formula: '0',
                     isShown: true,
                 };
 
@@ -73,14 +74,12 @@ export default function tableReducer(draft: Draft<ServiceData[]>, action: Action
             break;
         case 'save':
             {
-                draft.forEach(
-                    (service) => {
-                        const isInvalid = +service.rowData.price < 0 || service.rowData.price === '';
-
-                        if (isInvalid) service.rowData.error = true;
-                    }
-                );
-            };
+                draft.forEach((service) => {
+                    const isInvalid = service.rowData.rowName.trim() === '';
+                    service.rowData.error = isInvalid;
+                });
+                break;
+            }
             break;
     }
 }
