@@ -1,0 +1,196 @@
+.calculator-settings>.colum-wrapper:first-child {
+    flex: 3 2 0%;
+}
+
+/* .calculator-settings>.colum-wrapper:first-child {
+    max-width: 60%;
+}
+
+.calculator-settings>.colum-wrapper:last-child {
+    max-width: 40%;
+} */
+
+.calculator-settings table {
+    width: 100%;
+    padding-bottom: 0.44rem;
+    margin-bottom: 0.94rem;
+    border-bottom: 1px solid rgb(217, 217, 217);
+    border-spacing: 0px 2px;
+}
+
+.calculator-settings table>colgroup>col:first-child {
+    width: 50%;
+    padding-right: 20px;
+}
+
+.calculator-settings table>colgroup>col:not(:first-child) {
+    width: 19%;
+}
+
+.calculator-settings table>colgroup>col:last-child {
+    width: 10%;
+}
+
+.calculator-settings table>thead {
+    height: auto;
+}
+
+.calculator-settings table>thead>tr>th>p {
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 150%;
+    color: rgb(0, 0, 0);
+}
+
+.calculator-settings table>thead>tr>p {
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 150%;
+    color: rgb(0, 0, 0);
+}
+
+.calculator-settings table>thead>tr>th:first-child p {
+    color: rgb(33, 109, 209);
+    text-align: left;
+}
+
+.calculator-settings table>.spacer-row {
+    height: 0.44rem;
+}
+
+.calculator-settings table>tbody>tr:not(:first-child):not(:last-child) {
+    cursor: grab;
+    z-index: 2;
+}
+
+.calculator-settings table>tbody>tr>td {
+    line-height: 0px;
+}
+
+.calculator-settings table>tbody>tr>td:not(:last-child) {
+    padding-right: 5px;
+}
+
+.calculator-settings table>tbody tr.result-row>td {
+    padding-right: 5px;
+}
+
+.calculator-settings table>tbody>tr>td:first-child {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink: 1;
+    position: relative;
+    padding-left: 0px;
+    /* margin-right: 0.63rem; */
+}
+
+.calculator-settings table>tbody>tr>td:first-child .btn {
+    position: absolute;
+    right: 5px;
+
+    transition: 0.4s opacity;
+    opacity: 0;
+}
+
+.calculator-settings table>tbody>tr>td.show-edt-btn .btn {
+    opacity: 1;
+}
+
+.calculator-settings table>tbody>tr>td.show-text>.custom-input {
+    padding-left: 0px;
+    font-weight: 400;
+    line-height: 150%;
+    font-size: 0.91rem;
+    opacity: 1;
+    color: gray;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.calculator-settings table>tbody>tr>td>.custom-input:autofill,
+.calculator-settings table>tbody>tr>td.show-text>.custom-input:autofill {
+    -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.51) inset !important;
+    -webkit-text-fill-color: grey !important;
+}
+
+.calculator-settings .table-wrapper-container table>tbody>tr:last-child>td.show-text>.custom-input {
+    color: rgb(41, 41, 41);
+}
+
+.calculator-settings table>tbody>tr.error input[name='price'] {
+    border: 1px solid rgb(224, 59, 75);
+    color: rgb(224, 59, 75);
+}
+
+.calculator-settings table>tbody>tr {
+    transition: 0.4s opacity;
+}
+
+.calculator-settings table>tbody>tr.hide {
+    opacity: 0.5 !important;
+}
+
+.calculator-settings table>tbody>tr>td>.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.calculator-settings table>tbody>tr>td .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    transition: all 0.4s;
+    cursor: pointer;
+
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+.calculator-settings footer {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.calculator-settings .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25rem;
+    transition: transform 0.4s;
+    box-sizing: border-box;
+    user-select: none;
+    padding: 0px 1.5rem;
+    height: 2.75rem;
+    background: rgb(227, 234, 255);
+    cursor: pointer;
+    text-decoration: none !important;
+    width: 100%;
+    border: none;
+
+    font-weight: 500;
+    font-size: 0.88rem;
+    line-height: 1rem;
+    align-items: center;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: rgb(33, 109, 209);
+
+    &:hover {
+        transform: scale(0.97);
+    }
+}
+
+.calculator-settings .btn.save {
+    background-color: rgb(33, 109, 209);
+    color: rgb(255, 255, 255);
+}

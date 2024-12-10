@@ -1,0 +1,34 @@
+.additional-services>.container>.services>.service {
+    display: flex;
+    align-items: center;
+    gap: 0.44rem;
+    background-color: rgb(255, 255, 255);
+    transition: background-color 0.4s;
+    cursor: pointer;
+    padding: 0.53rem 0.94rem;
+
+    width: 100%;
+}
+
+.additional-services>.container>.services>.service:hover {
+    background-color: rgb(241, 246, 252);
+}
+
+.additional-services>.container>.services>.service>p {
+    font-weight: 300;
+    font-size: 0.81rem;
+    line-height: 0.94rem;
+    color: #000;
+}
+
+.additional-services>.container>.services>.service.selected {
+    background-color: rgb(241, 246, 252);
+}
+
+.additional-services>.container>.services>.service .price {
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 150%;
+    color: rgb(124, 141, 181);
+    margin-left: auto;
+}

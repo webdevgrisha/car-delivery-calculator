@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     gap: 2.5rem;
-    height: 4.13rem;
+    height: 5.13rem;
     padding: 0.75rem 0.81rem 0.75rem 1.56rem;
     background: rgb(255, 255, 255);
     border-bottom: 1px solid rgb(223, 231, 240);
@@ -18,8 +18,8 @@
 }
 
 .root-layout>header>.logo>img {
-    width: 5.56rem;
-    height: 1.5rem;
+    width: 8.56rem;
+    height: 4.5rem;
     cursor: pointer;
 }
 
@@ -83,7 +83,7 @@
     display: flex;
     flex-direction: column;
     background-color: rgb(255, 255, 255);
-    transition: 0.4s;
+    transition: 0.4s all;
 
     width: 14.5rem;
     border-right: 1px solid rgb(223, 231, 240);
@@ -111,7 +111,11 @@
     height: 3rem;
     padding: 0px 1.56rem;
     cursor: pointer;
-    transition: 0.4s;
+    transition: 0.4s all;
+}
+
+.root-layout nav>.nav-link:hover {
+    transition: 0.4s all;
 }
 
 .root-layout nav>.nav-link:hover {
@@ -142,7 +146,6 @@
 
 .root-layout nav>.separator {
     margin: 1.19rem 0px;
-    /* border-top: 1px solid rgb(223, 231, 240); */
     background-color: rgb(223, 231, 240);
     width: 100%;
     height: 1px;
@@ -186,7 +189,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 1.56rem 1.88rem;
+    /* padding: 1.56rem 1.88rem; */
     width: 100%;
 
     background: rgb(248, 248, 250);

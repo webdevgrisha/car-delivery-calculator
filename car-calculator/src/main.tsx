@@ -6,14 +6,24 @@ import {
   Outlet,
   RouterProvider,
 } from 'react-router-dom';
-import App from './App.tsx';
-import { LoginForm, PersonalInfo, Users } from './components/index.ts';
+import { Calculator, CalculatorSettings, LoginForm, PersonalInfo, Users } from './components/index.ts';
 
-import { RootLayout, LogInLayout } from '../src/layouts/index.ts';
+import { RootLayout, TablesLayout } from '../src/layouts/index.ts';
 
 import './index.css';
 import './reset.css';
 import AuthProvider from './utils/AuthProvider.tsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  Clo,
+  CopartFees,
+  DeliveryByShip,
+  Excise,
+  IAAIFees,
+  MyPorts,
+  ShippingCostToAUSPort,
+} from './components/Tables/index.ts';
 
 const router = createBrowserRouter([
   {
@@ -25,16 +35,8 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: 'carfax',
-        element: '',
-      },
-      {
-        path: 'autocheck',
-        element: '',
-      },
-      {
-        path: 'sticker',
-        element: '',
+        index: true,
+        element: <Navigate to="calculator" replace={true} />,
       },
       {
         path: 'clients',
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'calculator',
-        element: <App />,
+        element: <Calculator />,
       },
       {
         path: 'settings',
@@ -62,11 +64,47 @@ const router = createBrowserRouter([
           },
           {
             path: 'calculator',
-            element: '',
+            element: <CalculatorSettings />,
           },
           {
-            path: 'shipping',
-            element: '',
+            path: 'tables',
+            element: <TablesLayout />,
+            children: [
+              {
+                index: true,
+                element: (
+                  <Navigate to="shipping_cost_to_a_US_port" replace={true} />
+                ),
+              },
+              {
+                path: 'shipping_cost_to_a_US_port',
+                element: <ShippingCostToAUSPort />,
+              },
+              {
+                path: 'delivery_by_ship',
+                element: <DeliveryByShip />,
+              },
+              {
+                path: 'my_ports',
+                element: <MyPorts />,
+              },
+              {
+                path: 'iaai_fees',
+                element: <IAAIFees />,
+              },
+              {
+                path: 'copart_fees',
+                element: <CopartFees />,
+              },
+              {
+                path: 'excise',
+                element: <Excise />,
+              },
+              {
+                path: 'clo',
+                element: <Clo />,
+              },
+            ],
           },
         ],
       },
@@ -78,6 +116,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
+      <ToastContainer />
     </AuthProvider>
   </StrictMode>,
 );

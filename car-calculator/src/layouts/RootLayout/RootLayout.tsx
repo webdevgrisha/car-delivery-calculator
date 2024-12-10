@@ -1,33 +1,28 @@
 import { Outlet, NavLink, useMatch } from 'react-router-dom';
 
 import './RootLayout.css';
-import { useState } from 'react';
 
 import { userSignOut } from '../../services/firebase/auth';
-import { useAuth } from '../../utils/AuthProvider';
 
 import {
   SVG_Email,
   SVG_User,
-  SVG_CarFax,
-  SVG_Autocheck,
-  SVG_Sticekr,
   SVG_Clients,
   SVG_Calculator,
   SVG_Settings,
 } from '../../assets';
+import classNames from 'classnames';
+import { useUserLogIn } from '../../hooks';
 
 export default function RootLayout() {
   const match = useMatch('/settings/*');
-  const userData = useAuth();
+  const currentUser = useUserLogIn();
 
-  const email = userData.currentUser.email;
-  const role = userData.currentUser.role;
-  console.log('Auth: ', userData.currentUser.email);
-  // console.log('match: ', match);
-  // const [isSettingActive, setSettingActive] = useState<boolean>(false);
+  const email = currentUser?.email;
+  const role = currentUser?.role;
+  console.log('Auth: ', currentUser);
 
-  const mainNavClass = match ? 'remove-p' : '';
+  const mainNavClass = classNames({ 'remove-p': match });
   return (
     <div className="root-layout">
       <header>
@@ -52,24 +47,6 @@ export default function RootLayout() {
       </header>
       <div className="app-container">
         <nav className={'main-nav ' + mainNavClass}>
-          <NavLink className="nav-link" to="/">
-            <span className="icon">
-              <SVG_CarFax />
-            </span>
-            <p>CarFax</p>
-          </NavLink>
-          <NavLink className="nav-link" to="autocheck">
-            <span className="icon">
-              <SVG_Autocheck />
-            </span>
-            <p>Autocheck</p>
-          </NavLink>
-          <NavLink className="nav-link" to="sticker">
-            <span className="icon">
-              <SVG_Sticekr />
-            </span>
-            <p>Sticker</p>
-          </NavLink>
           <NavLink className="nav-link" to="clients">
             <span className="icon">
               <SVG_Clients />
@@ -98,15 +75,19 @@ export default function RootLayout() {
             <NavLink className="nav-link" to="settings/profile">
               Profile
             </NavLink>
-            <NavLink className="nav-link" to="settings/users">
-              Users
-            </NavLink>
-            <NavLink className="nav-link" to="settings/calculator">
-              Calculator
-            </NavLink>
-            <NavLink className="nav-link" to="settings/shipping">
-              Shipping
-            </NavLink>
+            {role === 'admin' && (
+              <>
+                <NavLink className="nav-link" to="settings/users">
+                  Users
+                </NavLink>
+                <NavLink className="nav-link" to="settings/calculator">
+                  Calculator
+                </NavLink>
+                <NavLink className="nav-link" to="settings/tables">
+                  Tables
+                </NavLink>
+              </>
+            )}
           </nav>
         )}
 
