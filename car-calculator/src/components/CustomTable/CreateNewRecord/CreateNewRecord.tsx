@@ -1,45 +1,20 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { SVG_Add } from '../../../assets';
 
 import './CreateNewRecord.css';
-import { CustomInput, CustomSelect } from '..';
-import { FieldInfo, InputFieldInfo, SelectedFieldInfo } from '../interfaces';
+import { CustomInput, CustomSelect } from '../../index';
+import { InputFieldInfo, ResponseData, SelectedFieldInfo } from '../interfaces';
 
-interface CreateNewRecordProps {
-  fields: FieldInfo[];
-  submitFunction: Function;
-}
+import { showWarningToastMessage, showUpdateToast } from '../tableToast';
+import { Id, toast } from 'react-toastify';
+import { FieldInfo } from '../types';
+import { useCustomTableContext } from '../tableContext';
 
-function CreateNewRecord({ fields }: CreateNewRecordProps) {
-  const newRecordDataConfig = useMemo(
-    () =>
-      fields.reduce<Record<string, string>>((config, field) => {
-        const fieldConfig = field.fieldConfig;
-        const key = fieldConfig.name;
-        const value = fieldConfig.defaultValue;
+function CreateNewRecord() {
+  const { fields, addNewRecordFunc } = useCustomTableContext();
 
-        config[key] = value;
-
-        return config;
-      }, {}),
-    [fields],
-  );
-
-  // refactor
-  const newRecordValidateFunc = useMemo(
-    () =>
-      fields.reduce<Record<string, Function>>((config, field) => {
-        const fieldConfig = field.fieldConfig;
-        const key = fieldConfig.name;
-        const value = fieldConfig.validateFunction;
-
-        config[key] = value;
-
-        return config;
-      }, {}),
-    [fields],
-  );
+  const [newRecordDataConfig] = useState(() => createConfig(fields));
 
   const [newRecordData, setNewRecordData] =
     useImmer<Record<string, string>>(newRecordDataConfig);
@@ -47,8 +22,6 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
   const [invalidFields, setInvalidFields] = useImmer<Record<string, boolean>>(
     {},
   );
-
-  console.log('fields: ', fields);
 
   const handleFieldChange = useCallback(
     (name: string, value: string) => {
@@ -66,13 +39,11 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
   );
 
   const handleFormSubmit = () => {
-    console.log('Add new record');
+    const invalidFieldsArr: boolean[] = fields.map(({ fieldConfig }) => {
+      const { name, validate } = fieldConfig;
 
-    const invalidFieldsArr: boolean[] = Object.entries(
-      newRecordValidateFunc,
-    ).map(([name, func]) => {
       const value = newRecordData[name];
-      const isValid = func(value);
+      const isValid = validate(value);
 
       if (isValid) return true;
 
@@ -80,22 +51,32 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
         draft[name] = true;
       });
 
+      showWarningToastMessage(name);
       return false;
     });
 
-    console.log('unValidFields:', invalidFieldsArr);
-  };
+    if (invalidFieldsArr.some((valid) => valid === false)) return;
 
-  console.log('newRecordData:', newRecordData);
+    const toastId: Id = toast.loading('Please wait...');
+
+    addNewRecordFunc(newRecordData).then(({ data }: { data: ResponseData }) => {
+      const status = 'message' in data ? 'success' : 'error';
+
+      const message: string = data.message || data.error || 'Unkown error';
+
+      showUpdateToast(toastId, message, status);
+
+      if (status !== 'error') setNewRecordData(newRecordDataConfig);
+    });
+  };
 
   return (
     <tr className="add-new-record">
       {fields.map((field: FieldInfo, index: number) => {
         const { tagName, fieldConfig } = field;
-
-        const errorClass = invalidFields[fieldConfig.name] ? 'error' : '';
-
-        console.log('errorClass: ', errorClass);
+        const errorClass = invalidFields[fieldConfig.name]
+          ? 'error'
+          : undefined;
 
         const buttons: JSX.Element | null =
           index === fields.length - 1 ? (
@@ -111,6 +92,7 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
             {tagName === 'input' ? (
               <CustomInput
                 {...(fieldConfig as InputFieldInfo)}
+                value={newRecordData[fieldConfig.name]}
                 changeEventFunc={(value: string) =>
                   handleFieldChange(fieldConfig.name, value)
                 }
@@ -118,6 +100,7 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
             ) : (
               <CustomSelect
                 {...(fieldConfig as SelectedFieldInfo)}
+                value={newRecordData[fieldConfig.name]}
                 changeEventFunc={(value: string) =>
                   handleFieldChange(fieldConfig.name, value)
                 }
@@ -132,3 +115,19 @@ function CreateNewRecord({ fields }: CreateNewRecordProps) {
 }
 
 export default CreateNewRecord;
+
+function createConfig(fields: FieldInfo[]) {
+  const result = fields.reduce(
+    (config, field) => {
+      const { fieldConfig } = field;
+      const { name, defaultValue } = fieldConfig;
+
+      config[name] = defaultValue || '';
+
+      return config;
+    },
+    {} as { [key: string]: string },
+  );
+
+  return result;
+}

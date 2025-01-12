@@ -60,7 +60,7 @@ section {
   background-color: rgb(255, 255, 255);
   overflow: hidden;
 
-  width: 500px;
+  min-width: 500px;
 }
 
 section .container {

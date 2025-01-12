@@ -1,0 +1,15 @@
+.tables-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
+}
+
+.tables-wrapper .table-section:first-child {
+    min-width: 55%;
+}
+
+.tables-wrapper .table-section:last-child {
+    min-width: 45%;
+}

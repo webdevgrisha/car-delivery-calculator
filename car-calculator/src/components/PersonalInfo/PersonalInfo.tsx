@@ -3,27 +3,44 @@ import 'react-phone-input-2/lib/style.css'; // Подключаем стили
 
 import './PersonalInfo.css';
 import { useEffect, useState } from 'react';
-import { error } from 'firebase-functions/logger';
 import { updateUserName } from '../../services/firebase/auth';
-import { useAuth } from '../../utils/AuthProvider';
+import { useImmer } from 'use-immer';
+import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
+import { useUserLogIn } from '../../hooks';
 
-type validateInput =
+type ValidateInput =
   | {
       error: string;
     }
   | boolean;
 
-function PersonalInfo() {
-  const userData = useAuth();
+interface PersonalInfo {
+  displayName: string;
+  email: string;
+  role: 'user' | 'admin';
+}
 
-  const [nameInit = '', sernameInit = ''] =
-    userData.currentUser.displayName.split(' ');
+function PersonalInfo() {
+  const currentUser = useUserLogIn();
+
+  const [personalInfo, setPersonalInfo] = useImmer({});
+
+  console.log('personalInfo: ', personalInfo);
+
+  useEffect(() => {
+    const unsubscribeFunc = subscribeOnUserUpdate(
+      currentUser.uid,
+      setPersonalInfo,
+    );
+
+    return unsubscribeFunc;
+  }, []);
+
+  const [nameInit = '', sernameInit = ''] = currentUser.displayName.split(' ');
 
   const [name, setName] = useState<string>(nameInit);
   const [surname, setSurname] = useState<string>(sernameInit);
   const [phone, setPhone] = useState<string>('');
-
-  // useEffect(() => {}, []);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -51,16 +68,11 @@ function PersonalInfo() {
 
       updateUserName(newName);
     }
-    // validateName(name);
-    // validateName(surname);
-    // validatePhoneNumber(phone);
   };
 
   return (
     <form action="" className="personal-info" onSubmit={handleFormSubmit}>
-      {/* <header> */}
       <h2>Personal info</h2>
-      {/* </header> */}
       <div className="group">
         <h3>Personal</h3>
         <p>Your name, e-mail and phone</p>
@@ -77,7 +89,6 @@ function PersonalInfo() {
           onChange={handleSurnameChange}
           value={surname}
         />
-        {/* <input type="text" placeholder="" /> */}
 
         <PhoneInput
           inputClass="phone-input-field"
@@ -96,7 +107,7 @@ function PersonalInfo() {
   );
 }
 
-function validateName(name: string): validateInput {
+function validateName(name: string): ValidateInput {
   if (name.trim().length === 0) return true;
 
   const regex: RegExp = /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s-]+$/;
@@ -112,7 +123,7 @@ function validateName(name: string): validateInput {
   return isValid;
 }
 
-function validatePhoneNumber(tel: string): validateInput {
+function validatePhoneNumber(tel: string): ValidateInput {
   if (tel.length === 0) return true;
 
   const isValid: boolean = tel.length >= 10 && tel.length <= 15;

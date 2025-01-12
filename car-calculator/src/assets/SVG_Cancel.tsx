@@ -16,7 +16,7 @@ const SVG_Cancel = () => (
       x="0.25"
       y="0.25"
       stroke="#FF4242"
-      stroke-width="0.5"
+      strokeWidth="0.5"
       rx="4.75"
     ></rect>
   </svg>

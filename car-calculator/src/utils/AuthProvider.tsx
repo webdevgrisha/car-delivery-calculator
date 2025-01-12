@@ -12,14 +12,17 @@ import {
 } from '../services/firebase/auth';
 
 type User = {
-  currentUser: User;
-  id: number;
+  uid: string;
   email: string;
   role: 'admin' | 'user';
   displayName: string;
 };
 
-const AuthContext = createContext<User | null>(null);
+interface CurrentUser {
+  currentUser: User | null;
+}
+
+const AuthContext = createContext<CurrentUser | null>(null);
 
 type AuthProviderProps = PropsWithChildren & {
   isSignedIn?: boolean;
@@ -28,17 +31,36 @@ type AuthProviderProps = PropsWithChildren & {
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   // const navigate = useNavigate();
+
   useEffect(() => {
     const unsubscriber = subscribeOnAuthStateChanged(async (user) => {
       console.log('user: ', user);
-      user.role = (await checkAdminRole()) ? 'admin' : 'user';
-      setCurrentUser(user);
+
+      if (user === null) {
+        if (window.location.pathname !== '/login') {
+          window.location.pathname = '/login';
+        }
+        return;
+      }
+
+      const userRole: 'admin' | 'user' = (await checkAdminRole()) as
+        | 'admin'
+        | 'user';
+
+      setCurrentUser({
+        uid: user.uid,
+        email: user.email || '',
+        role: userRole,
+        displayName: user.displayName || '',
+      });
     });
 
     return unsubscriber;
   }, []);
 
-  const value = {
+  console.log('currentUser: ', currentUser);
+
+  const value: CurrentUser = {
     currentUser,
   };
 

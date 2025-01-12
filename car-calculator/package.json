@@ -13,17 +13,26 @@
     "deploy": "npm run build && gh-pages -d dist --dest hooks-and-routing"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
+    "cors": "^2.8.5",
+    "html-to-image": "^1.11.11",
+    "lodash.clonedeep": "^4.5.0",
+    "papaparse": "^5.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-mentions": "^4.4.10",
     "react-phone-input-2": "^2.15.1",
     "react-phone-number-input": "^3.4.5",
     "react-router-dom": "^6.26.1",
+    "react-toastify": "^10.0.5",
     "use-immer": "^0.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "@types/react-mentions": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^8.4.0",
     "@typescript-eslint/parser": "^8.4.0",
     "@vitejs/plugin-react": "^4.3.1",

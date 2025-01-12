@@ -1,13 +1,9 @@
-import './firebase'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import './firebaseConfig'
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User, sendPasswordResetEmail } from "firebase/auth";
+
 
 const auth = getAuth();
-const functions = getFunctions();
 
-const addAdminRole = httpsCallable(functions, "addAdminRole");
-const createNewUser = httpsCallable(functions, "createNewUser");
-const getUsers = httpsCallable(functions, "getUsers");
 
 // addAdminRole({ email: 'test1@gmail.com' }).then((result) => {
 //     console.log("Result: ", result);
@@ -17,17 +13,17 @@ const getUsers = httpsCallable(functions, "getUsers");
 // getUsers().then((result) => console.log("Users:", result));
 
 
-function testCreateUser(email: string, password: string) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentail) => {
-            console.log('User create: ', userCredentail)
-            const user = userCredentail.user;
-            console.log('User: ', user);
-        })
-        .catch((err) => {
-            console.log('user not create: ', err.message);
-        });
-}
+// function testCreateUser(email: string, password: string) {
+//     createUserWithEmailAndPassword(auth, email, password)
+//         .then((userCredentail) => {
+//             console.log('User create: ', userCredentail)
+//             const user = userCredentail.user;
+//             console.log('User: ', user);
+//         })
+//         .catch((err) => {
+//             console.log('user not create: ', err.message);
+//         });
+// }
 
 function signInUser(email: string, password: string) {
     signInWithEmailAndPassword(auth, email, password)
@@ -48,7 +44,7 @@ function userSignOut() {
 }
 
 // subscriptions
-function subscribeOnAuthStateChanged(stateChangedFunc: Function) {
+function subscribeOnAuthStateChanged(stateChangedFunc: NextOrObserver<User>) {
     return onAuthStateChanged(auth, stateChangedFunc);
 }
 
@@ -83,6 +79,11 @@ async function updateUserName(name: string) {
 }
 
 
+async function resetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Письмо для сброса пароля отправлено.");
+}
+
 // createUser('test1@gmail.com', '12345678');
 
 export {
@@ -92,7 +93,5 @@ export {
     subscribeOnAuthStateChanged,
     checkAdminRole,
     updateUserName,
-    addAdminRole,
-    createNewUser,
-    getUsers,
+    resetPassword
 }

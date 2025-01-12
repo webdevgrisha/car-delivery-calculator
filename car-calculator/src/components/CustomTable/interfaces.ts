@@ -1,20 +1,18 @@
-type InputFiledType = 'text' | 'number' | 'email';
+import { FieldInfo, InputFiledType } from "./types";
 
 interface InputFieldInfo {
     name: string;
-    defaultValue: string;
     placeholder: string;
+    validate: (value: string) => boolean,
+    defaultValue?: string;
     type?: InputFiledType;
-    isRequired?: boolean;
-    validateFunction: (input: string | number) => boolean;
 }
 
 interface SelectedFieldInfo {
     name: string;
-    defaultValue: string;
-    selectionOptions: string[];
-    isRequired?: boolean;
-    validateFunction: (input: string | number) => boolean;
+    selectionOptions: string[] | Promise<string[]>;
+    defaultValue?: string;
+    validate: (value: string) => boolean,
 }
 
 interface InputField {
@@ -27,16 +25,37 @@ interface SelectField {
     fieldConfig: SelectedFieldInfo;
 }
 
-type FieldInfo = InputField | SelectField;
-
-interface Record {
-    id: string;
-    rowData: string[];
+interface FieldData {
+    [key: string]: string;
 }
 
+interface TableRecord {
+    id: string;
+    rowData: FieldData;
+}
+
+interface TableContext {
+    columnNames: string[];
+    fields: FieldInfo[];
+    records: TableRecord[];
+    addNewRecordFunc: Function;
+    deleteRecordFunc: Function;
+    editRecordFunc: Function;
+}
+
+interface ResponseData {
+    message?: string;
+    error?: string;
+}
+
+
 export type {
+    InputField,
+    SelectField,
     InputFieldInfo,
     SelectedFieldInfo,
-    FieldInfo,
-    Record
+    TableRecord,
+    FieldData,
+    TableContext,
+    ResponseData
 }

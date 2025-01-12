@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     width: auto;
-    /* padding: 0.94rem 1.56rem; */
     border: 1px solid rgb(223, 231, 240);
     border-radius: 0.81rem;
     background-color: rgb(255, 255, 255);
@@ -14,8 +13,6 @@
     align-items: center;
     height: 4.25rem;
     padding: 0px 1.25rem;
-    /* margin: 0.94rem 1.56rem 20px 1.25rem; */
-    /* border-bottom: 1px solid rgb(223, 231, 240); */
 }
 
 .table-section>header>.icon {
@@ -23,20 +20,22 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+    margin-right: 0.5rem;
 }
 
 .table-section>header>h2 {
     margin-right: 15px;
-    font-weight: 500;
+    font-weight: 430;
     font-size: 1.13rem;
     color: rgb(51, 51, 51);
     vertical-align: bottom;
+    text-align: left;
+    /* flex-shrink: 0; */
+    margin-right: auto;
 }
 
 .table-section>header>input {
-    margin-left: auto;
+    /* margin-left: auto; */
     background: rgb(250, 251, 252);
     border: 1px solid rgb(223, 231, 240);
     border-radius: 0.31rem;
@@ -69,6 +68,11 @@
     letter-spacing: 0.02em;
     white-space: nowrap;
     color: rgb(255, 255, 255);
+    transition: 0.4 all;
+
+    &:hover {
+        transform: scale(0.97);
+    }
 }
 
 .table-section>.custom-table {
@@ -84,8 +88,6 @@
 .table-section>.custom-table>thead {
     background-color: rgb(241, 246, 252);
 }
-
-
 
 .table-section>.custom-table>thead>tr>th {
     padding: 0.94rem 0.5rem 0.94rem 0px;
@@ -105,6 +107,10 @@
 
 .table-section .custom-table>tbody>tr:not(:last-child) {
     border-bottom: 1px solid rgb(231, 234, 240);
+}
+
+.table-section .custom-table>tbody>tr>td:last-child {
+    margin-bottom: 1px;
 }
 
 .table-section .custom-table>tbody>tr>td {
@@ -162,26 +168,12 @@
     line-height: 0px;
 }
 
-.table-section .custom-table>tbody  td>input::placeholder,
-.table-section .custom-table>tbody  td>select::placeholder {
-    color: rgb(190, 190, 190);
+.table-section .custom-table>tbody td.copart>p {
+    color: rgb(33, 109, 209);
 }
 
-.table-section .custom-table>tbody td>input,
-.table-section .custom-table>tbody td>select {
-    width: 100%;
-    padding: 0px 1.63rem 0px 0.63rem;
-    font-size: 0.88rem;
-    line-height: 1rem;
-    font-weight: 300;
-    border: 1px solid rgb(223, 231, 240);
-    border-radius: 0.25rem;
-    background-color: transparent;
-    outline: none;
-    appearance: none;
-    z-index: 1;
-    height: 1.5rem;
-    color: rgb(51, 51, 51);
+.table-section .custom-table>tbody td.iaai>p {
+    color: rgb(228, 76, 76);
 }
 
 .table-section .custom-table>tbody td.error>input,
