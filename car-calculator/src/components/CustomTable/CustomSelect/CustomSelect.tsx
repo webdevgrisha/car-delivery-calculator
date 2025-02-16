@@ -2,29 +2,28 @@ import './CustomSelect.css';
 
 interface CustomSelectProps {
   name: string;
-  defaultValue: string;
   selectionOptions: string[];
-  isRequired?: boolean;
+  value: string;
   changeEventFunc: (value: string) => void;
 }
 
 function CustomSelect({
   name,
-  defaultValue,
   selectionOptions,
-  isRequired,
+  value = '',
   changeEventFunc,
 }: CustomSelectProps) {
+  console.log('select: ', selectionOptions);
+  console.log('select value: ', value);
   return (
     <select
       name={name}
-      required={isRequired || false}
-      defaultValue={defaultValue}
+      value={value}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         changeEventFunc(e.target.value)
       }
     >
-      {selectionOptions.map((option: string, index: number) => {
+      {selectionOptions?.map((option: string, index: number) => {
         return (
           <option value={option} key={index}>
             {option}

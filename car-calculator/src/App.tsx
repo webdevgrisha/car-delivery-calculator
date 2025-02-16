@@ -35,6 +35,12 @@ const currencyPairs = [
 ];
 
 function App() {
+  // const showToastMessage = () => {
+  //   toast.success('Success Notification !', {
+  //     position: "top-right",
+  //   });
+  // };
+
   return (
     <>
       <div className="calculator">
@@ -69,6 +75,8 @@ function App() {
           <ManualCalculation />
         </div>
       </div>
+      {/* <button onClick={showToastMessage}>Notify</button> */}
+      
     </>
   );
 }

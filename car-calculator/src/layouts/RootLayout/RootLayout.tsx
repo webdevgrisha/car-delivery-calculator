@@ -104,8 +104,8 @@ export default function RootLayout() {
             <NavLink className="nav-link" to="settings/calculator">
               Calculator
             </NavLink>
-            <NavLink className="nav-link" to="settings/shipping">
-              Shipping
+            <NavLink className="nav-link" to="settings/tables">
+              Tables
             </NavLink>
           </nav>
         )}

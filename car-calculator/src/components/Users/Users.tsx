@@ -1,140 +1,121 @@
 import { useEffect, useState } from 'react';
 import './Users.css';
-import { useImmer } from 'use-immer';
 
 import {
-  addAdminRole,
   createNewUser,
-  getUsers,
-} from '../../services/firebase/auth';
+  deleteUser,
+  editUser,
+} from '../../services/firebase/functions';
+import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
 import Loader from '../Loader/Loader';
-import CustomTable from '../CustomTable/CustomTable';
-
-type UserFileds = 'name' | 'email' | 'role';
+import { SVG_User } from '../../assets';
+import { UserTable } from './UserTable/index';
+import { FieldInfo } from './UserTable/types';
+import { TableRecord } from './UserTable/interfaces';
 
 interface UserProfile {
   uid: string;
-  displayName: string;
-  email: string;
-  role: 'user' | 'admin';
-  customClaims?: {
-    role?: 'user' | 'admin';
+  userData: {
+    displayName: string;
+    email: string;
+    role: 'user' | 'admin';
+    customClaims?: {
+      role?: 'user' | 'admin';
+    };
   };
 }
 
-interface NewUserData {
-  name: string;
-  email: string;
-  role: string;
-}
+const fields: FieldInfo[] = [
+  {
+    tagName: 'input',
+    fieldConfig: {
+      name: 'displayName',
+      placeholder: 'Jakub Kowalski',
+      type: 'text',
+      validate: nameValidation,
+    },
+  },
+  {
+    tagName: 'input',
+    fieldConfig: {
+      name: 'email',
+      placeholder: 'test@gmail.com',
+      type: 'email',
+      validate: emailValidation,
+    },
+  },
+  {
+    tagName: 'select',
+    fieldConfig: {
+      name: 'role',
+      defaultValue: 'user',
+      selectionOptions: ['user', 'admin'],
+      validate: (value: string) => true,
+    },
+  },
+];
 
 function Users() {
-  const [showAddUserFields, setShowAddUserFields] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [users, setUsers] = useState<TableRecord[]>([]);
 
-  function loadUsers() {
-    return getUsers().then((result) => {
-      console.log('useEffect:', result);
-      const usersProfile = result.data.users.map((userRecord) => {
-        const { uid, displayName, email, customClaims }: UserProfile =
-          userRecord;
-        const userProfile: UserProfile = {
-          uid,
-          displayName,
-          email,
-          role: customClaims?.role || 'user',
-        };
-
-        return userProfile;
-      });
-      console.log('users profile: ', usersProfile);
-      setUsers(usersProfile);
-    });
-  }
-
+  // вызывает сомнения
   useEffect(() => {
-    loadUsers().finally(() => setLoading(false));
+    let unsubscribeFunc: () => void | undefined;
+
+    const subcribe = async () => {
+      unsubscribeFunc = await subscribeOnUserUpdate(setUsers);
+    };
+
+    subcribe();
+
+    return () => {
+      if (unsubscribeFunc) unsubscribeFunc();
+    };
   }, []);
 
-  const handleShowNewUserFields = () => setShowAddUserFields(true);
-
-  //  const
-  // const usersTableConfig = {};
-  const fields = [
-    {
-      tagName: 'input',
-      fieldConfig: {
-        name: 'name',
-        placeholder: 'Jakub Kowalski',
-        type: 'text',
-        defaultValue: '',
-        isRequired: false,
-        validateFunction: (input: string) => true,
-      },
-    },
-    {
-      tagName: 'input',
-      fieldConfig: {
-        name: 'email',
-        placeholder: 'test@gmail.com',
-        type: 'email',
-        defaultValue: '',
-        isRequired: true,
-        validateFunction: emailValidation,
-      },
-    },
-    {
-      tagName: 'select',
-      fieldConfig: {
-        name: 'role',
-        isRequired: false,
-        defaultValue: 'user',
-        selectionOptions: ['user', 'admin'],
-        validateFunction: (input: string) => true,
-      },
-    },
-  ];
-
-  const records = users.map((user) => {
-    const result = { id: '', rowData: [] };
-
-    result.id = user.uid;
-    result.rowData = [user.displayName, user.email, user.role];
-    return result;
-  });
+  console.log('users: ', users);
 
   return (
     <>
-      {/* Custom table */}
-      <CustomTable
-        tableIconPath={'table-logo/users.svg'}
+      <UserTable
+        tableIcon={<SVG_User />}
         tableName="Users"
         tableColumnNames={['Name', 'Email', 'Role']}
         tableFields={fields}
-        records={records}
+        records={users}
+        searchBy="displayName"
+        searchInputText="name"
+        addNewUserFunc={createNewUser}
+        deleteUserFunc={deleteUser}
+        editUserFunc={editUser}
       />
     </>
   );
+}
+
+function nameValidation(name: string) {
+  const nameRegex = /^[a-zA-Zа-яА-ЯёЁąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s-]+$/;
+
+  if (!name.length) return true;
+
+  const clearName: string = name.trim();
+
+  if (
+    clearName.length >= 2 &&
+    clearName.length <= 50 &&
+    nameRegex.test(clearName)
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 function emailValidation(email: string) {
   const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return emailRegex.test(email);
-}
-
-function formatName(name: string): string {
-  const names = name.trim().split(' ');
-
-  const result = names.map((name: string) => {
-    const firstLetter = name[0].toUpperCase();
-    const otherLetter = name.slice(1).toLocaleLowerCase();
-
-    return firstLetter + otherLetter;
-  });
-
-  return result.join(' ');
 }
 
 export default Users;
