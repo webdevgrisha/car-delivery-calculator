@@ -10,11 +10,12 @@
     "format:fix": "prettier --write .",
     "preview": "vite preview",
     "prepare": "husky install",
-    "deploy": "npm run build && gh-pages -d dist --dest hooks-and-routing"
+    "deploy": "pnpm run build && gh-pages -d dist --dest hooks-and-routing"
   },
   "dependencies": {
     "classnames": "^2.5.1",
     "cors": "^2.8.5",
+    "firebase": "^11.1.0",
     "html-to-image": "^1.11.11",
     "lodash.clonedeep": "^4.5.0",
     "papaparse": "^5.4.1",
@@ -50,5 +51,6 @@
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.2"
-  }
+  },
+  "packageManager": "pnpm@10.33.4"
 }
