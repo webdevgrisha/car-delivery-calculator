@@ -1,6 +1,10 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Id, toast } from 'react-toastify';
-import { createCalculatorConfiguration } from '../../services/firebase/functions';
+import {
+  createCalculatorConfiguration,
+  deleteCalculatorConfiguration,
+  renameCalculatorConfiguration,
+} from '../../services/firebase/functions';
 import { CalculatorConfiguration } from '../../services/calculatorConfigurations';
 import { showUpdateToast } from '../CustomTable/tableToast';
 import { SVG_Add, SVG_SelectArrow, SVG_Settings } from '../../assets';
@@ -11,18 +15,24 @@ interface Props {
   value: string;
   onChange: (id: string) => void;
   onCreated?: (configuration: CalculatorConfiguration) => void;
+  onRenamed?: (configuration: CalculatorConfiguration) => void;
+  onDeleted?: (id: string) => void;
   variant?: 'calculator' | 'settings';
 }
+
+type FormMode = 'create' | 'rename' | null;
 
 function CalculatorConfigurationPicker({
   configurations,
   value,
   onChange,
   onCreated,
+  onRenamed,
+  onDeleted,
   variant = 'calculator',
 }: Props) {
   const [name, setName] = useState('');
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [formMode, setFormMode] = useState<FormMode>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectedConfiguration = configurations.find(
@@ -30,13 +40,23 @@ function CalculatorConfigurationPicker({
   );
 
   useEffect(() => {
-    if (showCreateForm) inputRef.current?.focus();
-  }, [showCreateForm]);
+    if (formMode) inputRef.current?.focus();
+  }, [formMode]);
+
+  const closeForm = () => {
+    setName('');
+    setFormMode(null);
+  };
 
   const createConfiguration = (event: FormEvent) => {
     event.preventDefault();
     const configurationName = name.trim();
-    if (!configurationName || !onCreated || isSubmitting) return;
+    if (
+      formMode !== 'create' ||
+      !configurationName ||
+      !onCreated ||
+      isSubmitting
+    ) return;
 
     setIsSubmitting(true);
     const toastId: Id = toast.loading('Creating configuration...');
@@ -56,10 +76,77 @@ function CalculatorConfigurationPicker({
         }
 
         onCreated(result.configuration);
-        setName('');
-        setShowCreateForm(false);
+        closeForm();
         setIsSubmitting(false);
         showUpdateToast(toastId, 'Configuration created', 'success');
+      })
+      .catch((error: Error) => {
+        setIsSubmitting(false);
+        showUpdateToast(toastId, error.message, 'error');
+      });
+  };
+
+  const renameConfiguration = (event: FormEvent) => {
+    event.preventDefault();
+    const configurationName = name.trim();
+    if (
+      formMode !== 'rename' ||
+      value === 'default' ||
+      !configurationName ||
+      !onRenamed ||
+      isSubmitting
+    ) return;
+
+    setIsSubmitting(true);
+    const toastId: Id = toast.loading('Renaming configuration...');
+    renameCalculatorConfiguration({
+      configurationId: value,
+      name: configurationName,
+    })
+      .then(({ data }) => {
+        const result = data as {
+          configuration?: CalculatorConfiguration;
+          error?: string;
+        };
+        if (!result.configuration) {
+          showUpdateToast(toastId, result.error || 'Unknown error', 'error');
+          setIsSubmitting(false);
+          return;
+        }
+
+        onRenamed(result.configuration);
+        closeForm();
+        setIsSubmitting(false);
+        showUpdateToast(toastId, 'Configuration renamed', 'success');
+      })
+      .catch((error: Error) => {
+        setIsSubmitting(false);
+        showUpdateToast(toastId, error.message, 'error');
+      });
+  };
+
+  const deleteConfiguration = () => {
+    if (value === 'default' || !onDeleted || isSubmitting) return;
+    const configurationName = selectedConfiguration?.name || 'configuration';
+    if (!window.confirm(`Delete “${configurationName}”? This cannot be undone.`)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    const toastId: Id = toast.loading('Deleting configuration...');
+    deleteCalculatorConfiguration({configurationId: value})
+      .then(({ data }) => {
+        const result = data as {configurationId?: string; error?: string};
+        if (!result.configurationId) {
+          showUpdateToast(toastId, result.error || 'Unknown error', 'error');
+          setIsSubmitting(false);
+          return;
+        }
+
+        onDeleted(result.configurationId);
+        closeForm();
+        setIsSubmitting(false);
+        showUpdateToast(toastId, 'Configuration deleted', 'success');
       })
       .catch((error: Error) => {
         setIsSubmitting(false);
@@ -104,28 +191,64 @@ function CalculatorConfigurationPicker({
             <SVG_SelectArrow color="#216DD1" />
           </span>
         </label>
-        {onCreated && !showCreateForm && (
+        {onCreated && !formMode && (
           <button
             type="button"
             className="new-configuration-button"
-            onClick={() => setShowCreateForm(true)}
+            onClick={() => {
+              setName('');
+              setFormMode('create');
+            }}
           >
             <SVG_Add />
             <span>New configuration</span>
           </button>
         )}
+        {value !== 'default' && !formMode && (onRenamed || onDeleted) && (
+          <div className="configuration-management-actions">
+            {onRenamed && (
+              <button
+                type="button"
+                className="rename-configuration-button"
+                onClick={() => {
+                  setName(selectedConfiguration?.name || '');
+                  setFormMode('rename');
+                }}
+              >
+                Rename
+              </button>
+            )}
+            {onDeleted && (
+              <button
+                type="button"
+                className="delete-configuration-button"
+                disabled={isSubmitting}
+                onClick={deleteConfiguration}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      {onCreated && showCreateForm && (
+      {formMode && (
         <form
           className="configuration-create-form"
-          onSubmit={createConfiguration}
+          onSubmit={
+            formMode === 'create' ? createConfiguration : renameConfiguration
+          }
         >
           <div className="create-form-copy">
-            <strong>Create new configuration</strong>
+            <strong>
+              {formMode === 'create'
+                ? 'Create new configuration'
+                : 'Rename configuration'}
+            </strong>
             <span>
-              All settings from “{selectedConfiguration?.name || 'Default'}”
-              will be copied.
+              {formMode === 'create'
+                ? `All settings from “${selectedConfiguration?.name || 'Default'}” will be copied.`
+                : 'Only the display name will be changed.'}
             </span>
           </div>
           <div className="create-form-controls">
@@ -133,18 +256,23 @@ function CalculatorConfigurationPicker({
               ref={inputRef}
               value={name}
               maxLength={80}
-              aria-label="New configuration name"
-              placeholder="For example, Black Friday"
+              aria-label={
+                formMode === 'create'
+                  ? 'New configuration name'
+                  : 'Configuration name'
+              }
+              placeholder={
+                formMode === 'create'
+                  ? 'For example, Black Friday'
+                  : 'Configuration name'
+              }
               onChange={(event) => setName(event.target.value)}
             />
             <button
               type="button"
               className="cancel-configuration-button"
               disabled={isSubmitting}
-              onClick={() => {
-                setName('');
-                setShowCreateForm(false);
-              }}
+              onClick={closeForm}
             >
               Cancel
             </button>
@@ -153,7 +281,9 @@ function CalculatorConfigurationPicker({
               className="create-configuration-button"
               disabled={!name.trim() || isSubmitting}
             >
-              {isSubmitting ? 'Creating…' : 'Create copy'}
+              {isSubmitting
+                ? formMode === 'create' ? 'Creating…' : 'Saving…'
+                : formMode === 'create' ? 'Create copy' : 'Save name'}
             </button>
           </div>
         </form>

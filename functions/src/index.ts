@@ -31,6 +31,10 @@ import {getCalculatorConfigurations}
   from "./calculatorConfigurations/getCalculatorConfigurations";
 import {createCalculatorConfiguration}
   from "./calculatorConfigurations/createCalculatorConfiguration";
+import {renameCalculatorConfiguration}
+  from "./calculatorConfigurations/renameCalculatorConfiguration";
+import {deleteCalculatorConfiguration}
+  from "./calculatorConfigurations/deleteCalculatorConfiguration";
 
 export {
   addAdminRole,
@@ -52,4 +56,6 @@ export {
   getAuctionData,
   getCalculatorConfigurations,
   createCalculatorConfiguration,
+  renameCalculatorConfiguration,
+  deleteCalculatorConfiguration,
 };

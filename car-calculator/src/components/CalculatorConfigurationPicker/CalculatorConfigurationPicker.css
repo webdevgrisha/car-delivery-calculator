@@ -19,7 +19,8 @@
 .configuration-actions,
 .configuration-create-form,
 .create-form-controls,
-.new-configuration-button {
+.new-configuration-button,
+.configuration-management-actions {
   display: flex;
   align-items: center;
 }
@@ -104,6 +105,8 @@
 }
 
 .new-configuration-button,
+.rename-configuration-button,
+.delete-configuration-button,
 .cancel-configuration-button,
 .create-configuration-button {
   height: 2.75rem;
@@ -132,6 +135,30 @@
 }
 .new-configuration-button:hover {
   background: rgb(227, 234, 255);
+}
+
+.configuration-management-actions {
+  gap: 0.38rem;
+}
+
+.rename-configuration-button {
+  border: 1px solid rgb(223, 231, 240);
+  background: rgb(255, 255, 255);
+  color: rgb(33, 109, 209);
+}
+
+.rename-configuration-button:hover {
+  background: rgb(242, 246, 251);
+}
+
+.delete-configuration-button {
+  border: 1px solid rgb(235, 87, 87);
+  background: rgb(255, 255, 255);
+  color: rgb(205, 55, 55);
+}
+
+.delete-configuration-button:hover {
+  background: rgb(255, 242, 242);
 }
 
 .configuration-create-form {
@@ -190,13 +217,16 @@
 }
 
 .new-configuration-button:active,
+.rename-configuration-button:active,
+.delete-configuration-button:active,
 .cancel-configuration-button:active,
 .create-configuration-button:active {
   transform: scale(0.98);
 }
 
 .create-configuration-button:disabled,
-.cancel-configuration-button:disabled {
+.cancel-configuration-button:disabled,
+.delete-configuration-button:disabled {
   opacity: 0.5;
   cursor: default;
 }
@@ -243,6 +273,12 @@
   .new-configuration-button {
     flex: 1;
     justify-content: center;
+  }
+  .configuration-management-actions {
+    flex: 1 1 100%;
+  }
+  .configuration-management-actions button {
+    flex: 1;
   }
   .create-form-controls button {
     flex: 1;

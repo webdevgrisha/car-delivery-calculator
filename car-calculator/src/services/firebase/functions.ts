@@ -16,6 +16,8 @@ const calculateRowsData = httpsCallable(functions, "calculateRowsData");
 const getAuctionData = httpsCallable(functions, "getAuctionData");
 const getCalculatorConfigurations = httpsCallable(functions, "getCalculatorConfigurations");
 const createCalculatorConfiguration = httpsCallable(functions, "createCalculatorConfiguration");
+const renameCalculatorConfiguration = httpsCallable(functions, "renameCalculatorConfiguration");
+const deleteCalculatorConfiguration = httpsCallable(functions, "deleteCalculatorConfiguration");
 
 import { readAllUsers } from './realtimeDb';
 import { AddFunc, DeleteFunc, EditFunc } from "../../components/Users/UserTable/interfaces";
@@ -37,7 +39,9 @@ export {
     calculateRowsData,
     getAuctionData,
     getCalculatorConfigurations,
-    createCalculatorConfiguration
+    createCalculatorConfiguration,
+    renameCalculatorConfiguration,
+    deleteCalculatorConfiguration
 }
 
 readAllUsers();

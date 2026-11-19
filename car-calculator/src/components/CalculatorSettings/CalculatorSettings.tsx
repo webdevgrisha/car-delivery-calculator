@@ -30,6 +30,21 @@ function CalculatorSettings() {
     setConfigurationId(configuration.id);
   };
 
+  const handleRenamed = (configuration: CalculatorConfiguration) => {
+    setConfigurations((current) =>
+      current.map((item) =>
+        item.id === configuration.id ? configuration : item,
+      ),
+    );
+  };
+
+  const handleDeleted = (deletedConfigurationId: string) => {
+    setConfigurations((current) =>
+      current.filter((item) => item.id !== deletedConfigurationId),
+    );
+    setConfigurationId('default');
+  };
+
   return (
     <div className="calculator-settings-page">
       <CalculatorConfigurationPicker
@@ -37,6 +52,8 @@ function CalculatorSettings() {
         value={configurationId}
         onChange={setConfigurationId}
         onCreated={handleCreated}
+        onRenamed={handleRenamed}
+        onDeleted={handleDeleted}
         variant="settings"
       />
       <div className="calculator calculator-settings">
