@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { MentionsInput, Mention } from 'react-mentions';
 
 import mentionStyle from './MentionStyle';
-import { tableMention, variableMention } from './mentionData';
+import {
+  formulaFunctions,
+  tableMention,
+  variableMention,
+} from './mentionData';
 import isFormulaValid from './formulaValidation';
 import { toast } from 'react-toastify';
 
@@ -78,7 +82,8 @@ function FormulaModalWindow({
       ['c', 'v', 'a', 'x', 'z'].includes(event.key.toLowerCase());
 
     const isKeyEnable =
-      allowedKeys.includes(event.key) || /[\d\s#$%*+/\-.)(]/.test(event.key);
+      allowedKeys.includes(event.key) ||
+      /[\d\s#$%*+/\-.,()a-zA-Z_]/.test(event.key);
 
     if (!isKeyEnable && !isCtrlCombination) {
       event.preventDefault();
@@ -141,6 +146,16 @@ function FormulaModalWindow({
                     </li>
                   );
                 })}
+              </ul>
+            </div>
+            <div className="col">
+              <h4>Min / Max</h4>
+              <ul>
+                {formulaFunctions.map((formulaFunction) => (
+                  <li key={formulaFunction.id}>
+                    <p>{formulaFunction.display}</p>
+                  </li>
+                ))}
               </ul>
             </div>
           </footer>

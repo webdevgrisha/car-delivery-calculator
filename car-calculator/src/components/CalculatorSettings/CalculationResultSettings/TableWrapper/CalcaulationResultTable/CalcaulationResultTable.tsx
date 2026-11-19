@@ -17,6 +17,8 @@ function SettingsTable() {
         <col />
         <col />
         <col />
+        <col />
+        <col />
       </colgroup>
       <thead>
         <tr>
@@ -32,6 +34,12 @@ function SettingsTable() {
           <th>
             <p>Cost price</p>
           </th>
+          <th>
+            <p>Opcjonalne</p>
+          </th>
+          <th>
+            <p>Actions</p>
+          </th>
         </tr>
       </thead>
       <Reorder.Group
@@ -42,7 +50,7 @@ function SettingsTable() {
       >
         <AnimatePresence>
           <tr className="spacer-row" key="gap-row">
-            <td colSpan={4}></td>
+            <td colSpan={6}></td>
           </tr>
 
           {(order.rowData?.rowsOrder || []).map((rowId) => {

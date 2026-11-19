@@ -15,34 +15,71 @@ async function parseFormula(
   if (formula === undefined) return [NaN];
 
   const stack: Array<string | number | typeof NaN> = [];
+  let index = 0;
 
-  for (let i = 0; i < formula.length; i++) {
-    if (formula[i] === " ") continue;
+  while (index < formula.length) {
+    const symbol = formula[index];
 
-    let num = "";
-
-    while (i < formula.length && (isDigit(formula[i]) || formula[i] === " ")) {
-      num += formula[i];
-      i++;
+    if (/\s/.test(symbol)) {
+      index++;
+      continue;
     }
 
-    const sign = formula[i];
+    if (isDigit(symbol)) {
+      let num = "";
 
-    if (sign === "@") {
-      const varEnd = formula.indexOf("]", i);
+      while (index < formula.length && isDigit(formula[index])) {
+        num += formula[index];
+        index++;
+      }
+
+      const parsedNumber = Number(num);
+      if (Number.isNaN(parsedNumber)) return [NaN];
+
+      stack.push(parsedNumber);
+      continue;
+    }
+
+    if (symbol === "@" && formula[index + 1] === "[") {
+      const varEnd = formula.indexOf("]", index);
 
       if (varEnd === -1) return [NaN];
 
-      const variable = formula.slice(i + 2, varEnd);
+      const variable = formula.slice(index + 2, varEnd);
       const variableParseResult = await parseVariable(variables, variable);
+      const numericValue = Number(variableParseResult);
 
-      i = varEnd;
+      if (Number.isNaN(numericValue)) return [NaN];
 
-      stack.push(+variableParseResult);
-    } else {
-      if (num !== "") stack.push(+num);
-      if (sign !== undefined) stack.push(sign);
+      stack.push(numericValue);
+      index = varEnd + 1;
+      continue;
     }
+
+    if (/[a-zA-Z]/.test(symbol)) {
+      let identifier = "";
+
+      while (index < formula.length && /[a-zA-Z]/.test(formula[index])) {
+        identifier += formula[index];
+        index++;
+      }
+
+      const normalizedIdentifier = identifier.toLowerCase();
+      if (normalizedIdentifier !== "min" && normalizedIdentifier !== "max") {
+        return [NaN];
+      }
+
+      stack.push(normalizedIdentifier);
+      continue;
+    }
+
+    if ("+-*/(),".includes(symbol)) {
+      stack.push(symbol);
+      index++;
+      continue;
+    }
+
+    return [NaN];
   }
 
   return stack;

@@ -8,17 +8,20 @@ import {configurationCollectionPath, isConfigurationTable}
 type Currency = "PLN" | "USD" | "EUR";
 
 interface ResultRowData {
+  id?: string;
   rowType: "info" | "result";
   rowName: string;
   currency: Currency;
+  isOptional?: boolean;
 }
 
 interface InfoData {
   rowType: "info";
   rowName: string;
-  formula: string[];
+  formula: string;
   currency: Currency;
   isShown: boolean;
+  isOptional?: boolean;
 }
 
 interface ResultData {
@@ -102,9 +105,13 @@ export const getCalculatorSettingsData = onCall(
 
         if (!rowData) return;
 
-        const {formula, ...neededData} = rowData;
-
-        resultRows.push(neededData);
+        resultRows.push({
+          id,
+          rowType: rowData.rowType,
+          rowName: rowData.rowName,
+          currency: rowData.currency,
+          isOptional: rowData.isOptional ?? false,
+        });
       });
 
       resultRows.push(initRowsConfig.result);

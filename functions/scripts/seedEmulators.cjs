@@ -67,7 +67,10 @@ const collections = {
     auction_fee: {rowType: 'info', rowName: 'Opłaty aukcyjne', formula: '@[$calc_auction_fee(#auction,#carPrice)]', currency: 'USD', baseCurrency: 'USD', isShown: true},
     land_transport: {rowType: 'info', rowName: 'Transport w USA', formula: '@[$shipping_cost_to_a_US_port(#location,#carSize)]', currency: 'USD', baseCurrency: 'USD', isShown: true},
     sea_transport: {rowType: 'info', rowName: 'Transport morski', formula: '@[$delivery_by_ship($get_port_name(#location,#carSize),Gdynia,#carSize)]', currency: 'USD', baseCurrency: 'USD', isShown: true},
-    order: {rowType: 'order', rowsOrder: ['car_price', 'auction_fee', 'land_transport', 'sea_transport']},
+    insurance_us: {rowType: 'info', rowName: 'Insurance', formula: 'max(50,(@[#carPrice]+@[$calc_auction_fee(#auction,#carPrice)])*0.03)', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
+    offsite: {rowType: 'info', rowName: 'Offsite', formula: '50', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
+    electrician: {rowType: 'info', rowName: 'Elektryk', formula: '50', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
+    order: {rowType: 'order', rowsOrder: ['car_price', 'auction_fee', 'land_transport', 'sea_transport', 'insurance_us', 'offsite', 'electrician']},
     result: {rowType: 'result', rowName: 'Aukcja i wysyłka razem', currency: 'USD'},
   },
   customs_clearance: {

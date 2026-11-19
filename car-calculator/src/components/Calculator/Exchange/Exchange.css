@@ -1,5 +1,45 @@
-.currency-block {
+.exchange-rate-wrapper {
     margin-top: 0.88rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.estimate-notice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    max-width: 100%;
+    padding: 0.62rem 1rem;
+    border: 1px solid rgba(33, 109, 209, 0.2);
+    border-radius: 0.75rem;
+    background-color: rgb(245, 248, 252);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 140%;
+    color: rgb(41, 41, 41);
+}
+
+.estimate-notice-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background-color: rgb(33, 109, 209);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.currency-block {
     display: flex;
     align-items: center;
     justify-content: center;

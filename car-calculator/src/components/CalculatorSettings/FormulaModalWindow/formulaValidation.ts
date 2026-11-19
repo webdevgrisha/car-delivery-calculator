@@ -15,7 +15,23 @@ function isFormulaValid(formula: string) {
         return false;
     }
 
+    const areFunctionsValid = functionValidation(formula);
+
+    if (!areFunctionsValid) {
+        toast.error('only min() and max() functions are supported');
+        return false;
+    }
+
     return true;
+}
+
+function functionValidation(formula: string) {
+    const functionPattern = /(?<![$#])\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g;
+    const supportedFunctions = new Set(['min', 'max']);
+
+    return Array.from(formula.matchAll(functionPattern)).every((match) =>
+        supportedFunctions.has(match[1].toLowerCase()),
+    );
 }
 
 function mentionValidation(formula: string) {

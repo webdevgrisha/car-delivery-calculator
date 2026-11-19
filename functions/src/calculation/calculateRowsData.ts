@@ -8,11 +8,21 @@ import {
 import {SectionRow, TotalCost, Variables} from "./interfaces";
 import {Convertor, Currency} from "./types";
 
+const calculationSectionNames = [
+  "auction_and_shipping",
+  "customs_clearance",
+  "other_payments",
+] as const;
+
+type CalculationSection = typeof calculationSectionNames[number];
+type SelectedOptionalRows = Partial<Record<CalculationSection, string[]>>;
+
 export const calculateRowsData = onCall(
   async (
     request: CallableRequest<{
       variables: Variables,
       selectedAdditionalServices: SectionRow[],
+      selectedOptionalRows?: SelectedOptionalRows,
       configurationId?: string
     }>
   ) => {
@@ -20,6 +30,7 @@ export const calculateRowsData = onCall(
       const {
         variables,
         selectedAdditionalServices,
+        selectedOptionalRows = {},
         configurationId,
       } = request.data;
 
@@ -55,8 +66,14 @@ export const calculateRowsData = onCall(
           return;
         }
 
-        const sectionResult: Promise<number[]> =
-          sectionCalculation(variables, convertor, section as SectionRow[]);
+        const sectionName = calculationSectionNames[index];
+        const selectedRowIds = selectedOptionalRows[sectionName];
+        const sectionResult: Promise<number[]> = sectionCalculation(
+          variables,
+          convertor,
+          section as SectionRow[],
+          Array.isArray(selectedRowIds) ? selectedRowIds : []
+        );
 
         sectionsCalculation.push(sectionResult);
       });

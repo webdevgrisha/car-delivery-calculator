@@ -18,8 +18,10 @@ interface Exchange {
 }
 
 interface SectionRow {
+    id?: string;
     formula?: string;
     isShown?: boolean;
+    isOptional?: boolean;
     currency: Currency;
     baseCurrency?: Currency;
 }

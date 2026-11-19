@@ -60,8 +60,24 @@ const variableMention = [
     },
 ];
 
+const formulaFunctions = [
+    {
+        id: 'max',
+        display: 'max(50, formula)',
+    },
+    {
+        id: 'min',
+        display: 'min(500, formula)',
+    },
+    {
+        id: 'min-max',
+        display: 'min(500, max(50, formula))',
+    },
+];
+
 
 export {
     tableMention,
-    variableMention
+    variableMention,
+    formulaFunctions,
 }

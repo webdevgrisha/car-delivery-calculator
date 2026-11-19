@@ -13,8 +13,20 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
             {
                 const { initRows } = action;
 
-                // console.log('init: ', initRows);
-                Object.assign(draft, initRows);
+                const normalizedInfo = Object.fromEntries(
+                    Object.entries(initRows.info).map(([id, row]) => [
+                        id,
+                        {
+                            ...row,
+                            isOptional: row.isOptional ?? false,
+                        },
+                    ]),
+                );
+
+                Object.assign(draft, {
+                    ...initRows,
+                    info: normalizedInfo,
+                });
                 break;
             }
         case 'edit':
@@ -24,8 +36,7 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
                 if (rowType === 'info') {
                     const infoRow = draft.info[rowId];
 
-                    if (rowName in infoRow) infoRow[rowName] = newValue as never;
-                    // infoRow[rowName] = newValue as never;
+                    infoRow[rowName as keyof InfoRow] = newValue as never;
                 } else {
                     const resultRow = draft.result;
 
@@ -48,6 +59,7 @@ export default function tableReducer(draft: Draft<CalculatorSettingsTable
                     baseCurrency: 'USD',
                     formula: '0',
                     isShown: true,
+                    isOptional: false,
                 };
 
                 draft.info[rowId] = rowData;

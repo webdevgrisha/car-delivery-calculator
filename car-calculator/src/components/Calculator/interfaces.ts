@@ -1,9 +1,18 @@
 type Currency = 'USD' | 'PLN' | 'EUR';
 
 interface RowData {
+    id?: string;
     rowName: string;
     currency: Currency;
+    isOptional?: boolean;
 }
+
+type CalculationSection =
+    | 'auction_and_shipping'
+    | 'customs_clearance'
+    | 'other_payments';
+
+type SelectedOptionalRows = Record<CalculationSection, string[]>;
 
 interface CalculationResultSectionData {
     [key: string]: RowData[] | Currency;
@@ -49,5 +58,7 @@ export type {
     AdditionalService,
     ClalculationResult,
     CurrencyPrice,
-    CarData
+    CarData,
+    CalculationSection,
+    SelectedOptionalRows,
 }

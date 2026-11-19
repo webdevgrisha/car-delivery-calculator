@@ -6,15 +6,25 @@ import {Convertor, Currency} from "../types";
 async function sectionCalculation(
   variables: Variables,
   convertor: Convertor,
-  sectionRows: SectionRow[]
+  sectionRows: SectionRow[],
+  selectedOptionalRowIds: string[] = []
 ): Promise<number[]> {
   const parsePromiseArr: Promise<(string | number)[]>[] = [];
+  const selectedOptionalRows = new Set(selectedOptionalRowIds);
   let totalUSDSum = 0;
   let totalSumCurrency: Currency = "USD";
 
   sectionRows.forEach((sectionRow, index) => {
     if (sectionRows.length - 1 === index) {
       totalSumCurrency = sectionRow.currency;
+      return;
+    }
+
+    if (
+      sectionRow.isOptional &&
+      (!sectionRow.id || !selectedOptionalRows.has(sectionRow.id))
+    ) {
+      parsePromiseArr.push(Promise.resolve([0]));
       return;
     }
 

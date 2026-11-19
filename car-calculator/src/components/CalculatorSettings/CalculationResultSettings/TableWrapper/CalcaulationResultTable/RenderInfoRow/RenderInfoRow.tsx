@@ -21,6 +21,7 @@ interface RenderRowProps {
   baseCurrency: Currency;
   formula: string;
   isShown: boolean;
+  isOptional?: boolean;
 }
 
 const selectionOptions = {
@@ -50,6 +51,7 @@ function RenderInfoRow({
   currency,
   baseCurrency = 'USD',
   isShown,
+  isOptional = false,
   formula,
 }: RenderRowProps) {
   const { editRecordFunc, deleteRecordFunc } = useTableWrapperContext();
@@ -130,6 +132,18 @@ function RenderInfoRow({
             editRecordFunc(rowId, 'formula', value, 'info')
           }
         />
+      </td>
+      <td>
+        <label className="optional-field-control">
+          <input
+            type="checkbox"
+            checked={isOptional}
+            onChange={() =>
+              editRecordFunc(rowId, 'isOptional', !isOptional, 'info')
+            }
+          />
+          Opcjonalne
+        </label>
       </td>
       <td>
         <div className="buttons">

@@ -14,6 +14,7 @@ interface InfoData {
   currency: Currency;
   baseCurrency: Currency;
   isShown: boolean;
+  isOptional?: boolean;
 }
 
 interface ResultData {
@@ -82,10 +83,16 @@ async function getCalculatorSectionData(
 
     if (!rowData) return;
 
-    const {formula, currency, baseCurrency, isShown} = rowData;
+    const {formula, currency, baseCurrency, isShown, isOptional = false} =
+      rowData;
 
     resultRows.push({
-      formula, currency, isShown, baseCurrency: baseCurrency || currency,
+      id,
+      formula,
+      currency,
+      isShown,
+      isOptional,
+      baseCurrency: baseCurrency || currency,
     });
   });
 

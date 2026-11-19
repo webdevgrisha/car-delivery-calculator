@@ -5,6 +5,7 @@ import ManualCalculation from "./ManualCalculation/ManualCalculation";
 import CalculationResultSection from "./CalculationResultSection/CalculationResultSection";
 import TotalSum from "./TotalSum/TotalSum";
 import VehicleData from "./VehicleData/VehicleData";
+import OptionalFields from "./OptionalFields/OptionalFields";
 
 export {
     AdditionalServices,
@@ -14,4 +15,5 @@ export {
     CalculationResultSection,
     TotalSum,
     VehicleData,
+    OptionalFields,
 }

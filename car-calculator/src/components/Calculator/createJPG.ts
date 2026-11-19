@@ -1,20 +1,19 @@
 import { toPng } from 'html-to-image';
 
-function createJPG(htmlBlock: HTMLDivElement | null) {
+async function createJPG(htmlBlock: HTMLDivElement | null) {
     if (htmlBlock === null) {
         return;
     }
 
-    toPng(htmlBlock, { cacheBust: true, })
-        .then((dataUrl) => {
-            const link = document.createElement('a')
-            link.download = 'liberty-car.png'
-            link.href = dataUrl
-            link.click()
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+    try {
+        const dataUrl = await toPng(htmlBlock, { cacheBust: true });
+        const link = document.createElement('a');
+        link.download = 'liberty-car.png';
+        link.href = dataUrl;
+        link.click();
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 

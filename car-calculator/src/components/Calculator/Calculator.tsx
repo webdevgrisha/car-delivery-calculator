@@ -9,16 +9,19 @@ import {
   TotalSum,
   ManualCalculation,
   AdditionalServices,
+  OptionalFields,
   VehicleData,
 } from './index';
 import Loader from '../Loader/Loader';
 import {
   CalculationResultSectionData,
+  CalculationSection,
   CarData,
   ClalculationResult,
   Currency,
   RowData,
   SelectedAdditionalServices,
+  SelectedOptionalRows,
 } from './interfaces';
 import { toast } from 'react-toastify';
 import { getFirstTableRecord } from '../../services/firebase/firestoreDb';
@@ -39,6 +42,12 @@ const emptyCalculationResultSectionData = (): CalculationResultSectionData => ({
   total_car_cost: 'PLN',
 });
 
+const emptySelectedOptionalRows = (): SelectedOptionalRows => ({
+  auction_and_shipping: [],
+  customs_clearance: [],
+  other_payments: [],
+});
+
 function Calculator() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [configurations, setConfigurations] = useState<
@@ -54,6 +63,8 @@ function Calculator() {
 
   const [selectedAdditionalServices, setSelectedAdditionalServices] =
     useImmer<SelectedAdditionalServices>({});
+  const [selectedOptionalRows, setSelectedOptionalRows] =
+    useState<SelectedOptionalRows>(emptySelectedOptionalRows);
 
   const [carData, setCarData] = useState<null | CarData>(null);
 
@@ -68,6 +79,7 @@ function Calculator() {
     setIsLoading(true);
     setCalculationResult([]);
     setSelectedAdditionalServices({});
+    setSelectedOptionalRows(emptySelectedOptionalRows());
     const dataPromiseArr = [
       getCalculatorSettingsData({
         tableName: 'auction_and_shipping',
@@ -119,6 +131,21 @@ function Calculator() {
     });
   }, [configurationId, setSelectedAdditionalServices]);
 
+  const handleOptionalRowToggle = (
+    section: CalculationSection,
+    rowId: string,
+  ) => {
+    setCalculationResult([]);
+    setSelectedOptionalRows((current) => {
+      const selectedRows = current[section];
+      const nextRows = selectedRows.includes(rowId)
+        ? selectedRows.filter((id) => id !== rowId)
+        : [...selectedRows, rowId];
+
+      return { ...current, [section]: nextRows };
+    });
+  };
+
   return (
     <div className="calculator-page">
       <CalculatorConfigurationPicker
@@ -143,6 +170,9 @@ function Calculator() {
                       calculationResultSectionData.auction_and_shipping as RowData[]
                     }
                     sectionResult={calculationResult[0] || null}
+                    selectedOptionalRowIds={
+                      selectedOptionalRows.auction_and_shipping
+                    }
                   />
                   <CalculationResultSection
                     title="Odprawa celna"
@@ -150,6 +180,9 @@ function Calculator() {
                       calculationResultSectionData.customs_clearance as RowData[]
                     }
                     sectionResult={calculationResult[1] || null}
+                    selectedOptionalRowIds={
+                      selectedOptionalRows.customs_clearance
+                    }
                   />
                   <CalculationResultSection
                     title="Inne płatności"
@@ -157,6 +190,7 @@ function Calculator() {
                       calculationResultSectionData.other_payments as RowData[]
                     }
                     sectionResult={calculationResult[2] || null}
+                    selectedOptionalRowIds={selectedOptionalRows.other_payments}
                     selectedAdditionalServices={selectedAdditionalServices}
                   />
                 </div>
@@ -181,10 +215,23 @@ function Calculator() {
             <ManualCalculation
               setCalculationResult={setCalculationResult}
               selectedAdditionalServices={selectedAdditionalServices}
+              selectedOptionalRows={selectedOptionalRows}
               createJPG={() => createJPG(jpgBlock.current)}
               auction={carData?.auction}
               location={carData?.location}
               configurationId={configurationId}
+            />
+            <OptionalFields
+              rowsBySection={{
+                auction_and_shipping:
+                  calculationResultSectionData.auction_and_shipping as RowData[],
+                customs_clearance:
+                  calculationResultSectionData.customs_clearance as RowData[],
+                other_payments:
+                  calculationResultSectionData.other_payments as RowData[],
+              }}
+              selectedRows={selectedOptionalRows}
+              onToggle={handleOptionalRowToggle}
             />
             <AdditionalServices
               setSelectedAdditionalServices={setSelectedAdditionalServices}

@@ -41,9 +41,17 @@ function Exchange() {
   if (exchangeData.isShown === 'No') return null;
 
   return (
-    <div className="currency-block">
-      <p>USD/EUR - {exchangeData.usd_eur}</p>
-      <p>USD/PLN - {exchangeData.usd_pln}</p>
+    <div className="exchange-rate-wrapper">
+      <div className="estimate-notice" role="note">
+        <span className="estimate-notice-icon" aria-hidden="true">
+          i
+        </span>
+        <p>Przedstawiona wycena ma charakter szacunkowy</p>
+      </div>
+      <div className="currency-block">
+        <p>USD/EUR - {exchangeData.usd_eur}</p>
+        <p>USD/PLN - {exchangeData.usd_pln}</p>
+      </div>
     </div>
   );
 }

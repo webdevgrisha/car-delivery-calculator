@@ -13,6 +13,7 @@ interface InfoRow {
     currency: Currency;
     baseCurrency: Currency;
     isShown: boolean;
+    isOptional: boolean;
     formula: string;
 }
 
@@ -96,7 +97,7 @@ interface MoveActionData {
 interface HandleFieldChange {
     <T extends InfoRow | ResultRow>(
         id: string,
-        name: keyof T | 'isShown' | 'formula' | 'baseCurrency',
+        name: keyof T | 'isShown' | 'isOptional' | 'formula' | 'baseCurrency',
         value: T[keyof T] | boolean,
         rowType: T['rowType']
     ): void;

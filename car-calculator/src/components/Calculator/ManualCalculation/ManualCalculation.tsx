@@ -7,12 +7,17 @@ import { RowNames } from './types';
 import { FormEvent, useEffect, useState } from 'react';
 import { showWarningToastMessage } from '../../CustomTable/tableToast';
 import { calculateRowsData } from '../../../services/firebase/functions';
-import { ClalculationResult, SelectedAdditionalServices } from '../interfaces';
+import {
+  ClalculationResult,
+  SelectedAdditionalServices,
+  SelectedOptionalRows,
+} from '../interfaces';
 import reformatLocation from './reformatLocation';
 
 interface ManualCalculationProps {
   setCalculationResult: (value: ClalculationResult) => void;
   selectedAdditionalServices: SelectedAdditionalServices;
+  selectedOptionalRows: SelectedOptionalRows;
   createJPG: () => void;
   location?: string;
   auction?: string;
@@ -22,6 +27,7 @@ interface ManualCalculationProps {
 function ManualCalculation({
   setCalculationResult,
   selectedAdditionalServices,
+  selectedOptionalRows,
   createJPG,
   location = '',
   auction = '',
@@ -96,6 +102,7 @@ function ManualCalculation({
     calculateRowsData({
       variables: formData,
       selectedAdditionalServices: Object.values(selectedAdditionalServices),
+      selectedOptionalRows,
       configurationId,
     }).then(({ data }) => {
       console.log('result: ', data);
@@ -125,7 +132,7 @@ function ManualCalculation({
             );
           })}
           <div className="btn-wrapper">
-            <button className="save-jpg" onClick={createJPG}>
+            <button type="button" className="save-jpg" onClick={createJPG}>
               Save JPG
             </button>
             <button type="submit" className="calculate">
