@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { updateUserName } from '../../services/firebase/auth';
 import { useImmer } from 'use-immer';
 import { subscribeOnUserUpdate } from '../../services/firebase/realtimeDb';
-import { useUserLogIn } from '../../hooks';
+import { useAuth } from '../../utils/AuthProvider';
 
 type ValidateInput =
   | {
@@ -21,7 +21,7 @@ interface PersonalInfo {
 }
 
 function PersonalInfo() {
-  const currentUser = useUserLogIn();
+  const { currentUser } = useAuth();
 
   const [personalInfo, setPersonalInfo] = useImmer({});
 
@@ -29,14 +29,14 @@ function PersonalInfo() {
 
   useEffect(() => {
     const unsubscribeFunc = subscribeOnUserUpdate(
-      currentUser.uid,
+      currentUser!.uid,
       setPersonalInfo,
     );
 
     return unsubscribeFunc;
-  }, []);
+  }, [currentUser]);
 
-  const [nameInit = '', sernameInit = ''] = currentUser.displayName.split(' ');
+  const [nameInit = '', sernameInit = ''] = currentUser!.displayName.split(' ');
 
   const [name, setName] = useState<string>(nameInit);
   const [surname, setSurname] = useState<string>(sernameInit);

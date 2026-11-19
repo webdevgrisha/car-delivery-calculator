@@ -19,6 +19,14 @@ import SVG_UnShow from "./SVG_UnShow";
 import SVG_Auction from "./SVG_Auction";
 import SVG_Fees from "./SVG_Fees";
 import SVG_Tax from "./SVG_Tax";
+import SVG_Odometer from "./SVG_Odometer";
+import SVG_FuelType from "./SVG_FuelType";
+import SVG_Keys from "./SVG_Keys";
+import SVG_Location from "./SVG_Location";
+import SVG_PrimaryDamage from "./SVG_PrimaryDamage";
+import SVG_Transmission from "./SVG_Transmission";
+import SVG_Engine from "./SVG_Engine";
+import SVG_Hash from "./SVG_Hash";
 
 export {
     SVG_Add,
@@ -42,4 +50,12 @@ export {
     SVG_Auction,
     SVG_Fees,
     SVG_Tax,
+    SVG_Odometer,
+    SVG_FuelType,
+    SVG_Keys,
+    SVG_Location,
+    SVG_PrimaryDamage,
+    SVG_Transmission,
+    SVG_Engine,
+    SVG_Hash
 }

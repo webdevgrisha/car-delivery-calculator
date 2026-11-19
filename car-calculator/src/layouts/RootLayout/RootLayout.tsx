@@ -12,15 +12,14 @@ import {
   SVG_Settings,
 } from '../../assets';
 import classNames from 'classnames';
-import { useUserLogIn } from '../../hooks';
+import { useAuth } from '../../utils/AuthProvider';
 
 export default function RootLayout() {
   const match = useMatch('/settings/*');
-  const currentUser = useUserLogIn();
+  const { currentUser } = useAuth();
 
   const email = currentUser?.email;
   const role = currentUser?.role;
-  console.log('Auth: ', currentUser);
 
   const mainNavClass = classNames({ 'remove-p': match });
   return (

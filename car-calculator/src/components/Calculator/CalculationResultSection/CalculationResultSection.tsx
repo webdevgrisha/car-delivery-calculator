@@ -21,9 +21,7 @@ function CalculationResultSection({
     Object.values(selectedAdditionalServices),
   );
   const totalRows = [...rows];
-  totalRows.splice(-1, 0,
-    ...(Object.values(selectedAdditionalServices)),
-  );
+  totalRows.splice(-1, 0, ...Object.values(selectedAdditionalServices));
 
   console.log('totalRows: ', totalRows);
 
@@ -40,14 +38,12 @@ function CalculationResultSection({
         const price: number = sectionResult?.[index] || 0;
 
         return (
-          <>
-            <div className={rowClass} key={rowName}>
-              <p className="name">{rowName}</p>
-              <p className="price">
-                {price} {currency}
-              </p>
-            </div>
-          </>
+          <div className={rowClass} key={rowName}>
+            <p className="name">{rowName}</p>
+            <p className="price">
+              {price} {currency}
+            </p>
+          </div>
         );
       })}
     </div>

@@ -18,9 +18,7 @@ async function sectionCalculation(
       return;
     }
 
-    const result = parseFormula(
-      variables, sectionRow.formula || sectionRow?.price
-    );
+    const result = parseFormula(variables, sectionRow.formula);
 
     parsePromiseArr.push(result);
   });

@@ -19,7 +19,6 @@ interface Exchange {
 
 interface SectionRow {
     formula?: string;
-    price?: string;
     isShown?: boolean;
     currency: Currency;
     baseCurrency?: Currency;

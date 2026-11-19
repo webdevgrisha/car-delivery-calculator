@@ -9,10 +9,12 @@ import {
   TotalSum,
   ManualCalculation,
   AdditionalServices,
+  VehicleData,
 } from './index';
 import Loader from '../Loader/Loader';
 import {
   CalculationResultSectionData,
+  CarData,
   ClalculationResult,
   Currency,
   RowData,
@@ -39,6 +41,8 @@ function Calculator() {
 
   const [selectedAdditionalServices, setSelectedAdditionalServices] =
     useImmer<SelectedAdditionalServices>({});
+
+  const [carData, setCarData] = useState<null | CarData>(null);
 
   useEffect(() => {
     const dataPromiseArr = [
@@ -87,15 +91,14 @@ function Calculator() {
     });
   }, []);
 
-
-
   if (isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="calculator">
-      <div ref={jpgBlock} className="colum-wrapper">
+      <div ref={jpgBlock} className="foto-wrapper">
+      <div className="colum-wrapper">
         <section className="calculation-result">
           <div className="container">
             <header>
@@ -128,11 +131,21 @@ function Calculator() {
         </section>
         <Exchange />
       </div>
-      <div className="colum-wrapper">
-        <AutoCalculation />
+      {carData && (
+        <div className="column-wrapper">
+          <VehicleData {...carData} />
+        </div>
+      )}
+      </div>
+      <div className="colum-wrapper second">
+        <AutoCalculation setCarData={setCarData} />
         <ManualCalculation
           setCalculationResult={setCalculationResult}
-          selectedAdditionalServices={selectedAdditionalServices} createJPG={() => createJPG(jpgBlock.current)} />
+          selectedAdditionalServices={selectedAdditionalServices}
+          createJPG={() => createJPG(jpgBlock.current)}
+          auction={carData?.auction }
+          location={carData?.location}
+        />
         <AdditionalServices
           setSelectedAdditionalServices={setSelectedAdditionalServices}
         />

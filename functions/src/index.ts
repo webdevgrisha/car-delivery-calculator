@@ -26,6 +26,7 @@ import {getCalculatorSettingsData}
 import {scheduleExchangeRateUpdate, updateExchangeRateHttp}
   from "./exchange/exchangeRateAutoUpdate";
 import {calculateRowsData} from "./calculation/calculateRowsData";
+import {getAuctionData} from "./parsers/getAuctionData";
 
 export {
   addAdminRole,
@@ -44,4 +45,5 @@ export {
   scheduleExchangeRateUpdate,
   updateExchangeRateHttp,
   calculateRowsData,
+  getAuctionData,
 };

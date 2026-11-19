@@ -13,9 +13,12 @@ const createTableRecord = httpsCallable(functions, "createTableRecord");
 const updateCalculatorSettingsData = httpsCallable(functions, "updateCalculatorSettingsData");
 const getCalculatorSettingsData = httpsCallable(functions, "getCalculatorSettingsData");
 const calculateRowsData = httpsCallable(functions, "calculateRowsData");
+const getAuctionData = httpsCallable(functions, "getAuctionData");
 
 import { readAllUsers } from './realtimeDb';
 import { AddFunc, DeleteFunc, EditFunc } from "../../components/Users/UserTable/interfaces";
+
+// getAuctionData({ url: 'https://www.copart.com/lot/83976684' }).then(data => console.log('getAuctionData: ', data)).catch(err => console.log('getAuctionData Err:', err));
 
 export {
     addAdminRole,
@@ -29,7 +32,8 @@ export {
     createTableRecord,
     updateCalculatorSettingsData,
     getCalculatorSettingsData,
-    calculateRowsData
+    calculateRowsData,
+    getAuctionData
 }
 
 readAllUsers();

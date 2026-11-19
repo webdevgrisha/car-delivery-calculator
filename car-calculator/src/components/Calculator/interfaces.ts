@@ -27,6 +27,19 @@ interface CurrencyPrice {
     usd_eur: string;
 }
 
+interface CarData {
+    title: string;
+    imgs: string[];
+    stock: string;
+    odometer: string;
+    engine: string;
+    fuelType: string;
+    primaryDamage: string;
+    transmission: string;
+    keys: string;
+    location: string;
+    auction: string;
+  }
 
 export type {
     RowData,
@@ -36,4 +49,5 @@ export type {
     AdditionalService,
     ClalculationResult,
     CurrencyPrice,
+    CarData
 }

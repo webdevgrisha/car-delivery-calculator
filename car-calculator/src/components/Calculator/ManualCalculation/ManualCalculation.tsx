@@ -4,21 +4,26 @@ import getFormFields from './fieldsConfig';
 import { FormRows, FormData } from './interface';
 import { ManualRow } from '.';
 import { RowNames } from './types';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { showWarningToastMessage } from '../../CustomTable/tableToast';
 import { calculateRowsData } from '../../../services/firebase/functions';
 import { ClalculationResult, SelectedAdditionalServices } from '../interfaces';
+import reformatLocation from './reformatLocation';
 
 interface ManualCalculationProps {
   setCalculationResult: (value: ClalculationResult) => void;
   selectedAdditionalServices: SelectedAdditionalServices;
   createJPG: () => void;
+  location?: string;
+  auction?: string;
 }
 
 function ManualCalculation({
   setCalculationResult,
   selectedAdditionalServices,
   createJPG,
+  location = '',
+  auction = '',
 }: ManualCalculationProps) {
   const [formData, setFormData] = useImmer<FormData>({
     // auction: '',
@@ -37,6 +42,16 @@ function ManualCalculation({
   );
 
   const [formFields] = useState<FormRows[]>(() => getFormFields());
+
+  useEffect(() => {
+    const newLoc = reformatLocation(location, auction);
+
+    console.log('new loc: ', newLoc);
+
+    setFormData((draft) => {
+      draft.location = newLoc;
+    });
+  }, [location, auction]);
 
   const handleFormDataChange = (name: RowNames, value: string) => {
     if (inValidFields[name]) {
@@ -81,20 +96,6 @@ function ManualCalculation({
       selectedAdditionalServices: Object.values(selectedAdditionalServices),
     }).then(({ data }) => {
       console.log('result: ', data);
-
-      // const additionalServiceCount = Object.keys(
-      //   selectedAdditionalServices,
-      // ).length;
-
-      // const resData = data as ClalculationResult;
-
-      // resData[2].splice(
-      //   resData[2].length - 1 - additionalServiceCount,
-      //   additionalServiceCount,
-      // );
-
-      // console.log('resData: ', resData);
-
       setCalculationResult(data as ClalculationResult);
     });
   };
@@ -121,7 +122,9 @@ function ManualCalculation({
             );
           })}
           <div className="btn-wrapper">
-            <button className="save-jpg" onClick={createJPG}>Save JPG</button>
+            <button className="save-jpg" onClick={createJPG}>
+              Save JPG
+            </button>
             <button type="submit" className="calculate">
               OK
             </button>

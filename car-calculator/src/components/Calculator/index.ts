@@ -4,6 +4,7 @@ import Exchange from "./Exchange/Exchange";
 import ManualCalculation from "./ManualCalculation/ManualCalculation";
 import CalculationResultSection from "./CalculationResultSection/CalculationResultSection";
 import TotalSum from "./TotalSum/TotalSum";
+import VehicleData from "./VehicleData/VehicleData";
 
 export {
     AdditionalServices,
@@ -12,4 +13,5 @@ export {
     ManualCalculation,
     CalculationResultSection,
     TotalSum,
+    VehicleData,
 }

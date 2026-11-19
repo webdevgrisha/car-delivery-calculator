@@ -1,14 +1,14 @@
-import { toJpeg } from 'html-to-image';
+import { toPng } from 'html-to-image';
 
 function createJPG(htmlBlock: HTMLDivElement | null) {
     if (htmlBlock === null) {
         return;
     }
 
-    toJpeg(htmlBlock, { cacheBust: true, })
+    toPng(htmlBlock, { cacheBust: true, })
         .then((dataUrl) => {
             const link = document.createElement('a')
-            link.download = 'liberty-car.jpg'
+            link.download = 'liberty-car.png'
             link.href = dataUrl
             link.click()
         })

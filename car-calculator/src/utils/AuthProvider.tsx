@@ -64,17 +64,22 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     currentUser,
   };
 
-  if (!currentUser && window.location.pathname !== '/login') {
+  if (currentUser === null && window.location.pathname !== '/login') {
     console.log(window.location.pathname);
     window.location.pathname = '/login';
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-  //  children : <Navigate to="/login" />;
 }
+
+// const allowPath = ['calculator', 'profile', 'login'];
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+
+  // if (!isPathAllowed && currentUser !== null && currentUser.role === 'user') {
+  //   navigate('/calculator', { replace: true });
+  // }
 
   if (context === null) {
     throw new Error('useAuth must be used within an AuthProvider');

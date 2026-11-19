@@ -111,7 +111,7 @@ function subscribeOnFirstTableRecord(tableName: string, setData: Function) {
         } else {
             const doc = querySnapshot.docs[0];
             const row = { id: doc.id, rowData: doc.data() };
-            console.log('doc data: ', doc.data());
+            // console.log('doc data: ', doc.data());
             setData(row);
         }
     });
@@ -168,63 +168,63 @@ async function getTableData(tableName: string, sortByColName: string) {
     return tableRows;
 }
 
-async function calcClientFee(auction: string, carPrice: string): Promise<number> {
-    try {
-        // Получение коллекции из Firestore
-        const querySnapshot = await getDocs(
-            collection(firestoreDb, `${auction.toLowerCase()}_auction_client_fee`)
-        );
+// async function calcClientFee(auction: string, carPrice: string): Promise<number> {
+//     try {
+//         // Получение коллекции из Firestore
+//         const querySnapshot = await getDocs(
+//             collection(firestoreDb, `${auction.toLowerCase()}_auction_client_fee`)
+//         );
 
-        if (querySnapshot.empty) {
-            return NaN;
-        }
+//         if (querySnapshot.empty) {
+//             return NaN;
+//         }
 
-        // Поиск подходящего документа
-        const rowData = querySnapshot.docs.find((row) => {
-            const salePriceRange = row.data()["Cena sprzedaży"];
-            if (!salePriceRange) return false;
+//         // Поиск подходящего документа
+//         const rowData = querySnapshot.docs.find((row) => {
+//             const salePriceRange = row.data()["Cena sprzedaży"];
+//             if (!salePriceRange) return false;
 
-            const [a, b] = salePriceRange.split("-");
-            const [numA, numB] = [parseFloat(a), parseFloat(b)];
+//             const [a, b] = salePriceRange.split("-");
+//             const [numA, numB] = [parseFloat(a), parseFloat(b)];
 
-            // console.log({ numA, numB });
+//             // console.log({ numA, numB });
 
-            if (isNaN(numB)) {
-                console.log('we here');
-                return +carPrice >= numA;
-            }
+//             if (isNaN(numB)) {
+//                 console.log('we here');
+//                 return +carPrice >= numA;
+//             }
 
-            return +carPrice >= numA && +carPrice <= numB;
-        });
+//             return +carPrice >= numA && +carPrice <= numB;
+//         });
 
-        if (!rowData) {
-            return NaN;
-        }
+//         if (!rowData) {
+//             return NaN;
+//         }
 
-        console.log("rowData: ", rowData.data());
-        console.log("value: ", Object.values(rowData.data()));
-        // Расчет итоговой суммы
-        const sum = Object.entries(rowData.data())
-            .reduce((sum: number, [rowName, value]) => {
-                if (rowName === 'Cena sprzedaży') return sum;
+//         console.log("rowData: ", rowData.data());
+//         console.log("value: ", Object.values(rowData.data()));
+//         // Расчет итоговой суммы
+//         const sum = Object.entries(rowData.data())
+//             .reduce((sum: number, [rowName, value]) => {
+//                 if (rowName === 'Cena sprzedaży') return sum;
 
-                if (value.endsWith("%")) {
-                    const parsePreset = parseFloat(value);
-                    return sum + (+carPrice * parsePreset) / 100;
-                }
-                return sum + parseFloat(value);
-            }, 0);
+//                 if (value.endsWith("%")) {
+//                     const parsePreset = parseFloat(value);
+//                     return sum + (+carPrice * parsePreset) / 100;
+//                 }
+//                 return sum + parseFloat(value);
+//             }, 0);
 
-        console.log('sum: ', sum);
+//         console.log('sum: ', sum);
 
-        return sum;
-    } catch (error) {
-        console.error("Ошибка при расчете клиентской комиссии:", error);
-        return NaN;
-    }
-}
+//         return sum;
+//     } catch (error) {
+//         console.error("Ошибка при расчете клиентской комиссии:", error);
+//         return NaN;
+//     }
+// }
 
-console.log('sum: ', calcClientFee('iaai', '100000'));
+// console.log('sum: ', calcClientFee('iaai', '100000'));
 
 export {
     subscribeOnTableUpdate,
