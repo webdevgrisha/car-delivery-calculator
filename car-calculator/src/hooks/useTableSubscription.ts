@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { subscribeOnTableUpdate, subscribeOnTableUpdateFrontEndSort } from "../services/firebase/firestoreDb";
 
 
@@ -10,17 +10,21 @@ function useTableSubscriptiontsts<T>(
     updateDataFunc: React.Dispatch<React.SetStateAction<T>>,
     sortType: SortType = 'back') {
 
-    const subscribeFunc = sortType === 'front' ? subscribeOnTableUpdateFrontEndSort : subscribeOnTableUpdate;
+    const updateDataRef = useRef(updateDataFunc);
+    updateDataRef.current = updateDataFunc;
 
     useEffect(() => {
+        const subscribeFunc = sortType === 'front'
+            ? subscribeOnTableUpdateFrontEndSort
+            : subscribeOnTableUpdate;
         const unsubscribeFunc = subscribeFunc(
             tableName,
             sortByColName,
-            updateDataFunc,
+            (data: T) => updateDataRef.current(data),
         );
 
         return unsubscribeFunc;
-    }, []);
+    }, [tableName, sortByColName, sortType]);
 }
 
 export default useTableSubscriptiontsts;

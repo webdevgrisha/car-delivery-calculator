@@ -2,6 +2,8 @@ import admin from "../../init";
 import {onCall, CallableRequest} from "firebase-functions/v2/https";
 import {error} from "firebase-functions/logger";
 import {FirebaseError} from "firebase-admin";
+import {configurationCollectionPath, isConfigurationTable}
+  from "../../calculatorConfigurations/configurationPath";
 
 type Currency = "PLN" | "USD" | "EUR";
 
@@ -38,7 +40,7 @@ interface InitRowsConfig {
 export const getCalculatorSettingsData = onCall(
   async (
     request: CallableRequest<
-      { tableName: string }
+      { tableName: string, configurationId?: string }
     >
   ) => {
     const userAuth = request.auth;
@@ -47,10 +49,16 @@ export const getCalculatorSettingsData = onCall(
       return {error: "User is not authenticated"};
     }
 
-    const {tableName} = request.data;
+    const {tableName, configurationId} = request.data;
+
+    if (!isConfigurationTable(tableName)) {
+      return {error: "Invalid calculator settings table"};
+    }
 
     const firestoreDb = admin.firestore();
-    const tableRef = firestoreDb.collection(tableName);
+    const tableRef = firestoreDb.collection(
+      configurationCollectionPath(configurationId, tableName)
+    );
 
     try {
       const querySnapshot = await tableRef.get();

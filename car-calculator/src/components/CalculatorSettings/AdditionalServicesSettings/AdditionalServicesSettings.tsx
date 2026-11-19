@@ -10,7 +10,7 @@ import {
   ShowModalFunc,
   TableContext,
 } from './interfaces';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Action } from './types';
 import { useTableSubscriptiontsts } from '../../../hooks';
 import { showUpdateToast } from '../../CustomTable/tableToast';
@@ -22,8 +22,9 @@ import { AdditionaServiceTableContext } from './AdditionaServiceTableContext';
 import './AdditionalServicesSettings.css';
 import { generateRowId } from '../../../services/firebase/firestoreDb';
 import FormulaModalWindow from '../FormulaModalWindow/FormulaModalWindow';
+import { calculatorConfigurationTablePath } from '../../../services/calculatorConfigurations';
 
-function AdditionalServicesSettings() {
+function AdditionalServicesSettings({ configurationId }: { configurationId: string }) {
   const [services, dispatch] = useImmerReducer<ServiceData[], Action>(
     tableReducer,
     [],
@@ -47,7 +48,13 @@ function AdditionalServicesSettings() {
     });
   };
 
-  useTableSubscriptiontsts('additional_services', 'rowName', (initServices) => {
+  const tablePath = calculatorConfigurationTablePath(configurationId, 'additional_services');
+
+  useEffect(() => {
+    servicesAction.current = {};
+  }, [configurationId]);
+
+  useTableSubscriptiontsts(tablePath, 'rowName', (initServices) => {
     console.log('effect services: ', initServices);
     dispatch({ type: 'init', initServices } as InitActionData);
   });
@@ -71,7 +78,7 @@ function AdditionalServicesSettings() {
   };
 
   const handleAddService = async () => {
-    const serviceId = await generateRowId('additional_services');
+    const serviceId = await generateRowId(tablePath);
     dispatch({
       type: 'add',
       rowId: serviceId,
@@ -108,6 +115,7 @@ function AdditionalServicesSettings() {
 
     updateCalculatorSettingsData({
       tableName: 'additional_services',
+      configurationId,
       tableAction: actionToUpdate,
     }).then((result) => {
       const data = result.data as ResponseData;

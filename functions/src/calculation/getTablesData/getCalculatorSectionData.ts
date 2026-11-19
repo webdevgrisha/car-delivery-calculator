@@ -1,5 +1,7 @@
 import admin from "../../init";
 import {SectionRow} from "../interfaces";
+import {ConfigurationTable, configurationCollectionPath}
+  from "../../calculatorConfigurations/configurationPath";
 
 type Currency = "PLN" | "USD" | "EUR";
 
@@ -30,9 +32,14 @@ interface InitRowsConfig {
   result: ResultData;
 }
 
-async function getCalculatorSectionData(tableName: string) {
+async function getCalculatorSectionData(
+  tableName: ConfigurationTable,
+  configurationId?: string
+) {
   const firestoreDb = admin.firestore();
-  const tableRef = firestoreDb.collection(tableName);
+  const tableRef = firestoreDb.collection(
+    configurationCollectionPath(configurationId, tableName)
+  );
 
   const querySnapshot = await tableRef.get();
 

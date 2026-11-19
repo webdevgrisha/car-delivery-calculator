@@ -16,6 +16,7 @@ interface ManualCalculationProps {
   createJPG: () => void;
   location?: string;
   auction?: string;
+  configurationId: string;
 }
 
 function ManualCalculation({
@@ -24,6 +25,7 @@ function ManualCalculation({
   createJPG,
   location = '',
   auction = '',
+  configurationId,
 }: ManualCalculationProps) {
   const [formData, setFormData] = useImmer<FormData>({
     // auction: '',
@@ -94,6 +96,7 @@ function ManualCalculation({
     calculateRowsData({
       variables: formData,
       selectedAdditionalServices: Object.values(selectedAdditionalServices),
+      configurationId,
     }).then(({ data }) => {
       console.log('result: ', data);
       setCalculationResult(data as ClalculationResult);

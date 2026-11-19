@@ -1,5 +1,5 @@
-import { getFunctions, httpsCallable } from "firebase/functions";
-const functions = getFunctions();
+import { httpsCallable } from "firebase/functions";
+import { functions } from './firebaseConfig';
 
 const addAdminRole = httpsCallable(functions, "addAdminRole");
 const createNewUser = httpsCallable(functions, "createNewUser") as AddFunc;
@@ -14,6 +14,8 @@ const updateCalculatorSettingsData = httpsCallable(functions, "updateCalculatorS
 const getCalculatorSettingsData = httpsCallable(functions, "getCalculatorSettingsData");
 const calculateRowsData = httpsCallable(functions, "calculateRowsData");
 const getAuctionData = httpsCallable(functions, "getAuctionData");
+const getCalculatorConfigurations = httpsCallable(functions, "getCalculatorConfigurations");
+const createCalculatorConfiguration = httpsCallable(functions, "createCalculatorConfiguration");
 
 import { readAllUsers } from './realtimeDb';
 import { AddFunc, DeleteFunc, EditFunc } from "../../components/Users/UserTable/interfaces";
@@ -33,7 +35,9 @@ export {
     updateCalculatorSettingsData,
     getCalculatorSettingsData,
     calculateRowsData,
-    getAuctionData
+    getAuctionData,
+    getCalculatorConfigurations,
+    createCalculatorConfiguration
 }
 
 readAllUsers();

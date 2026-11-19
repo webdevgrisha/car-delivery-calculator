@@ -3,6 +3,8 @@ import {onCall, CallableRequest} from "firebase-functions/v2/https";
 import {error} from "firebase-functions/logger";
 import {checkAdminRole} from "../../checkAdminRole";
 import {FirebaseError} from "firebase-admin";
+import {configurationCollectionPath, isConfigurationTable}
+  from "../../calculatorConfigurations/configurationPath";
 
 type Currency = "USD" | "EUR" | "PLN";
 
@@ -29,15 +31,25 @@ type ServiceAction = DeleteActionConfig | CreateEditActionConfig;
 export const updateCalculatorSettingsData = onCall(
   async (
     request: CallableRequest<
-      { tableAction: ServiceAction[], tableName: string }
+      {
+        tableAction: ServiceAction[],
+        tableName: string,
+        configurationId?: string
+      }
     >
   ) => {
     checkAdminRole(request);
 
-    const {tableAction, tableName} = request.data;
+    const {tableAction, tableName, configurationId} = request.data;
+
+    if (!isConfigurationTable(tableName)) {
+      return {error: "Invalid calculator settings table"};
+    }
 
     const firestoreDb = admin.firestore();
-    const tableRef = firestoreDb.collection(tableName);
+    const tableRef = firestoreDb.collection(
+      configurationCollectionPath(configurationId, tableName)
+    );
 
     try {
       const actionsArrPromise = tableAction.map((tableAction) => {

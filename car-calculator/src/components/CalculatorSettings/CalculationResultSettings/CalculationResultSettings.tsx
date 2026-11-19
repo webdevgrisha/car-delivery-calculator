@@ -5,7 +5,7 @@ import FormulaModalWindow from '../FormulaModalWindow/FormulaModalWindow';
 import TotalCost from './TotalCost/TotalCost';
 import { TableWrapper } from './index';
 
-function CalculationResultSettings() {
+function CalculationResultSettings({ configurationId }: { configurationId: string }) {
   const [modalWindowData, setModalWindowData] =
     useImmer<FormulaModalWindowData>({
       isShown: false,
@@ -34,6 +34,7 @@ function CalculationResultSettings() {
             tableName="Aukcja i wysyłka"
             tablePath="auction_and_shipping"
             showModal={showModal}
+            configurationId={configurationId}
           />
 
           <hr className="table-delimiter" />
@@ -42,6 +43,7 @@ function CalculationResultSettings() {
             tableName="Odprawa celna"
             tablePath="customs_clearance"
             showModal={showModal}
+            configurationId={configurationId}
           />
 
           <hr className="table-delimiter" />
@@ -50,11 +52,12 @@ function CalculationResultSettings() {
             tableName="Inne płatności"
             tablePath="other_payments"
             showModal={showModal}
+            configurationId={configurationId}
           />
 
           <hr className="table-delimiter" />
 
-          <TotalCost tablePath="total_car_cost" />
+          <TotalCost tablePath="total_car_cost" configurationId={configurationId} />
         </div>
       </div>
 

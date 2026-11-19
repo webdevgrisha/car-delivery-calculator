@@ -12,11 +12,16 @@ export const calculateRowsData = onCall(
   async (
     request: CallableRequest<{
       variables: Variables,
-      selectedAdditionalServices: SectionRow[]
+      selectedAdditionalServices: SectionRow[],
+      configurationId?: string
     }>
   ) => {
     try {
-      const {variables, selectedAdditionalServices} = request.data;
+      const {
+        variables,
+        selectedAdditionalServices,
+        configurationId,
+      } = request.data;
 
       variables.auction = variables.location.split("-").at(-1)?.trim() || "";
 
@@ -31,10 +36,10 @@ export const calculateRowsData = onCall(
       let totalSectionsSumCurrency: Currency = "PLN";
 
       const sectionData = await Promise.all([
-        getCalculatorSectionData("auction_and_shipping"),
-        getCalculatorSectionData("customs_clearance"),
-        getCalculatorSectionData("other_payments"),
-        getTotalCarCost(),
+        getCalculatorSectionData("auction_and_shipping", configurationId),
+        getCalculatorSectionData("customs_clearance", configurationId),
+        getCalculatorSectionData("other_payments", configurationId),
+        getTotalCarCost(configurationId),
       ]);
 
       console.log("sectionData: ", sectionData);

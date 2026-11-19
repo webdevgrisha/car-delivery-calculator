@@ -6,6 +6,7 @@ import { useImmer } from 'use-immer';
 import ServiceComp from './ServiceComp/ServiceComp';
 import { getTableData } from '../../../services/firebase/firestoreDb';
 import { AdditionalService, SelectedAdditionalServices } from '../interfaces';
+import { calculatorConfigurationTablePath } from '../../../services/calculatorConfigurations';
 
 interface AdditionalServices {
   [key: string]: AdditionalService;
@@ -15,20 +16,26 @@ interface AdditionalServicesProps {
   setSelectedAdditionalServices: (
     updater: (draft: SelectedAdditionalServices) => void,
   ) => void;
+  configurationId: string;
 }
 
 function AdditionalServices({
   setSelectedAdditionalServices,
+  configurationId,
 }: AdditionalServicesProps) {
   const [additionalServices, setAdditionalServices] =
     useImmer<AdditionalServices | null>(null);
   const [showServices, setShowServices] = useState<boolean>(false);
 
   useEffect(() => {
-    getTableData('additional_services', 'rowName').then((data) => {
+    setAdditionalServices(null);
+    getTableData(
+      calculatorConfigurationTablePath(configurationId, 'additional_services'),
+      'rowName',
+    ).then((data) => {
       setAdditionalServices(data as AdditionalServices);
     });
-  }, []);
+  }, [configurationId, setAdditionalServices]);
 
   const handleArrowClick = () => {
     setShowServices(!showServices);

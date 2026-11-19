@@ -1,0 +1,250 @@
+.calculator-configuration-picker {
+  width: calc(100% - 3.76rem);
+  max-width: 76rem;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(15rem, 1fr) auto;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  border: 1px solid rgb(223, 231, 240);
+  border-radius: 0.81rem;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 0.25rem 1rem rgba(41, 72, 125, 0.035);
+  overflow: visible;
+}
+
+.configuration-summary,
+.configuration-actions,
+.configuration-create-form,
+.create-form-controls,
+.new-configuration-button {
+  display: flex;
+  align-items: center;
+}
+
+.configuration-summary {
+  min-width: 0;
+  gap: 0.8rem;
+}
+
+.configuration-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.63rem;
+  flex: 0 0 auto;
+  border-radius: 0.63rem;
+  background: rgb(242, 246, 251);
+}
+
+.configuration-icon svg path {
+  fill: rgb(33, 109, 209);
+}
+.configuration-copy {
+  min-width: 0;
+}
+
+.configuration-copy h2 {
+  margin-bottom: 0.2rem;
+  color: rgb(41, 41, 41);
+  font-size: 0.94rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+
+.configuration-copy p {
+  color: rgb(124, 141, 181);
+  font-size: 0.75rem;
+  line-height: 1.1rem;
+}
+
+.configuration-actions {
+  justify-content: flex-end;
+  gap: 0.63rem;
+}
+.configuration-select {
+  position: relative;
+  min-width: 13.5rem;
+}
+
+.configuration-select select {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 2.7rem 0 0.94rem;
+  appearance: none;
+  border: 1px solid rgb(223, 231, 240);
+  border-radius: 0.38rem;
+  outline: none;
+  background: rgb(255, 255, 255);
+  color: rgb(41, 41, 41);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.configuration-select select:hover {
+  border-color: rgb(124, 141, 181);
+}
+
+.configuration-select select:focus {
+  border-color: rgb(33, 109, 209);
+  box-shadow: 0 0 0 0.19rem rgba(33, 109, 209, 0.11);
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 0.88rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.new-configuration-button,
+.cancel-configuration-button,
+.create-configuration-button {
+  height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: 0.38rem;
+  font-size: 0.81rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s,
+    opacity 0.2s;
+}
+
+.new-configuration-button {
+  gap: 0.5rem;
+  border: 1px solid rgb(223, 231, 240);
+  background: rgb(242, 246, 251);
+  color: rgb(33, 109, 209);
+  white-space: nowrap;
+}
+
+.new-configuration-button svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+.new-configuration-button:hover {
+  background: rgb(227, 234, 255);
+}
+
+.configuration-create-form {
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(223, 231, 240);
+}
+
+.create-form-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.create-form-copy strong {
+  color: rgb(41, 41, 41);
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+.create-form-copy span {
+  color: rgb(124, 141, 181);
+  font-size: 0.72rem;
+  line-height: 1rem;
+}
+.create-form-controls {
+  gap: 0.5rem;
+}
+
+.create-form-controls input {
+  width: 17rem;
+  height: 2.75rem;
+  padding: 0 0.88rem;
+  border: 1px solid rgb(223, 231, 240);
+  border-radius: 0.38rem;
+  outline: none;
+  color: rgb(41, 41, 41);
+  font-size: 0.81rem;
+}
+
+.create-form-controls input:focus {
+  border-color: rgb(33, 109, 209);
+  box-shadow: 0 0 0 0.19rem rgba(33, 109, 209, 0.11);
+}
+
+.cancel-configuration-button {
+  border: 1px solid rgb(223, 231, 240);
+  background: white;
+  color: rgb(124, 141, 181);
+}
+
+.create-configuration-button {
+  border: 1px solid rgb(33, 109, 209);
+  background: rgb(33, 109, 209);
+  color: white;
+}
+
+.new-configuration-button:active,
+.cancel-configuration-button:active,
+.create-configuration-button:active {
+  transform: scale(0.98);
+}
+
+.create-configuration-button:disabled,
+.cancel-configuration-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .calculator-configuration-picker {
+    grid-template-columns: 1fr;
+  }
+  .configuration-actions {
+    justify-content: flex-start;
+  }
+  .configuration-create-form {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .calculator-configuration-picker {
+    width: calc(100% - 1.5rem);
+    padding: 0.88rem;
+  }
+  .configuration-actions,
+  .create-form-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .configuration-select,
+  .create-form-controls input {
+    width: 100%;
+  }
+  .new-configuration-button {
+    flex: 1;
+    justify-content: center;
+  }
+  .create-form-controls button {
+    flex: 1;
+  }
+}

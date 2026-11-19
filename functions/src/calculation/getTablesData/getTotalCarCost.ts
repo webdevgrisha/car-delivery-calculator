@@ -1,9 +1,13 @@
 import admin from "../../init";
 import {TotalCost} from "../interfaces";
+import {configurationCollectionPath}
+  from "../../calculatorConfigurations/configurationPath";
 
-async function getTotalCarCost(): Promise<TotalCost> {
+async function getTotalCarCost(configurationId?: string): Promise<TotalCost> {
   const firestoreDb = admin.firestore();
-  const docRef = firestoreDb.collection("total_car_cost").doc("total_cost");
+  const docRef = firestoreDb
+    .collection(configurationCollectionPath(configurationId, "total_car_cost"))
+    .doc("total_cost");
   const doc = await docRef.get();
 
   if (!doc.exists) throw Error("Doc does't exist");

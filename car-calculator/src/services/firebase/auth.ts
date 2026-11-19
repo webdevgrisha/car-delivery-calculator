@@ -1,8 +1,6 @@
 import './firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User, sendPasswordResetEmail } from "firebase/auth";
-
-
-const auth = getAuth();
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, NextOrObserver, User, sendPasswordResetEmail } from "firebase/auth";
+import { auth } from './firebaseConfig';
 
 
 // addAdminRole({ email: 'test1@gmail.com' }).then((result) => {

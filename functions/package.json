@@ -5,6 +5,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "serve": "pnpm run build && firebase emulators:start --only functions",
+    "seed:emulators": "node scripts/seedEmulators.cjs",
     "shell": "pnpm run build && firebase functions:shell",
     "start": "pnpm run shell",
     "lint:fix": "eslint . --fix",

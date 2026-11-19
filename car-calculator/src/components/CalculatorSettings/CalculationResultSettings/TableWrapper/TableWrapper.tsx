@@ -24,11 +24,13 @@ import { showUpdateToast } from '../../../CustomTable/tableToast';
 import { Id, toast } from 'react-toastify';
 import { moveRowAction } from './tableActionFunctions';
 import { ShowModalFunc } from '../interfaces';
+import { calculatorConfigurationTablePath } from '../../../../services/calculatorConfigurations';
 
 interface TableWrapperProps {
   tableName: string;
   tablePath: string;
   showModal: ShowModalFunc;
+  configurationId: string;
 }
 
 const tableRowsInitConfig: CalculatorSettingsTable = {
@@ -50,7 +52,7 @@ const tableRowsInitConfig: CalculatorSettingsTable = {
   },
 };
 
-function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
+function TableWrapper({ tableName, tablePath, showModal, configurationId }: TableWrapperProps) {
   const [tableRows, dispatch] = useImmerReducer<
     CalculatorSettingsTable,
     Action
@@ -58,15 +60,16 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
   const tableAction = useRef<TableAction>({});
 
   useEffect(() => {
+    tableAction.current = {};
     const unsubscrive = subscribeOnTableSettingsUpdate(
-      tablePath,
+      calculatorConfigurationTablePath(configurationId, tablePath),
       (initRows: CalculatorSettingsTable) => {
         dispatch({ type: 'init', initRows: initRows } as InitActionData);
       },
     );
 
     return unsubscrive;
-  }, []);
+  }, [configurationId, dispatch, tablePath]);
 
   console.log('table rows: ', tableRows);
 
@@ -90,7 +93,9 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
   };
 
   const handleAddRow = async () => {
-    const serviceId = await generateRowId(tablePath);
+    const serviceId = await generateRowId(
+      calculatorConfigurationTablePath(configurationId, tablePath),
+    );
     dispatch({
       type: 'add',
       rowId: serviceId,
@@ -118,6 +123,7 @@ function TableWrapper({ tableName, tablePath, showModal }: TableWrapperProps) {
 
     updateCalculatorSettingsData({
       tableName: tablePath,
+      configurationId,
       tableAction: Object.values(tableAction.current),
     }).then((response) => {
       const data = response.data as { message?: string; error?: string };

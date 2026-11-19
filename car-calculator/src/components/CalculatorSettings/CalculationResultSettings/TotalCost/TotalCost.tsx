@@ -8,9 +8,11 @@ import { updateCalculatorSettingsData } from '../../../../services/firebase/func
 import Loader from '../../../Loader/Loader';
 import { showUpdateToast } from '../../../CustomTable/tableToast';
 import { ResponseData } from '../interfaces';
+import { calculatorConfigurationTablePath } from '../../../../services/calculatorConfigurations';
 
 interface TotalCostProps {
   tablePath: string;
+  configurationId: string;
 }
 
 const selectionOptions = {
@@ -28,14 +30,14 @@ interface TotalCostData {
   };
 }
 
-function TotalCost({ tablePath }: TotalCostProps) {
+function TotalCost({ tablePath, configurationId }: TotalCostProps) {
   const [totalCostData, setTotalCostData] = useImmer<TotalCostData | null>(
     null,
   );
 
   useEffect(() => {
     const unsubscrive = subscribeOnFirstTableRecord(
-      tablePath,
+      calculatorConfigurationTablePath(configurationId, tablePath),
       (updateData: TotalCostData) =>
         setTotalCostData(() => {
           return updateData;
@@ -43,7 +45,7 @@ function TotalCost({ tablePath }: TotalCostProps) {
     );
 
     return unsubscrive;
-  }, []);
+  }, [configurationId, setTotalCostData, tablePath]);
 
   const handleCurrencyChange = (currency: Currency) => {
     setTotalCostData((draft) => {
@@ -56,6 +58,7 @@ function TotalCost({ tablePath }: TotalCostProps) {
 
     updateCalculatorSettingsData({
       tableName: tablePath,
+      configurationId,
       tableAction: [{ id: totalCostData!.id, config: totalCostData!.rowData }],
     }).then((result) => {
       const data = result.data as ResponseData;
