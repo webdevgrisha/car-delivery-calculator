@@ -70,7 +70,9 @@ const collections = {
     insurance_us: {rowType: 'info', rowName: 'Insurance', formula: 'max(50,(@[#carPrice]+@[$calc_auction_fee(#auction,#carPrice)])*0.03)', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
     offsite: {rowType: 'info', rowName: 'Offsite', formula: '50', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
     electrician: {rowType: 'info', rowName: 'Elektryk', formula: '50', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
-    order: {rowType: 'order', rowsOrder: ['car_price', 'auction_fee', 'land_transport', 'sea_transport', 'insurance_us', 'offsite', 'electrician']},
+    abstract: {rowType: 'info', rowName: 'Abstract', formula: '80', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
+    new_title: {rowType: 'info', rowName: 'New Title', formula: '450', currency: 'USD', baseCurrency: 'USD', isShown: true, isOptional: true},
+    order: {rowType: 'order', rowsOrder: ['car_price', 'auction_fee', 'land_transport', 'sea_transport', 'insurance_us', 'offsite', 'electrician', 'abstract', 'new_title']},
     result: {rowType: 'result', rowName: 'Aukcja i wysyłka razem', currency: 'USD'},
   },
   customs_clearance: {
