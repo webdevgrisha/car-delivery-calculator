@@ -64,14 +64,11 @@ function CalculationResultSection({
         });
 
         const price: number = sectionResult?.[resultIndex] || 0;
-        const currencyLabel =
-          currency === 'PLN' ? `${currency} brutto` : currency;
-
         return (
           <div className={rowClass} key={id || rowName}>
             <p className="name">{rowName}</p>
             <p className="price">
-              {price} {currencyLabel}
+              {price} {currency}
             </p>
           </div>
         );

@@ -185,7 +185,7 @@ function Calculator() {
                     }
                   />
                   <CalculationResultSection
-                    title="Inne płatności"
+                    title="Inne płatności (netto)"
                     rows={
                       calculationResultSectionData.other_payments as RowData[]
                     }

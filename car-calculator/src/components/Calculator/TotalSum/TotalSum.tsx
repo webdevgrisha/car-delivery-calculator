@@ -9,13 +9,12 @@ interface TotalSumProps {
 
 function TotalSum({ title, currency, totalResult }: TotalSumProps) {
   const price: number = totalResult?.[0] || 0;
-  const currencyLabel = currency === 'PLN' ? `${currency} brutto` : currency;
 
   return (
     <div className="total-sum">
       <p className="title">{title}</p>
       <p className="price">
-        {price} {currencyLabel}
+        {price} {currency}
       </p>
     </div>
   );

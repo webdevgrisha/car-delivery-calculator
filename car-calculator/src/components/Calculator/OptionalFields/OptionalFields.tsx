@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { SVG_SelectArrow } from '../../../assets';
 import {
   CalculationSection,
-  Currency,
   RowData,
   SelectedOptionalRows,
 } from '../interfaces';
@@ -18,7 +17,7 @@ interface OptionalFieldsProps {
 const sectionLabels: Record<CalculationSection, string> = {
   auction_and_shipping: 'Aukcja i wysyłka',
   customs_clearance: 'Odprawa celna',
-  other_payments: 'Inne płatności',
+  other_payments: 'Inne płatności (netto)',
 };
 
 const sectionOrder = Object.keys(sectionLabels) as CalculationSection[];
@@ -63,8 +62,6 @@ function OptionalFields({
               <p className="group-title">{sectionLabels[section]}</p>
               {rows.map(({ id, rowName, currency }) => {
                 const isSelected = selectedRows[section].includes(id);
-                const currencyLabel = formatCurrency(currency);
-
                 return (
                   <label
                     className={classNames('optional-field', {
@@ -78,7 +75,7 @@ function OptionalFields({
                       onChange={() => onToggle(section, id)}
                     />
                     <span>{rowName}</span>
-                    <span className="currency">{currencyLabel}</span>
+                    <span className="currency">{currency}</span>
                   </label>
                 );
               })}
@@ -88,11 +85,6 @@ function OptionalFields({
       </div>
     </section>
   );
-}
-
-function formatCurrency(currency: Currency): string {
-  if (currency === 'PLN') return 'PLN brutto';
-  return currency;
 }
 
 export default OptionalFields;
